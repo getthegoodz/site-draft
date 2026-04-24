@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Goodz Site Draft",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", ".", "--port", "3000", "--no-clipboard"],
+      "port": 3000
+    },
+    {
+      "name": "Bandcamp Builder",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "../bandcamp-builder", "--port", "3001", "--no-clipboard"],
+      "port": 3001
+    }
+  ]
+}

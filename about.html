@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Goodz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .about-body {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+    }
+
+    .about-body h2 {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      margin-top: 3.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .about-body h2:first-of-type { margin-top: 2.5rem; }
+
+    .about-body p {
+      font-size: 1.05rem;
+      color: var(--text-light);
+      line-height: 1.9;
+      margin-bottom: 1.25rem;
+    }
+
+    .about-body p em {
+      font-style: italic;
+      color: var(--text);
+    }
+
+    .about-sign {
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-lighter);
+      letter-spacing: 0.02em;
+    }
+
+    .about-cta-row {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 1.75rem;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">((GOODZ))</a>
+  <ul class="nav-links">
+    <li><a href="mixtape.html">Mixtape Goodz</a></li>
+    <li><a href="custom.html">Custom Goodz</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="index.html#faq">FAQ</a></li>
+    <li><a href="https://shop.getthegoodz.com" class="nav-shop">Shop</a></li>
+  </ul>
+  <button class="nav-toggle" aria-label="Menu">☰</button>
+</nav>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <p class="section-label on-dark">About</p>
+    <h1>Music should be seen, not just heard.</h1>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="about-body">
+
+  <p>There's something magical about holding music in your hands. Taking something invisible like sound and capturing it in an object — like fireflies in a jar. All of a sudden the thing you love can be collected. Put on a shelf. Given away. Taken with you.</p>
+
+  <p>Streaming is great. Having every song ever recorded in your pocket is genuinely incredible, and we're not trying to undo it. But most of the music we love now lives in a place no one can see.</p>
+
+  <p>Goodz are physical collectibles with a chip inside. Tap one with your phone and the music opens. Same streaming, same ease, just with something to hold.</p>
+
+  <p>Could you listen to streaming music without Goodz? Of course. You probably do every day. Are Goodz less convenient? Easier to lose? <em>Yes and absolutely yes.</em></p>
+
+  <p>They're not for everyone.</p>
+
+  <h2>We made these for the music obsessives.</h2>
+
+  <p>The playlisters. The collectors. The completists. The people who miss cassettes and the ones who never lived through that era but have a hunch they would've thrived in it. The half of vinyl buyers who don't own a record player — who just want something that reminds them of the music they love, a little less bulky than an LP and a lot less bad for the environment.</p>
+
+  <p>You've got great taste in music and you know it. You've got the right song for every occasion. But your playlists live in your phone, where no one can see them.</p>
+
+  <p>We're here to help you pull them back out.</p>
+
+  <h2>And for the artists putting the music out.</h2>
+
+  <p>If you make music, we want to make Goodz with you. We work with indie artists, labels, and events to put out runs of custom Goodz — wooden cards with your artwork and a link to your music, made to sell or hand out. The goal is simple: give fans something to hold, and give artists another way to get paid for making what they make.</p>
+
+  <div class="about-cta-row">
+    <a href="custom.html" class="btn btn-amber">Start a custom run →</a>
+  </div>
+
+  <h2>We're just getting started.</h2>
+
+  <p>Goodz was started in 2023 by Chris Cerrito and Mike Rosenthal. We're figuring this out as we go and we love hearing from people who want to figure it out with us. Email, DM, write us a letter — tell us what artists we should work with, what playlists are on your Goodz, what we should build next.</p>
+
+  <div class="about-cta-row">
+    <a href="https://www.getthegoodz.com/contact" class="btn btn-outline">Get in touch</a>
+  </div>
+
+  <p class="about-sign" style="margin-top:3rem;">Chris &amp; Mike · Co-founders, Goodz</p>
+
+</div>
+
+<footer>
+  <div>
+    <div class="footer-logo">((GOODZ))</div>
+    <div class="footer-tagline">Music you can hold.</div>
+  </div>
+  <ul class="footer-links">
+    <li><a href="mixtape.html">Mixtape Goodz</a></li>
+    <li><a href="custom.html">Custom Goodz</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="https://shop.getthegoodz.com">Shop</a></li>
+    <li><a href="index.html#faq">FAQ</a></li>
+    <li><a href="https://www.getthegoodz.com/support">Support</a></li>
+    <li><a href="https://www.getthegoodz.com/contact">Contact</a></li>
+  </ul>
+  <div class="footer-right">
+    <div class="footer-social">
+      <a href="https://www.instagram.com/getthegoodz">Instagram</a>
+      <a href="https://www.facebook.com/getthegoodz">Facebook</a>
+    </div>
+    <div class="footer-copy">© 2026 Goodz. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+function toggleFaq(btn) { btn.parentElement.classList.toggle('open'); }
+</script>
+</body>
+</html>

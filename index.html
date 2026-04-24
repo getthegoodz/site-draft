@@ -12,18 +12,18 @@
     .usp-list li { display: flex; align-items: center; gap: 0.75rem; font-size: 0.95rem; color: var(--text-light); }
     .usp-list li::before { content: "✦"; color: var(--amber); flex-shrink: 0; font-size: 0.7rem; }
 
-    .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: var(--border); margin-top: 2.5rem; }
-    .feature-card { padding: 2.5rem 2rem; border-right: var(--border-inner); }
-    .feature-card:last-child { border-right: none; }
-    .feature-icon { font-size: 1.75rem; margin-bottom: 1rem; display: block; }
-    .feature-card h3 { font-size: 0.9rem; margin-bottom: 0.5rem; }
-    .feature-card p { font-size: 0.82rem; color: var(--text-light); line-height: 1.65; }
-
-    @media (max-width: 900px) {
-      .feature-grid { grid-template-columns: 1fr; }
-      .feature-card { border-right: none; border-bottom: var(--border-inner); }
-      .feature-card:last-child { border-bottom: none; }
+    .two-audience {
+      background: var(--off-white);
+      border-bottom: var(--border);
+      padding: 4rem 2rem;
     }
+    .two-audience-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .two-audience h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); margin-bottom: 1.25rem; }
+    .two-audience p { font-size: 1rem; color: var(--text-light); line-height: 1.85; max-width: 640px; margin: 0 auto; }
   </style>
 </head>
 <body>
@@ -34,7 +34,7 @@
   <ul class="nav-links">
     <li><a href="mixtape.html">Mixtape Goodz</a></li>
     <li><a href="custom.html">Custom Goodz</a></li>
-    <li><a href="#how-it-works">How It Works</a></li>
+    <li><a href="about.html">About</a></li>
     <li><a href="#faq">FAQ</a></li>
     <li><a href="https://shop.getthegoodz.com" class="nav-shop">Shop</a></li>
   </ul>
@@ -44,11 +44,11 @@
 <!-- HERO -->
 <section class="hero">
   <div class="hero-text">
-    <h1 class="hero-title">Music You Can Hold.</h1>
-    <p class="hero-sub">A wooden card. Hold any phone near it. Music opens instantly — no app, no account.</p>
+    <h1 class="hero-title">Music you can hold.</h1>
+    <p class="hero-sub">Tap to play. An album, a playlist, a song. No new app. No new account. Just your music.</p>
     <div class="hero-ctas">
       <a href="mixtape.html" class="btn btn-amber">Shop Mixtape Goodz</a>
-      <a href="custom.html" class="btn btn-ghost">Custom Orders</a>
+      <a href="custom.html" class="btn btn-ghost">Order Custom Goodz</a>
     </div>
   </div>
   <div class="hero-visual">
@@ -56,6 +56,13 @@
   </div>
 </section>
 
+<!-- TWO-AUDIENCE INTRO -->
+<div class="two-audience">
+  <div class="two-audience-inner">
+    <h2>Streaming is great. Collecting is better.</h2>
+    <p>Made from beautiful, eco-friendly basswood, Goodz contain a hidden chip that lets you instantly access streaming music — Bandcamp, Spotify, YouTube, anywhere you listen. We make them for two kinds of people: the ones who want to hold the music they love, and the artists who want to give their fans something to collect.</p>
+  </div>
+</div>
 
 <!-- PRODUCT CARDS -->
 <div class="product-grid">
@@ -64,9 +71,9 @@
     <div class="product-tag">For Music Lovers</div>
     <h2>Mixtape Goodz</h2>
     <ul class="usp-list">
-      <li>Load any streaming music — Bandcamp, Spotify, Apple Music, and more</li>
-      <li>Ships in 1–3 days, ready to give</li>
-      <li>Update the playlist anytime — the card stays current</li>
+      <li>Works with Bandcamp, Spotify, Apple Music, YouTube, anywhere you listen</li>
+      <li>Update the link at any time</li>
+      <li>Ships in 1–3 days</li>
     </ul>
     <div class="product-price">$11.99 <span>/ card</span></div>
     <div class="btn-group">
@@ -76,16 +83,16 @@
   </div>
   <div class="product-card">
     <div class="product-card-img img-placeholder dark"></div>
-    <div class="product-tag">For Artists &amp; Events</div>
+    <div class="product-tag">For Artists &amp; Bands</div>
     <h2>Custom Goodz</h2>
     <ul class="usp-list">
-      <li>Your artwork UV-printed on basswood</li>
-      <li>50-unit minimum · $3.44/unit · 2–3 week turnaround</li>
-      <li>Links to your music, Bandcamp, or any URL</li>
+      <li>Your artwork, UV-printed on basswood</li>
+      <li>Links to Bandcamp, a single-release site, or anywhere else</li>
+      <li>From $3.44/unit · 4–6 week turnaround</li>
     </ul>
     <div class="product-price">From $3.44 <span>/ unit · Min. 50</span></div>
     <div class="btn-group">
-      <a href="order.html" class="btn btn-amber">Start your order</a>
+      <a href="custom.html" class="btn btn-amber">Start your order</a>
       <a href="custom.html#examples" class="btn btn-outline">See examples</a>
     </div>
   </div>
@@ -95,24 +102,24 @@
 <div class="tap-section" id="how-it-works">
   <div class="tap-inner">
     <p class="section-label">How It Works</p>
-    <h2 style="font-size:2rem;margin-bottom:0.4rem;">Hold Your Phone to It. That's the whole thing.</h2>
-    <p style="color:var(--text-light);max-width:540px;line-height:1.7;font-size:0.92rem;margin-bottom:0;">The same chip in your phone that reads a contactless card at checkout — Goodz uses that to open music instead of a payment.</p>
+    <h2 style="font-size:2rem;margin-bottom:0.75rem;">Tap with your phone to play. That's it.</h2>
+    <p style="color:var(--text-light);max-width:580px;line-height:1.8;font-size:0.92rem;">The chips inside Goodz use the same technology your phone uses to buy a coffee — NFC. Except instead of charging a card, it launches your favorite music. No app to download. No account to make. Your phone already knows how.</p>
     <div class="steps">
       <div class="step">
         <span class="step-num">01</span>
         <h3>Get Your Goodz</h3>
-        <p>Order ready-made from the shop or configure a custom run. We encode your link into the chip before it ships.</p>
+        <p>Order one ready-made from the shop, or configure a custom run for your band. We encode your link into the chip before it ships.</p>
       </div>
       <div class="step">
         <span class="step-num">02</span>
-        <h3>Hold a Phone Near It</h3>
-        <p>iPhone: hold the top of the phone near the card. Android: hold the back. No app, no unlock needed.</p>
+        <h3>Tap It with Your Phone</h3>
+        <p>iPhone: top of the phone. Android: back of the phone. A notification pops up. Tap it.</p>
         <p class="step-note">iPhone 7+ · All modern Android phones</p>
       </div>
       <div class="step">
         <span class="step-num">03</span>
-        <h3>Music Opens</h3>
-        <p>Your playlist opens in their browser — like tapping a link in a text. Spotify, Bandcamp, YouTube, anything.</p>
+        <h3>Music Plays</h3>
+        <p>Your playlist, your album, whatever link you chose. No friction. Just music.</p>
       </div>
     </div>
   </div>
@@ -125,11 +132,15 @@
 
 <!-- CREDIBILITY -->
 <div class="cred-bar">
-  <p>Trusted by artists and brands</p>
+  <p>Artists and labels we've worked with</p>
   <div class="cred-names">
     <span class="cred-name">Sony Music</span>
-    <span class="cred-name">Warner Music</span>
+    <span class="cred-name">Concord</span>
     <span class="cred-name">Craft Recordings</span>
+    <span class="cred-name">Fania</span>
+    <span class="cred-name">They Might Be Giants</span>
+    <span class="cred-name">Britney Spears</span>
+    <span class="cred-name">Outkast</span>
   </div>
 </div>
 
@@ -137,30 +148,30 @@
 <div class="split">
   <div class="split-img img-placeholder dark" style="min-height:420px;"></div>
   <div class="split-text">
-    <p class="section-label">Custom Goodz</p>
-    <h2>Merch Fans Actually Keep</h2>
-    <p>Your artwork on basswood. Your music in the chip. Fans tap it — your album opens. Used by indie artists, labels, and festivals.</p>
-    <ul class="usp-list" style="margin-top:1rem;">
-      <li>50-unit minimum · ships in 2–3 weeks</li>
-      <li>Bandcamp CSV pre-load available</li>
-      <li>Tap analytics included</li>
+    <p class="section-label">For Artists &amp; Bands</p>
+    <h2>Merch your fans will actually keep.</h2>
+    <p>Most band merch ends up in a drawer. Goodz don't. They're small, they're beautiful, they do something — and they're a way for the people who bought your album to show off what they love. Indie artists, labels, and festivals use them as tour merch, limited editions, and release-day drops.</p>
+    <ul class="usp-list" style="margin-top:0.5rem;">
+      <li>50-unit minimum · ships in 4–6 weeks</li>
+      <li>Bandcamp integration — link albums or pre-load download codes</li>
+      <li>Tap analytics, so you know where your fans are</li>
     </ul>
-    <a href="custom.html" class="btn btn-black" style="align-self:flex-start;margin-top:0.5rem;">Start your order →</a>
+    <a href="custom.html" class="btn btn-amber" style="align-self:flex-start;margin-top:0.5rem;">Start your order →</a>
   </div>
 </div>
 
 <!-- SPLIT — MIXTAPE -->
 <div class="split reverse" style="background:var(--off-white);">
   <div class="split-text">
-    <p class="section-label">Mixtape Goodz</p>
-    <h2>Music Made for Someone Specific.</h2>
-    <p>You made them a playlist. This makes it physical. Birthdays, anniversaries, long distances, or just because.</p>
-    <ul class="usp-list" style="margin-top:1rem;">
-      <li>Ready-made — just add your link at checkout</li>
+    <p class="section-label">For Music Lovers</p>
+    <h2>You already made them a playlist. Now make it a thing.</h2>
+    <p>Your taste in music is a gift. Most of the time it stays trapped in your phone. Mixtape Goodz pull it into the room — for the shelf, the dashboard, or for someone you want to hand it to in person. For long drives, long distance, or no reason at all.</p>
+    <ul class="usp-list" style="margin-top:0.5rem;">
+      <li>Load any playlist or album link</li>
       <li>Ships in 1–3 business days</li>
-      <li>Update the playlist anytime, card stays current</li>
+      <li>Update the playlist anytime — the card stays current</li>
     </ul>
-    <a href="mixtape.html" class="btn btn-black" style="align-self:flex-start;margin-top:0.5rem;">Shop Mixtape Goodz →</a>
+    <a href="mixtape.html" class="btn btn-amber" style="align-self:flex-start;margin-top:0.5rem;">Shop Mixtape Goodz →</a>
   </div>
   <div class="split-img img-placeholder warm" style="min-height:420px;"></div>
 </div>
@@ -180,28 +191,28 @@
   <h2>Questions?</h2>
 
   <div class="faq-item">
-    <button class="faq-q" onclick="toggleFaq(this)">What is a Goodz? <span class="icon">+</span></button>
-    <div class="faq-a">A 65×65mm wooden card with an embedded chip. Hold any modern phone near it and it opens a link — usually music — directly in the browser. No app, no account needed.</div>
+    <button class="faq-q" onclick="toggleFaq(this)">What are Goodz? <span class="icon">+</span></button>
+    <div class="faq-a">Small wooden cards, about the size of a coaster, with an NFC chip inside. Tap it with your phone and it opens a link. Usually music. Sometimes a video, a web page, or anything else. No app, no account, no download.</div>
   </div>
 
   <div class="faq-item">
     <button class="faq-q" onclick="toggleFaq(this)">Mixtape vs. Custom — what's the difference? <span class="icon">+</span></button>
-    <div class="faq-a">Mixtape Goodz are ready-made cards you buy and load with any playlist link — great for gifting. Custom Goodz are printed with your own artwork and ordered in quantities of 50+ — for artists, labels, events, and brands.</div>
+    <div class="faq-a">Mixtape Goodz are ready-made cards you load with any playlist link. One-off gifts, personal mixtapes, that kind of thing. Custom Goodz are printed with your own artwork, ordered in runs of 50 or more, and made for artists, labels, and events who want something to sell or hand out.</div>
   </div>
 
   <div class="faq-item">
-    <button class="faq-q" onclick="toggleFaq(this)">Will it work on any phone? <span class="icon">+</span></button>
-    <div class="faq-a">Yes. Works on iPhone 7 and later (hold the top of the phone near the card) and virtually all Android phones made after 2015 (hold the back). No app download — the chip is read by the phone's built-in hardware.</div>
+    <button class="faq-q" onclick="toggleFaq(this)">Does it really work on any phone? <span class="icon">+</span></button>
+    <div class="faq-a">Yes. Works on iPhone 7 and later (hold the top of the phone near the card) and virtually all Android phones made after 2015 (hold the back). The NFC hardware is already in the phone, so there's nothing to download.</div>
   </div>
 
   <div class="faq-item">
     <button class="faq-q" onclick="toggleFaq(this)">Can I change the music after it ships? <span class="icon">+</span></button>
-    <div class="faq-a">Yes — if the link points to a playlist you control (Spotify, Apple Music, etc.), updating that playlist updates what anyone tapping the card hears. The card never needs to change.</div>
+    <div class="faq-a">Depends which one. Mixtape Goodz can be re-pointed anytime — simply change the destination URL and every tap goes to the new link. Custom Goodz work differently: the artist or brand who placed the order can update the link across the entire run, but individual fans can't redirect the card they're holding. Either way, if the link points to a playlist you control, updating that playlist updates what anyone tapping the card hears.</div>
   </div>
 
   <div class="faq-item">
     <button class="faq-q" onclick="toggleFaq(this)">How long does shipping take? <span class="icon">+</span></button>
-    <div class="faq-a">Mixtape Goodz ship in 1–3 business days. Custom Goodz take approximately 2–3 weeks from artwork approval to delivery.</div>
+    <div class="faq-a">Mixtape Goodz ship in 1–3 business days. Custom Goodz take 4–6 weeks from artwork approval.</div>
   </div>
 </div>
 
@@ -209,11 +220,12 @@
 <footer>
   <div>
     <div class="footer-logo">((GOODZ))</div>
-    <div class="footer-tagline">Streaming music you can hold.</div>
+    <div class="footer-tagline">Music you can hold.</div>
   </div>
   <ul class="footer-links">
     <li><a href="mixtape.html">Mixtape Goodz</a></li>
     <li><a href="custom.html">Custom Goodz</a></li>
+    <li><a href="about.html">About</a></li>
     <li><a href="https://shop.getthegoodz.com">Shop</a></li>
     <li><a href="#faq">FAQ</a></li>
     <li><a href="https://www.getthegoodz.com/support">Support</a></li>
