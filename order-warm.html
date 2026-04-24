@@ -33,7 +33,7 @@
 
     body {
       font-family: 'DM Sans', -apple-system, sans-serif;
-      background: var(--cream);
+      background: #fff;
       color: var(--text);
       min-height: 100vh;
     }
@@ -67,7 +67,7 @@
         position: sticky;
         top: 0;
         z-index: 100;
-        background: var(--cream);
+        background: var(--black);
         padding-bottom: 0.5rem;
       }
       .config-panel { order: 1; padding-top: 1rem; }
@@ -76,25 +76,25 @@
     .preview-panel { position: sticky; top: 2rem; }
 
     .goodz-preview {
-      background: #e4e4d6;
-      border-radius: 14px;
-      border: 1px solid #cdc8b2;
-      padding: 0.75rem 1rem;
+      background: var(--black);
+      border-radius: 16px;
+      border: none;
+      padding: 1.5rem 1.25rem;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.75rem;
     }
     @media (max-width: 768px) {
-      .goodz-preview { padding: 0.5rem 0.75rem; gap: 0.4rem; }
+      .goodz-preview { padding: 0.75rem; gap: 0.5rem; border-radius: 0; }
     }
 
     .preview-label {
-      font-size: 0.7rem;
+      font-size: 0.62rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: #999;
+      letter-spacing: 0.12em;
+      color: var(--yellow);
     }
 
     .card {
@@ -113,7 +113,7 @@
     }
 
     .card.has-art { background: transparent; }
-    .card-placeholder-text { font-size: 0.6rem; color: #666; text-align: center; line-height: 1.4; }
+    .card-placeholder-text { font-size: 0.6rem; color: #9a8e7e; text-align: center; line-height: 1.4; }
     .zone-guide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; z-index: 10; opacity: 0.65; border-radius: inherit; }
     .card-art { width: 100%; height: 100%; object-fit: cover; }
 
@@ -154,8 +154,8 @@
       clip-path: inset(0 0 85% 0);
     }
 
-    .sleeve-label { font-size: 0.5rem; color: #aaa; letter-spacing: 0.05em; text-transform: uppercase; }
-    .preview-hint { font-size: 0.65rem; color: #999; letter-spacing: 0.05em; text-align: center; }
+    .sleeve-label { font-size: 0.5rem; color: #6b6354; letter-spacing: 0.05em; text-transform: uppercase; }
+    .preview-hint { font-size: 0.65rem; color: #6b6354; letter-spacing: 0.05em; text-align: center; }
 
     .status-ok {
       margin-top: 1rem;
@@ -182,12 +182,13 @@
 
     .step-bar-wrapper { margin-bottom: 1.75rem; }
     .step-bar { display: flex; gap: 0.25rem; margin-bottom: 0.4rem; }
-    .step-segment { flex: 1; height: 4px; border-radius: 2px; background: #cdc8b2; transition: background 0.2s; cursor: default; }
-    .step-segment.done, .step-segment.active { background: var(--black); }
+    .step-segment { flex: 1; height: 3px; border-radius: 2px; background: #e0ddd4; transition: background 0.2s; cursor: default; }
+    .step-segment.done { background: var(--yellow); cursor: pointer; }
+    .step-segment.active { background: var(--black); }
     .step-segment.done { cursor: pointer; }
     .step-labels { display: flex; }
-    .step-labels span { flex: 1; text-align: center; font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #999; transition: color 0.2s; }
-    .step-labels span.done { color: var(--black); cursor: pointer; }
+    .step-labels span { flex: 1; text-align: center; font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #b0a898; transition: color 0.2s; }
+    .step-labels span.done { color: var(--yellow); cursor: pointer; }
     .step-labels span.done:hover { text-decoration: underline; }
     .step-labels span.active { color: var(--black); }
 
@@ -198,13 +199,13 @@
     .drop-zone {
       width: 100%;
       aspect-ratio: 1;
-      border: 2px dashed #c0bba8;
+      border: 2px dashed #d8d4c8;
       border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      background: #e8e7d8;
+      background: #fafaf7;
       transition: all 0.15s ease;
       overflow: hidden;
       position: relative;
@@ -231,11 +232,11 @@
     .sleeve-option-title { font-weight: 700; font-size: 0.95rem; font-family: 'Poppins', sans-serif; }
     .sleeve-option-sub { font-size: 0.75rem; color: #666; margin-top: 0.2rem; }
 
-    .mode-toggle { display: flex; gap: 0; margin-bottom: 1rem; border-radius: 8px; overflow: hidden; border: 1px solid #cdc8b2; }
-    .mode-btn { flex: 1; padding: 0.65rem 1rem; background: var(--cream); border: none; font-size: 0.85rem; font-weight: 600; color: #6b6354; cursor: pointer; transition: all 0.15s; text-align: center; font-family: 'DM Sans', sans-serif; }
-    .mode-btn.active { background: var(--black); color: #efefe2; }
+    .mode-toggle { display: flex; gap: 0; margin-bottom: 1rem; border-radius: 8px; overflow: hidden; border: 2px solid var(--black); }
+    .mode-btn { flex: 1; padding: 0.65rem 1rem; background: #fff; border: none; font-size: 0.85rem; font-weight: 600; color: #6b6354; cursor: pointer; transition: all 0.15s; text-align: center; font-family: 'DM Sans', sans-serif; }
+    .mode-btn.active { background: var(--black); color: var(--yellow); }
 
-    .csv-zone { border: 2px dashed #c0bba8; border-radius: 10px; padding: 2rem; text-align: center; cursor: pointer; background: #e4e4d6; transition: all 0.15s ease; }
+    .csv-zone { border: 2px dashed #d8d4c8; border-radius: 10px; padding: 2rem; text-align: center; cursor: pointer; background: #fafaf7; transition: all 0.15s ease; }
     .csv-zone:hover, .csv-zone.drag-over { border-color: var(--black); background: var(--yellow-light); }
     .csv-zone.has-error { border-color: var(--red-text); background: var(--red-bg); }
     .csv-icon { font-size: 2rem; margin-bottom: 0.75rem; }
@@ -254,7 +255,7 @@
     .csv-warning strong { font-weight: 700; }
 
     .alt-url-box { margin-top: 0; }
-    .alt-url-input { width: 100%; padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid #cdc8b2; font-size: 0.9rem; font-family: 'DM Sans', sans-serif; box-sizing: border-box; transition: border-color 0.15s; background: var(--cream); }
+    .alt-url-input { width: 100%; padding: 0.75rem 1rem; border-radius: 8px; border: 2px solid #e0ddd4; font-size: 0.9rem; font-family: 'DM Sans', sans-serif; box-sizing: border-box; transition: border-color 0.15s; background: #fff; }
     .alt-url-input:focus { outline: none; border-color: var(--black); }
     .alt-url-hint { margin-top: 0.5rem; font-size: 0.75rem; color: #888; }
 
@@ -263,21 +264,21 @@
     .bandcamp-help-bottom { margin-bottom: 1.5rem; }
 
     .qty-label { display: block; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #666; margin-bottom: 0.5rem; }
-    .qty-input { width: 120px; padding: 0.5rem 0.75rem; border-radius: 6px; border: 1px solid #cdc8b2; font-size: 1rem; font-weight: 700; text-align: center; margin-bottom: 0.25rem; box-sizing: border-box; display: block; background: var(--cream); font-family: 'DM Sans', sans-serif; }
+    .qty-input { width: 120px; padding: 0.5rem 0.75rem; border-radius: 6px; border: 2px solid var(--black); font-size: 1rem; font-weight: 700; text-align: center; margin-bottom: 0.25rem; box-sizing: border-box; display: block; background: #fff; font-family: 'DM Sans', sans-serif; }
     .qty-hint { font-size: 0.8rem; color: #666; margin-bottom: 1rem; line-height: 1.5; }
     .tier-buttons { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
     .tier-btn { padding: 0.4rem 0.75rem; border-radius: 6px; border: 1px solid #cdc8b2; background: var(--cream); color: #6b6354; font-weight: 600; font-size: 0.75rem; cursor: pointer; transition: all 0.1s ease; font-family: 'DM Sans', sans-serif; }
     .tier-btn.active { border-color: var(--black); background: var(--yellow); color: var(--black); }
 
-    .pricing-box { padding: 1rem; background: #e4e4d6; border-radius: 10px; border: 1px solid #cdc8b2; }
+    .pricing-box { padding: 1.25rem 1.5rem; background: var(--black); border-radius: 10px; border: none; }
     .pricing-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.25rem; }
-    .pricing-per { font-size: 0.8rem; color: #666; }
-    .pricing-tier { font-size: 0.7rem; color: #999; }
-    .pricing-total { font-size: 1.75rem; font-weight: 800; }
-    .pricing-total-label { font-size: 0.8rem; color: #666; font-weight: 400; }
+    .pricing-per { font-size: 0.8rem; color: #9a8e7e; }
+    .pricing-tier { font-size: 0.7rem; color: #6b6354; }
+    .pricing-total { font-size: 1.75rem; font-weight: 800; color: var(--yellow); }
+    .pricing-total-label { font-size: 0.8rem; color: #9a8e7e; font-weight: 400; }
 
-    .summary-row { display: flex; justify-content: space-between; align-items: center; padding: 0.85rem 1rem; background: #e4e4d6; border-radius: 8px; font-size: 0.9rem; border: 1px solid #cdc8b2; }
-    .summary-row.bold { background: var(--black); color: #efefe2; font-weight: 700; font-size: 1.1rem; border-color: var(--black); border-radius: 8px; }
+    .summary-row { display: flex; justify-content: space-between; align-items: center; padding: 0.85rem 1rem; background: #fafaf7; border-radius: 8px; font-size: 0.9rem; border: 1px solid #e8e4d8; }
+    .summary-row.bold { background: var(--yellow); color: var(--black); font-weight: 800; font-size: 1.1rem; border-color: var(--yellow); border-radius: 8px; }
     .summary-row.warn { color: var(--red-text); background: var(--red-bg); }
     .summary-rows { display: grid; gap: 0.75rem; margin-bottom: 1.5rem; }
     .summary-warning { margin-bottom: 1rem; padding: 0.85rem 1rem; background: var(--red-bg); border: 1px solid var(--red-border); border-radius: 8px; color: var(--red-text); font-size: 0.85rem; }
