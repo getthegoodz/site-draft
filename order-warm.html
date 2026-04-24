@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Custom Goodz — Goodz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&family=Inter:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style-warm.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --yellow: #ffc852;
+      --yellow-light: #fff4d6;
+      --black: #0e0c0a;
+      --cream: #efefe2;
+      --text: #1a1510;
+      --green-bg: #f0fdf4;
+      --green-border: #bbf7d0;
+      --green-text: #166534;
+      --blue-bg: #eff6ff;
+      --blue-border: #bfdbfe;
+      --blue-text: #1e40af;
+      --yellow-bg: #fffbeb;
+      --yellow-border: #fde68a;
+      --yellow-text: #92400e;
+      --red-bg: #fef2f2;
+      --red-border: #fecaca;
+      --red-text: #dc2626;
+    }
+
+    body {
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .header {
+      border-bottom: 2px solid var(--black);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: var(--cream);
+    }
+    .header-brand { font-size: 1.1rem; font-weight: 800; font-family: 'Poppins', sans-serif; color: var(--black); letter-spacing: -0.02em; }
+    .header-sep { color: #aaa; }
+    .header-page { font-weight: 600; color: var(--text); }
+
+    .layout {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    @media (max-width: 768px) {
+      .layout { grid-template-columns: 1fr; padding: 1rem; gap: 0; }
+      .preview-panel {
+        order: -1;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: var(--cream);
+        padding-bottom: 0.5rem;
+      }
+      .config-panel { order: 1; padding-top: 1rem; }
+    }
+
+    .preview-panel { position: sticky; top: 2rem; }
+
+    .goodz-preview {
+      background: #e4e4d6;
+      border-radius: 14px;
+      border: 1px solid #cdc8b2;
+      padding: 0.75rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    @media (max-width: 768px) {
+      .goodz-preview { padding: 0.5rem 0.75rem; gap: 0.4rem; }
+    }
+
+    .preview-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #999;
+    }
+
+    .card {
+      width: 140px;
+      height: 140px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25), inset 0 0 0 2px rgba(255,255,255,0.1);
+      background: #111;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .card.has-art { background: transparent; }
+    .card-placeholder-text { font-size: 0.6rem; color: #666; text-align: center; line-height: 1.4; }
+    .zone-guide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; z-index: 10; opacity: 0.65; border-radius: inherit; }
+    .card-art { width: 100%; height: 100%; object-fit: cover; }
+
+    .sleeve-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .sleeve-box {
+      width: 152px;
+      height: 152px;
+      border-radius: 4px;
+      background: #d4d0c8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 6px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      position: relative;
+    }
+
+    .sleeve-card-peek {
+      width: 136px;
+      height: 136px;
+      border-radius: 10px 10px 0 0;
+      overflow: hidden;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.2);
+      position: relative;
+    }
+
+    .sleeve-card-peek .card-art {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      clip-path: inset(0 0 85% 0);
+    }
+
+    .sleeve-label { font-size: 0.5rem; color: #aaa; letter-spacing: 0.05em; text-transform: uppercase; }
+    .preview-hint { font-size: 0.65rem; color: #999; letter-spacing: 0.05em; text-align: center; }
+
+    .status-ok {
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      background: var(--green-bg);
+      border: 1px solid var(--green-border);
+      border-radius: 8px;
+      font-size: 0.8rem;
+      color: var(--green-text);
+    }
+
+    .status-info {
+      margin-top: 0.5rem;
+      padding: 0.75rem 1rem;
+      background: var(--blue-bg);
+      border: 1px solid var(--blue-border);
+      border-radius: 8px;
+      font-size: 0.8rem;
+      color: var(--blue-text);
+    }
+
+    .config-panel h2 { font-size: 1.4rem; font-weight: 800; margin-bottom: 0.25rem; font-family: 'Poppins', sans-serif; text-transform: uppercase; letter-spacing: -0.01em; }
+    .config-panel > p { color: #666; font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.6; }
+
+    .step-bar-wrapper { margin-bottom: 1.75rem; }
+    .step-bar { display: flex; gap: 0.25rem; margin-bottom: 0.4rem; }
+    .step-segment { flex: 1; height: 4px; border-radius: 2px; background: #cdc8b2; transition: background 0.2s; cursor: default; }
+    .step-segment.done, .step-segment.active { background: var(--black); }
+    .step-segment.done { cursor: pointer; }
+    .step-labels { display: flex; }
+    .step-labels span { flex: 1; text-align: center; font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #999; transition: color 0.2s; }
+    .step-labels span.done { color: var(--black); cursor: pointer; }
+    .step-labels span.done:hover { text-decoration: underline; }
+    .step-labels span.active { color: var(--black); }
+
+    .upload-grid { display: flex; gap: 2rem; flex-wrap: wrap; }
+    .upload-box { flex: 1 1 200px; min-width: 180px; }
+    .upload-label { display: block; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #666; margin-bottom: 0.5rem; }
+
+    .drop-zone {
+      width: 100%;
+      aspect-ratio: 1;
+      border: 2px dashed #c0bba8;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      background: #e8e7d8;
+      transition: all 0.15s ease;
+      overflow: hidden;
+      position: relative;
+      text-align: center;
+      flex-direction: column;
+    }
+
+    .drop-zone:hover, .drop-zone.drag-over { border-color: var(--black); background: var(--yellow-light); }
+    .drop-zone-content { padding: 1rem; }
+    .drop-zone-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+    .drop-zone-text { font-size: 0.8rem; color: #9a8e7e; line-height: 1.5; }
+    .drop-zone-text span { color: var(--black); font-weight: 700; }
+    .artwork-req { font-size: 0.65rem; color: #bbb; margin-top: 0.5rem; line-height: 1.4; }
+    .drop-zone-req-banner { background: var(--black); color: #efefe2; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.04em; padding: 0.3rem 0.6rem; border-radius: 4px; margin-bottom: 0.5rem; text-align: center; }
+    .drop-zone img { width: 100%; height: 100%; object-fit: cover; }
+    /* safe-area-label removed */
+    .file-input { display: none; }
+    .file-name { margin-top: 0.5rem; font-size: 0.75rem; color: #666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .img-delete-btn { position: absolute; top: 8px; right: 8px; width: 24px; height: 24px; border-radius: 50%; background: rgba(0,0,0,0.55); border: none; color: #fff; font-size: 14px; line-height: 24px; text-align: center; cursor: pointer; z-index: 10; }
+
+    .sleeve-toggle { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+    .sleeve-option { flex: 1; padding: 1rem; border: 1px solid #cdc8b2; border-radius: 8px; background: var(--cream); cursor: pointer; text-align: center; transition: all 0.15s; }
+    .sleeve-option.selected { border-color: var(--black); background: var(--yellow); }
+    .sleeve-option-title { font-weight: 700; font-size: 0.95rem; font-family: 'Poppins', sans-serif; }
+    .sleeve-option-sub { font-size: 0.75rem; color: #666; margin-top: 0.2rem; }
+
+    .mode-toggle { display: flex; gap: 0; margin-bottom: 1rem; border-radius: 8px; overflow: hidden; border: 1px solid #cdc8b2; }
+    .mode-btn { flex: 1; padding: 0.65rem 1rem; background: var(--cream); border: none; font-size: 0.85rem; font-weight: 600; color: #6b6354; cursor: pointer; transition: all 0.15s; text-align: center; font-family: 'DM Sans', sans-serif; }
+    .mode-btn.active { background: var(--black); color: #efefe2; }
+
+    .csv-zone { border: 2px dashed #c0bba8; border-radius: 10px; padding: 2rem; text-align: center; cursor: pointer; background: #e4e4d6; transition: all 0.15s ease; }
+    .csv-zone:hover, .csv-zone.drag-over { border-color: var(--black); background: var(--yellow-light); }
+    .csv-zone.has-error { border-color: var(--red-text); background: var(--red-bg); }
+    .csv-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+    .csv-title { font-weight: 700; margin-bottom: 0.25rem; font-family: 'Poppins', sans-serif; }
+    .csv-sub { font-size: 0.85rem; color: #666; }
+    .csv-sub span { color: var(--black); font-weight: 700; }
+    .csv-helper { font-size: 0.75rem; color: #999; margin-top: 0.5rem; line-height: 1.4; }
+    .csv-error { margin-top: 0.75rem; padding: 0.75rem; background: var(--red-bg); border: 1px solid var(--red-border); border-radius: 8px; color: var(--red-text); font-size: 0.85rem; }
+    .csv-success { margin-top: 1rem; padding: 1rem; background: var(--green-bg); border: 1px solid var(--green-border); border-radius: 8px; }
+    .csv-success-title { font-weight: 600; color: var(--green-text); margin-bottom: 0.5rem; font-size: 0.9rem; }
+    .csv-success-sub { font-size: 0.8rem; color: #15803d; }
+    .csv-preview { margin-top: 0.5rem; }
+    .csv-preview summary { font-size: 0.75rem; color: var(--green-text); cursor: pointer; }
+    .csv-preview ul { margin: 0.5rem 0 0 1.25rem; padding: 0; font-size: 0.7rem; color: var(--green-text); word-break: break-all; }
+    .csv-warning { margin-top: 0.75rem; padding: 0.75rem 1rem; background: var(--yellow-bg); border: 1px solid var(--yellow-border); border-radius: 8px; font-size: 0.85rem; color: var(--yellow-text); }
+    .csv-warning strong { font-weight: 700; }
+
+    .alt-url-box { margin-top: 0; }
+    .alt-url-input { width: 100%; padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid #cdc8b2; font-size: 0.9rem; font-family: 'DM Sans', sans-serif; box-sizing: border-box; transition: border-color 0.15s; background: var(--cream); }
+    .alt-url-input:focus { outline: none; border-color: var(--black); }
+    .alt-url-hint { margin-top: 0.5rem; font-size: 0.75rem; color: #888; }
+
+    .bandcamp-help { font-size: 0.9rem; color: #555; margin-bottom: 1rem; line-height: 1.7; }
+    .bandcamp-help a { color: var(--black); text-decoration: underline; font-weight: 700; }
+    .bandcamp-help-bottom { margin-bottom: 1.5rem; }
+
+    .qty-label { display: block; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #666; margin-bottom: 0.5rem; }
+    .qty-input { width: 120px; padding: 0.5rem 0.75rem; border-radius: 6px; border: 1px solid #cdc8b2; font-size: 1rem; font-weight: 700; text-align: center; margin-bottom: 0.25rem; box-sizing: border-box; display: block; background: var(--cream); font-family: 'DM Sans', sans-serif; }
+    .qty-hint { font-size: 0.8rem; color: #666; margin-bottom: 1rem; line-height: 1.5; }
+    .tier-buttons { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
+    .tier-btn { padding: 0.4rem 0.75rem; border-radius: 6px; border: 1px solid #cdc8b2; background: var(--cream); color: #6b6354; font-weight: 600; font-size: 0.75rem; cursor: pointer; transition: all 0.1s ease; font-family: 'DM Sans', sans-serif; }
+    .tier-btn.active { border-color: var(--black); background: var(--yellow); color: var(--black); }
+
+    .pricing-box { padding: 1rem; background: #e4e4d6; border-radius: 10px; border: 1px solid #cdc8b2; }
+    .pricing-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.25rem; }
+    .pricing-per { font-size: 0.8rem; color: #666; }
+    .pricing-tier { font-size: 0.7rem; color: #999; }
+    .pricing-total { font-size: 1.75rem; font-weight: 800; }
+    .pricing-total-label { font-size: 0.8rem; color: #666; font-weight: 400; }
+
+    .summary-row { display: flex; justify-content: space-between; align-items: center; padding: 0.85rem 1rem; background: #e4e4d6; border-radius: 8px; font-size: 0.9rem; border: 1px solid #cdc8b2; }
+    .summary-row.bold { background: var(--black); color: #efefe2; font-weight: 700; font-size: 1.1rem; border-color: var(--black); border-radius: 8px; }
+    .summary-row.warn { color: var(--red-text); background: var(--red-bg); }
+    .summary-rows { display: grid; gap: 0.75rem; margin-bottom: 1.5rem; }
+    .summary-warning { margin-bottom: 1rem; padding: 0.85rem 1rem; background: var(--red-bg); border: 1px solid var(--red-border); border-radius: 8px; color: var(--red-text); font-size: 0.85rem; }
+
+    .btn-row { display: flex; justify-content: space-between; margin-top: 1.5rem; gap: 0.75rem; }
+
+    @media (max-width: 768px) {
+      .btn-row { flex-direction: column-reverse; }
+      .btn-row .btn { width: 100%; text-align: center; padding: 0.9rem 1.5rem; }
+    }
+    .btn { padding: 0.7rem 1.5rem; border-radius: 6px; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.15s; border: 2px solid var(--black); font-family: 'DM Sans', sans-serif; }
+    .btn-back { background: transparent; color: var(--black); border: 2px solid var(--black); }
+    .btn-primary { background: var(--yellow); color: var(--black); border-color: var(--yellow); }
+    .btn-primary:disabled { background: #cdc8b2; border-color: #cdc8b2; color: #9a8e7e; cursor: not-allowed; }
+    .btn-primary:hover:not(:disabled) { background: #e6b044; border-color: #e6b044; }
+    .btn-order { padding: 0.85rem 2rem; font-size: 1rem; }
+
+    .step { display: none; }
+    .step.active { display: block; }
+
+    .order-success { text-align: center; padding: 3rem 2rem; }
+    .order-success-icon { font-size: 4rem; margin-bottom: 1rem; }
+    .order-success h2 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+    .order-success p { color: #666; margin-bottom: 1.5rem; }
+    .order-success-detail { display: inline-block; padding: 0.75rem 1.5rem; background: #e4e4d6; border: 1px solid #cdc8b2; border-radius: 8px; font-size: 0.9rem; color: #6b6354; margin-bottom: 1.5rem; }
+
+    .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 6px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .step-subtitle { font-size: 0.9rem; color: #777; margin-bottom: 1rem; line-height: 1.6; }
+
+    /* crop modal CSS removed */
+    .sleeve-review-row { margin-bottom: 1.25rem; padding: 1rem; background: #fff4d6; border: 1px solid #e6c96a; border-radius: 10px; }
+    .sleeve-checkbox-label { display: flex; align-items: center; gap: 0.75rem; font-size: 0.95rem; font-weight: 700; cursor: pointer; }
+    .sleeve-checkbox-label input[type=checkbox] { width: 18px; height: 18px; cursor: pointer; accent-color: var(--black); }
+    .sleeve-checkbox-sub { font-size: 0.78rem; color: #666; font-weight: 400; margin-top: 0.25rem; margin-left: 1.7rem; }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index-warm.html" class="nav-logo">((GOODZ))</a>
+  <ul class="nav-links">
+    <li><a href="mixtape-warm.html">Mixtape Goodz</a></li>
+    <li><a href="custom-warm.html">Custom Goodz</a></li>
+    <li><a href="index-warm.html#how-it-works">How It Works</a></li>
+    <li><a href="index-warm.html#faq">FAQ</a></li>
+    <li><a href="https://shop.getthegoodz.com" class="nav-shop">Shop</a></li>
+  </ul>
+  <button class="nav-toggle" aria-label="Menu">☰</button>
+</nav>
+
+<div class="layout">
+  <div class="preview-panel">
+    <div class="goodz-preview">
+      <div class="preview-label">Live Preview</div>
+
+      <div id="card-wrap">
+        <div class="card" id="card">
+          <div id="card-placeholder" class="card-placeholder-text">Your art will appear here<br><span style="color:#555">Upload art →</span></div>
+          <img id="card-art" class="card-art" style="display:none" src="" alt="Card face">
+          <img id="zone-guide" class="zone-guide" src="../bandcamp-builder/card-template.png" alt="" style="display:none">
+        </div>
+      </div>
+
+      <div id="sleeve-wrap" class="sleeve-wrap" style="display:none">
+        <div class="sleeve-box">
+          <div class="sleeve-card-peek">
+            <div class="card" id="sleeve-card-inner" style="width:136px;height:136px;border-radius:10px 10px 0 0;background:#111">
+              <img id="sleeve-card-art" class="card-art" style="display:none;clip-path:inset(0 0 85% 0)" src="" alt="">
+            </div>
+          </div>
+          <div class="sleeve-label">Goodz</div>
+        </div>
+      </div>
+
+      <div class="preview-hint" id="preview-hint" style="display:none">Upload album art to preview</div>
+      <div id="print-explanation" class="print-explanation" style="display:none;font-size:0.65rem;color:#999;line-height:1.5;max-width:200px;text-align:center;margin-top:0.5rem;">The red line shows the outer edge (bleed zone) of your Goodz. Keep all important elements inside the white area — at least 1.5 mm away from the edge.</div>
+    </div>
+
+    <div id="status-art" class="status-ok" style="display:none">✅ Artwork uploaded</div>
+    <div id="status-codes" class="status-info" style="display:none"></div>
+  </div>
+
+  <div class="config-panel">
+
+    <!-- Step indicator -->
+    <div class="step-bar-wrapper" id="step-bar-wrapper">
+      <div class="step-bar">
+        <div class="step-segment active" data-step="0" onclick="handleStepClick(0)"></div>
+        <div class="step-segment" data-step="1" onclick="handleStepClick(1)"></div>
+        <div class="step-segment" data-step="2" onclick="handleStepClick(2)"></div>
+        <div class="step-segment" data-step="3" onclick="handleStepClick(3)"></div>
+      </div>
+      <div class="step-labels">
+        <span data-step-label="0" class="active">Art</span>
+        <span data-step-label="1">Music</span>
+        <span data-step-label="2">Qty</span>
+        <span data-step-label="3">Review</span>
+      </div>
+    </div>
+
+    <!-- STEP 0: Artwork -->
+    <div class="step active" id="step-0">
+      <h2>Upload your album artwork</h2>
+      <p>This will be printed on the front of each of your Goodz.</p>
+
+      <div class="upload-grid">
+        <div class="upload-box">
+          <label class="upload-label">Album Art (Front)</label>
+          <div class="drop-zone" id="drop-front" onclick="document.getElementById('input-front').click()">
+            <div class="drop-zone-content" id="front-placeholder">
+              <div class="drop-zone-req-banner">300 DPI · RGB · PNG or TIFF</div>
+              <div class="drop-zone-icon">🖼️</div>
+              <div class="drop-zone-text">Drop image or<br><span>click to browse</span></div>
+            </div>
+            <img id="front-preview" style="display:none" src="" alt="Front preview">
+            <button class="img-delete-btn" id="img-delete-btn" style="display:none" onclick="clearImage(event)">×</button>
+          </div>
+          <input type="file" id="input-front" class="file-input" accept=".png,.tiff,.tif">
+          <div class="file-name" id="front-name"></div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <div></div>
+        <button class="btn btn-primary" id="btn-step0" onclick="goToStep(1)" disabled>Next: Link Music →</button>
+      </div>
+    </div>
+
+    <!-- STEP 1: Music Linking (Bandcamp Codes) -->
+    <div class="step" id="step-1">
+      <h2>Link your music</h2>
+      <p class="step-subtitle">You can pre-load your Goodz with Bandcamp download codes, letting fans tap to redeem their purchase instantly.</p>
+
+      <p class="bandcamp-help">
+        To do this, simply upload the CSV file of download codes Bandcamp issues you. You will need one code per unit you are ordering.
+        <a href="https://get.bandcamp.help/hc/en-us/articles/23020666567191-Track-album-code-tutorial" target="_blank" rel="noreferrer">How do I get these? →</a>
+      </p>
+      <p class="bandcamp-help bandcamp-help-bottom">
+        Or select Bandcamp Album URL to simply link all the Goodz directly to your Bandcamp album page.
+      </p>
+
+      <div class="mode-toggle">
+        <button class="mode-btn active" id="mode-csv-btn" onclick="setBandcampMode('csv')">Bandcamp codes (CSV)</button>
+        <button class="mode-btn" id="mode-url-btn" onclick="setBandcampMode('url')">Bandcamp Album URL</button>
+      </div>
+
+      <!-- CSV mode -->
+      <div id="bandcamp-csv-area">
+        <div class="csv-zone" id="csv-zone" onclick="document.getElementById('input-csv').click()">
+          <div id="csv-zone-content">
+            <div class="csv-icon">📋</div>
+            <div class="csv-title">Upload your Bandcamp download codes CSV</div>
+            <div class="csv-sub">Drop your Bandcamp CSV here or <span>click to browse</span></div>
+            <div class="csv-helper">Bandcamp exports these as a CSV — each row is one unique download link</div>
+          </div>
+          <input type="file" id="input-csv" class="file-input" accept=".csv">
+        </div>
+
+        <div id="csv-error" class="csv-error" style="display:none"></div>
+
+        <div id="csv-success" class="csv-success" style="display:none">
+          <div class="csv-success-title" id="csv-success-title"></div>
+          <div class="csv-success-sub">Each Goodz will be pre-loaded with one unique URL from this file.</div>
+          <details class="csv-preview">
+            <summary>Preview first 5 URLs</summary>
+            <ul id="csv-url-list"></ul>
+          </details>
+        </div>
+
+        <div id="csv-loading" class="csv-success" style="display:none">
+          <div class="csv-success-title"><span class="spinner"></span>Processing your codes…</div>
+          <div class="csv-success-sub">Generating unique URLs for each of your <span id="csv-loading-qty">50</span> Goodz.</div>
+        </div>
+
+        <div id="csv-filled" style="display:none; margin-top:0">
+          <div class="csv-zone" style="border-style:solid; border-color:var(--green-border); background:var(--green-bg); cursor:default;">
+            <div style="display:flex; align-items:center; gap:0.75rem;">
+              <span style="font-size:1.5rem">✅</span>
+              <div style="text-align:left">
+                <div style="font-weight:600; color:var(--green-text); font-size:0.9rem;" id="csv-filled-count"></div>
+                <div style="font-size:0.8rem; color:#15803d;">Bandcamp codes loaded</div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:0.5rem; font-size:0.8rem; color:#888; text-align:center; cursor:pointer;" onclick="resetCSV()">↻ Upload a different file</div>
+        </div>
+
+        <div id="csv-warning" class="csv-warning" style="display:none"></div>
+      </div>
+
+      <!-- URL mode -->
+      <div id="bandcamp-url-area" style="display:none" class="alt-url-box">
+        <input
+          type="url"
+          id="alt-url-input"
+          class="alt-url-input"
+          placeholder="https://fish2hunt.bandcamp.com/album/self-taught-2"
+          oninput="handleAltURLChange()"
+        >
+        <div class="alt-url-hint">All Goodz will link to this URL.</div>
+        <div id="alt-url-success" class="csv-success" style="display:none; margin-top:0.75rem">
+          <div class="csv-success-title">✅ URL saved</div>
+          <div class="csv-success-sub">All Goodz will link to this URL.</div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-back" onclick="goToStep(0)">← Back</button>
+        <button class="btn btn-primary" id="btn-step1" onclick="goToStep(2)">Next: Quantity →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: Quantity -->
+    <div class="step" id="step-2">
+      <h2>Choose your quantity</h2>
+
+      <label class="qty-label">Quantity</label>
+      <input type="number" id="qty-input" class="qty-input" min="50" value="50">
+      <div class="qty-hint" id="qty-hint-text">Minimum order: 50 units</div>
+
+      <div class="tier-buttons" id="tier-buttons"></div>
+
+      <div class="pricing-box">
+        <div class="pricing-row">
+          <span class="pricing-per" id="pricing-per">$3.44 per Goodz</span>
+          <span class="pricing-tier" id="pricing-tier">50–99 units</span>
+        </div>
+        <div class="pricing-row">
+          <span></span>
+          <span class="pricing-total" id="pricing-total">$172<span class="pricing-total-label"> total</span></span>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-back" onclick="goToStep(1)">← Back</button>
+        <button class="btn btn-primary" id="btn-step2" onclick="goToStep(3)">Next: Review →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Review (sleeve step removed — sleeve is now a checkbox here) -->
+    <div class="step" id="step-3">
+      <h2>Review your order</h2>
+      <p>Here's what we'll make and ship to you.</p>
+
+      <!-- Sleeve add-on checkbox -->
+      <div class="sleeve-review-row">
+        <label class="sleeve-checkbox-label">
+          <input type="checkbox" id="sleeve-checkbox" onchange="toggleSleeveCheckbox(this)">
+          ➕ Add sleeve packaging
+        </label>
+        <div class="sleeve-checkbox-sub">+$<span id="sleeve-upcharge-display">0.20</span> per Goodz — <strong>+$<span id="sleeve-total-display">10.00</span></strong> for your order</div>
+      </div>
+
+      <div class="summary-rows" id="summary-rows"></div>
+
+      <div id="summary-warning" class="summary-warning" style="display:none"></div>
+
+      <div class="btn-row">
+        <button class="btn btn-back" onclick="goToStep(2)">← Back</button>
+        <button class="btn btn-primary btn-order" id="btn-order" onclick="placeOrder()" disabled>Proceed to Checkout →</button>
+      </div>
+    </div>
+
+    <!-- ORDER SUCCESS -->
+    <div class="step" id="step-success">
+      <div class="order-success">
+        <div class="order-success-icon">🎉</div>
+        <h2>Order placed!</h2>
+        <p>We'll start preparing your Goodz right away. You'll receive a confirmation email shortly.</p>
+        <div class="order-success-detail" id="success-detail"></div>
+        <button class="btn btn-primary" onclick="resetBuilder()">Order more Goodz</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- crop modal removed -->
+
+<script>
+const TIERS = [
+  { min: 50,   max: 99,   price: 3.44 },
+  { min: 100,  max: 199,  price: 3.32 },
+  { min: 200,  max: 499,  price: 3.06 },
+  { min: 500,  max: 999,  price: 3.00 },
+  { min: 1000, max: 1999, price: 2.72 },
+  { min: 2000, max: 2999, price: 2.62 },
+  { min: 3000, max: null, price: 2.52 },
+];
+const SLEEVE_UPCHARGE = 0.20;
+const API_BASE = "https://bandcamp-builder.vercel.app";
+const CLOUDINARY_CLOUD = "dg6kjrhid";
+const CLOUDINARY_UPLOAD_PRESET = "goodz_uploads";
+
+// ── Cloudinary upload ────────────────────────────────────────────────────────
+function uploadToCloudinary(dataUrl, resourceType = 'image') {
+  const formData = new FormData();
+  formData.append('file', dataUrl);
+  formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+  formData.append('folder', 'goodz');
+  return fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/${resourceType}/upload`, {
+    method: 'POST',
+    body: formData,
+  }).then(r => r.json()).then(d => {
+    if (d.error) throw new Error(d.error.message);
+    return d.secure_url;
+  });
+}
+
+function getVariantIdForQty(qty) {
+  if (qty >= 3000) return "gid://shopify/ProductVariant/51673311510824";
+  if (qty >= 2000) return "gid://shopify/ProductVariant/51673311346984";
+  if (qty >= 1000) return "gid://shopify/ProductVariant/51673311314216";
+  if (qty >= 500)  return "gid://shopify/ProductVariant/51673311215912";
+  if (qty >= 200)  return "gid://shopify/ProductVariant/51673310265640";
+  if (qty >= 100)  return "gid://shopify/ProductVariant/51673309643048";
+  return "gid://shopify/ProductVariant/51673297256744";
+}
+
+let state = {
+  frontArt: null,       // base64 data URL for artwork
+  bandcampCSVUrl: null, // Cloudinary URL for CSV file
+  uploadingCSV: false,  // true while Cloudinary CSV upload is in flight
+  hasSleeve: false,
+  bandcampMode: 'csv',
+  bandcampURLs: [],
+  altURL: '',
+  quantity: 50,
+  currentStep: 0,
+};
+
+function repositionStepBar() {
+  const stepBar = document.getElementById('step-bar-wrapper');
+  const previewPanel = document.querySelector('.preview-panel');
+  const configPanel = document.querySelector('.config-panel');
+  if (!stepBar || !previewPanel || !configPanel) return;
+  if (window.innerWidth <= 768) {
+    if (stepBar.parentElement !== previewPanel) {
+      previewPanel.appendChild(stepBar);
+    }
+  } else {
+    if (stepBar.parentElement !== configPanel) {
+      configPanel.insertBefore(stepBar, configPanel.firstChild);
+    }
+  }
+}
+
+function init() {
+  renderTierButtons();
+  setupDragDrop('drop-front', 'input-front', handleFrontFile);
+  setupDragDropCSV();
+  setupFileInput('input-front', handleFrontFile);
+  setupFileInput('input-csv', handleCSV);
+  document.getElementById('qty-input').addEventListener('input', handleQtyChange);
+  document.getElementById('qty-input').addEventListener('blur', handleQtyBlur);
+  renderStep(0);
+  updatePricing();
+  updateSleeveCheckboxDisplay();
+  repositionStepBar();
+  window.addEventListener('resize', repositionStepBar);
+}
+
+function renderTierButtons() {
+  const el = document.getElementById('tier-buttons');
+  el.innerHTML = TIERS.map(t => {
+    const label = t.max ? `${t.min}–${t.max}` : `${t.min}+`;
+    return `<button class="tier-btn" data-min="${t.min}" onclick="setQty(${t.min})">${label}</button>`;
+  }).join('');
+}
+
+function getTier(qty) {
+  return TIERS.find(t => qty >= t.min && (t.max === null || qty <= t.max));
+}
+
+function handleQtyChange(e) {
+  const raw = e.target.value;
+  const parsed = parseInt(raw);
+  if (raw === '' || isNaN(parsed)) return;
+  state.quantity = parsed;
+  updatePricing();
+  updateStepButtons();
+  updateSummary();
+}
+
+function handleQtyBlur(e) {
+  const parsed = parseInt(e.target.value);
+  if (!parsed || parsed < 50) {
+    state.quantity = 50;
+    e.target.value = 50;
+  } else {
+    state.quantity = parsed;
+    e.target.value = parsed;
+  }
+  updatePricing();
+  updateStepButtons();
+  updateSummary();
+}
+
+function setQty(min) {
+  state.quantity = min;
+  document.getElementById('qty-input').value = min;
+  updatePricing();
+  updateStepButtons();
+  updateSummary();
+}
+
+function setupDragDrop(id, inputId, handler) {
+  const el = document.getElementById(id);
+  el.addEventListener('dragover', e => { e.preventDefault(); el.classList.add('drag-over'); });
+  el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
+  el.addEventListener('drop', e => {
+    e.preventDefault();
+    el.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (file) handler(file);
+  });
+}
+
+function setupFileInput(id, handler) {
+  document.getElementById(id).addEventListener('change', e => {
+    if (e.target.files[0]) handler(e.target.files[0]);
+  });
+}
+
+function setupDragDropCSV() {
+  const zone = document.getElementById('csv-zone');
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault();
+    zone.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (file) handleCSV(file);
+  });
+}
+
+function readFileAsDataURL(file, callback) {
+  const reader = new FileReader();
+  reader.onload = e => callback(e.target.result);
+  reader.readAsDataURL(file);
+}
+
+function handleFrontFile(file) {
+  const allowed = ['image/png', 'image/tiff', 'image/tif'];
+  const ext = file.name.toLowerCase();
+  if (!ext.endsWith('.png') && !ext.endsWith('.tiff') && !ext.endsWith('.tif')) {
+    alert('Please upload a PNG or TIFF file for best print quality.');
+    return;
+  }
+  readFileAsDataURL(file, dataUrl => {
+    state.frontArt = dataUrl;
+    document.getElementById('front-preview').src = dataUrl;
+    document.getElementById('front-preview').style.display = 'block';
+    document.getElementById('front-placeholder').style.display = 'none';
+    document.getElementById('front-name').textContent = file.name;
+    document.getElementById('img-delete-btn').style.display = 'block';
+    updateCardPreview();
+    updateStepButtons();
+    updateStatusBar();
+
+    // Upload art to Cloudinary (non-blocking, replaces base64 with CDN URL)
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      canvas.getContext('2d').drawImage(img, 0, 0);
+      canvas.toBlob(blob => {
+        if (!blob) return;
+        const formData = new FormData();
+        formData.append('file', blob, 'art_${Date.now()}.png');
+        formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+        formData.append('folder', 'goodz');
+        fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, {
+          method: 'POST',
+          body: formData,
+        }).then(r => r.json()).then(d => {
+          if (d.secure_url) {
+            state.frontArt = d.secure_url;
+            console.log('Art uploaded to Cloudinary:', d.secure_url);
+          } else {
+            console.warn('Art Cloudinary upload: no secure_url', d);
+          }
+        }).catch(err => {
+          console.warn('Art Cloudinary upload failed (non-blocking):', err);
+        });
+      }, 'image/png');
+    };
+    img.src = dataUrl;
+  });
+}
+
+function clearImage(e) {
+  e.stopPropagation();
+  state.frontArt = null;
+  state.bandcampCSVUrl = null;
+  document.getElementById('front-preview').style.display = 'none';
+  document.getElementById('front-preview').src = '';
+  document.getElementById('front-placeholder').style.display = 'flex';
+  document.getElementById('front-name').textContent = '';
+  document.getElementById('img-delete-btn').style.display = 'none';
+  document.getElementById('input-front').value = '';
+  updateCardPreview();
+  updateStepButtons();
+  updateStatusBar();
+}
+
+function handleCSV(file) {
+  if (!file.name.endsWith('.csv')) {
+    showError('Please upload a .csv file from Bandcamp');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = e => {
+    const urls = parseCSVURLs(e.target.result);
+    if (urls.length === 0) {
+      showError('No URLs found. Make sure the CSV has http/https links.');
+      return;
+    }
+    showCSVLoading(state.quantity);
+    setTimeout(() => {
+      state.bandcampURLs = urls;
+      state.altURL = '';
+      hideError();
+      showCSVSuccess(urls);
+      updateStatusBar();
+      updateStepButtons();
+      updateSummary();
+
+      // Upload CSV to Cloudinary
+      state.uploadingCSV = true;
+      updateStepButtons();
+      const csvText = e.target.result;
+      const csvBlob = new Blob([csvText], { type: 'text/csv' });
+      const formData = new FormData();
+      formData.append('file', csvBlob, file.name);
+      formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+      formData.append('folder', 'goodz');
+      fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/raw/upload`, {
+        method: 'POST',
+        body: formData,
+      }).then(r => r.json()).then(d => {
+        if (d.error) throw new Error(d.error.message);
+        state.bandcampCSVUrl = d.secure_url;
+        state.uploadingCSV = false;
+        updateStepButtons();
+      }).catch(err => {
+        console.warn('Cloudinary CSV upload failed (non-blocking):', err);
+        state.uploadingCSV = false;
+        updateStepButtons();
+      });
+    }, 800);
+  };
+  reader.readAsText(file);
+}
+
+function parseCSVURLs(text) {
+  const lines = text.trim().split('\n');
+  const urls = [];
+  for (const line of lines) {
+    const parts = line.split(',');
+    for (const p of parts) {
+      const t = p.trim().replace(/^["']|["']$/g, '');
+      if (t && (t.startsWith('http://') || t.startsWith('https://'))) urls.push(t);
+    }
+  }
+  return urls;
+}
+
+function showError(msg) {
+  const el = document.getElementById('csv-error');
+  el.textContent = msg;
+  el.style.display = 'block';
+  document.getElementById('csv-zone').classList.add('has-error');
+  document.getElementById('csv-success').style.display = 'none';
+  document.getElementById('csv-loading').style.display = 'none';
+}
+
+function hideError() {
+  document.getElementById('csv-error').style.display = 'none';
+  document.getElementById('csv-zone').classList.remove('has-error');
+}
+
+function showCSVLoading(qty) {
+  document.getElementById('csv-loading-qty').textContent = qty;
+  document.getElementById('csv-loading').style.display = 'block';
+  document.getElementById('csv-success').style.display = 'none';
+  document.getElementById('csv-zone-content').style.display = 'none';
+}
+
+function showCSVSuccess(urls) {
+  document.getElementById('csv-zone-content').style.display = 'none';
+  document.getElementById('csv-filled').style.display = 'block';
+  document.getElementById('csv-filled-count').textContent = `${urls.length} codes loaded`;
+  document.getElementById('csv-success').style.display = 'block';
+  document.getElementById('csv-success-title').textContent = `✅ ${urls.length} unique Bandcamp URLs loaded`;
+  document.getElementById('csv-url-list').innerHTML = urls.slice(0,5).map(u => `<li>${u}</li>`).join('') +
+    (urls.length > 5 ? `<li style="color:#999">...and ${urls.length-5} more</li>` : '');
+  document.getElementById('csv-loading').style.display = 'none';
+}
+
+function resetCSV() {
+  state.bandcampURLs = [];
+  state.altURL = '';
+  document.getElementById('csv-zone-content').style.display = 'block';
+  document.getElementById('csv-filled').style.display = 'none';
+  document.getElementById('csv-success').style.display = 'none';
+  document.getElementById('csv-warning').style.display = 'none';
+  document.getElementById('csv-loading').style.display = 'none';
+  document.getElementById('input-csv').value = '';
+  updateStatusBar();
+  updateStepButtons();
+  updateSummary();
+}
+
+function setBandcampMode(mode) {
+  state.bandcampMode = mode;
+  document.getElementById('mode-csv-btn').classList.toggle('active', mode === 'csv');
+  document.getElementById('mode-url-btn').classList.toggle('active', mode === 'url');
+  document.getElementById('bandcamp-csv-area').style.display = mode === 'csv' ? 'block' : 'none';
+  document.getElementById('bandcamp-url-area').style.display = mode === 'url' ? 'block' : 'none';
+  if (mode === 'url') {
+    document.getElementById('csv-warning').style.display = 'none';
+  } else {
+    if (state.bandcampURLs.length === 0) {
+      document.getElementById('csv-zone-content').style.display = 'block';
+      document.getElementById('csv-filled').style.display = 'none';
+    }
+  }
+  updateStepButtons();
+  updateSummary();
+}
+
+function handleAltURLChange() {
+  const val = document.getElementById('alt-url-input').value.trim();
+  state.altURL = val;
+  state.bandcampURLs = [];
+  const successEl = document.getElementById('alt-url-success');
+  if (val && (val.startsWith('http://') || val.startsWith('https://'))) {
+    successEl.style.display = 'block';
+  } else {
+    successEl.style.display = 'none';
+  }
+  updateStatusBar();
+  updateStepButtons();
+  updateSummary();
+}
+
+function setSleeve(val) {
+  state.hasSleeve = val;
+  document.getElementById('sleeve-wrap').style.display = val ? 'flex' : 'none';
+  updatePricing();
+  updateSummary();
+  updateSleeveCheckboxDisplay();
+}
+
+function toggleSleeveCheckbox(checkbox) {
+  setSleeve(checkbox.checked);
+}
+
+function updateSleeveCheckboxDisplay() {
+  const totalSleeve = (state.quantity * SLEEVE_UPCHARGE).toFixed(2);
+  const perEl = document.getElementById('sleeve-upcharge-display');
+  const totEl = document.getElementById('sleeve-total-display');
+  if (perEl) perEl.textContent = SLEEVE_UPCHARGE.toFixed(2);
+  if (totEl) totEl.textContent = totalSleeve;
+}
+
+function updateCardPreview() {
+  const card = document.getElementById('card');
+  const art = document.getElementById('card-art');
+  const placeholder = document.getElementById('card-placeholder');
+  const hint = document.getElementById('preview-hint');
+
+  if (state.frontArt) {
+    art.src = state.frontArt;
+    art.style.display = 'block';
+    placeholder.style.display = 'none';
+    card.classList.add('has-art');
+    document.getElementById('zone-guide').style.display = 'block';
+    document.getElementById('print-explanation').style.display = (state.currentStep === 0) ? 'block' : 'none';
+    hint.style.display = 'none';
+    if (state.hasSleeve) {
+      const peekArt = document.getElementById('sleeve-card-art');
+      peekArt.src = state.frontArt;
+      peekArt.style.display = 'block';
+    }
+  } else {
+    art.style.display = 'none';
+    placeholder.style.display = 'flex';
+    card.classList.remove('has-art');
+    document.getElementById('zone-guide').style.display = 'none';
+    document.getElementById('print-explanation').style.display = 'none';
+    hint.style.display = 'none';
+    if (state.hasSleeve) {
+      const peekArt = document.getElementById('sleeve-card-art');
+      peekArt.style.display = 'none';
+    }
+  }
+}
+
+function updateStatusBar() {
+  const artStatus = document.getElementById('status-art');
+  const codesStatus = document.getElementById('status-codes');
+  // Art status only on step 0 (art step)
+  artStatus.style.display = (state.frontArt && state.currentStep === 0) ? 'block' : 'none';
+  // Codes status only on step 1 (music step)
+  const hasCodes = state.bandcampURLs.length > 0 || (state.bandcampMode === 'url' && state.altURL);
+  if (hasCodes && state.currentStep === 1) {
+    codesStatus.style.display = 'block';
+    codesStatus.textContent = state.bandcampMode === 'csv'
+      ? `✅ ${state.bandcampURLs.length} Bandcamp codes loaded`
+      : '✅ URL saved — all Goodz will link to this URL';
+    if (window._codesStatusTimer) clearTimeout(window._codesStatusTimer);
+    window._codesStatusTimer = setTimeout(() => { codesStatus.style.display = 'none'; }, 3000);
+  } else {
+    codesStatus.style.display = 'none';
+  }
+}
+
+function goToStep(n) {
+  if (state.currentStep === 2 && state.quantity < 50) {
+    state.quantity = 50;
+    document.getElementById('qty-input').value = 50;
+    updatePricing();
+  }
+  state.currentStep = n;
+  renderStep(n);
+  updateSummary();
+  updateStepButtons();
+  updateStatusBar();
+  // Hide print-explanation when leaving art step
+  const printExpl = document.getElementById('print-explanation');
+  if (printExpl) {
+    printExpl.style.display = (n === 0 && state.frontArt) ? 'block' : 'none';
+  }
+  // On mobile, scroll so config panel is visible below the sticky preview
+  if (window.innerWidth <= 768) {
+    const configPanel = document.querySelector('.config-panel');
+    const previewPanel = document.querySelector('.preview-panel');
+    if (configPanel && previewPanel) {
+      setTimeout(() => {
+        const previewHeight = previewPanel.getBoundingClientRect().height;
+        const configTop = configPanel.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({ top: Math.max(0, configTop - previewHeight), behavior: 'smooth' });
+      }, 50);
+    }
+  }
+}
+
+function renderStep(n) {
+  document.querySelectorAll('.step').forEach((el, i) => {
+    el.classList.toggle('active', i === n);
+  });
+  document.querySelectorAll('.step-segment').forEach((el, i) => {
+    el.classList.toggle('active', i === n);
+    el.classList.toggle('done', i < n);
+  });
+  document.querySelectorAll('.step-labels span[data-step-label]').forEach((el) => {
+    const i = parseInt(el.dataset.stepLabel);
+    el.classList.toggle('active', i === n);
+    el.classList.toggle('done', i < n);
+  });
+}
+
+function handleStepClick(n) {
+  if (n < state.currentStep) goToStep(n);
+}
+
+function updateStepButtons() {
+  const qty = state.quantity;
+  const hasCodes = (state.bandcampURLs.length > 0 || state.altURL);
+  document.getElementById('btn-step0').disabled = !state.frontArt;
+  document.getElementById('btn-step1').disabled = !hasCodes;
+  document.getElementById('btn-step2').disabled = qty < 50;
+
+  const tier = getTier(qty);
+  const sleeveAmt = state.hasSleeve ? qty * SLEEVE_UPCHARGE : 0;
+  const total = tier ? (tier.price * qty) + sleeveAmt : 0;
+
+  const btn = document.getElementById('btn-order');
+  const isUploading = state.uploadingCSV;
+  btn.disabled = !state.frontArt || qty < 50 || isUploading;
+  if (isUploading) {
+    btn.textContent = 'Uploading CSV…';
+  } else {
+    btn.textContent = 'Proceed to Checkout →';
+  }
+
+  // CSV warning
+  const hasCSV = state.bandcampURLs.length > 0;
+  const csvWarn = document.getElementById('csv-warning');
+  if (hasCSV && state.bandcampURLs.length < qty) {
+    csvWarn.style.display = 'block';
+    csvWarn.innerHTML = `⚠️ You have <strong>${state.bandcampURLs.length}</strong> codes for <strong>${qty}</strong> units. Add more codes or reduce quantity.`;
+  } else if (!hasCSV && !state.altURL) {
+    csvWarn.style.display = 'block';
+    csvWarn.innerHTML = `⚠️ Please choose Bandcamp codes or enter a URL to continue.`;
+  } else {
+    csvWarn.style.display = 'none';
+  }
+}
+
+function updatePricing() {
+  const tier = getTier(state.quantity);
+  if (!tier) return;
+  const sleeveAmt = state.hasSleeve ? state.quantity * SLEEVE_UPCHARGE : 0;
+  const grandTotal = (tier.price * state.quantity) + sleeveAmt;
+  document.getElementById('pricing-per').textContent =
+    `$${tier.price.toFixed(2)} per Goodz${state.hasSleeve ? ` + $${SLEEVE_UPCHARGE.toFixed(2)} sleeve` : ''}`;
+  const tierLabel = tier.max ? `${tier.min}–${tier.max} units` : `${tier.min}+ units`;
+  document.getElementById('pricing-tier').textContent = tierLabel;
+  document.getElementById('pricing-total').innerHTML =
+    `$${grandTotal.toFixed(2)}<span class="pricing-total-label"> total</span>`;
+  document.querySelectorAll('.tier-btn').forEach(btn => {
+    btn.classList.toggle('active', parseInt(btn.dataset.min) === tier.min);
+  });
+  updateSleeveCheckboxDisplay();
+}
+
+function updateSummary() {
+  const tier = getTier(state.quantity);
+  const unitPrice = tier ? tier.price : 0;
+  const sleeveAmt = state.hasSleeve ? state.quantity * SLEEVE_UPCHARGE : 0;
+  const total = (unitPrice * state.quantity) + sleeveAmt;
+  const hasCSV = state.bandcampURLs.length > 0;
+  const hasAlt = state.altURL && (state.altURL.startsWith('http://') || state.altURL.startsWith('https://'));
+  const sleeveVal = state.hasSleeve ? `Sleeve (+$${sleeveAmt.toFixed(2)})` : 'None';
+  const codesVal = state.bandcampMode === 'url' && hasAlt
+    ? state.altURL
+    : (state.bandcampURLs.length > 0 ? `${state.bandcampURLs.length} Bandcamp codes` : 'None');
+
+  const codesLabel = state.bandcampMode === 'url' ? 'Bandcamp link' : 'Bandcamp codes';
+  const rows = [
+    { label: 'Album art', value: state.frontArt ? 'Uploaded ✓' : 'Missing ✗', ok: !!state.frontArt },
+    { label: 'Sleeve', value: sleeveVal, ok: true },
+    { label: codesLabel, value: codesVal, ok: hasCSV || hasAlt },
+    { label: 'Quantity', value: `${state.quantity} units` },
+    { label: 'Unit price', value: unitPrice ? `$${unitPrice.toFixed(2)}${state.hasSleeve ? ` + $${SLEEVE_UPCHARGE.toFixed(2)} sleeve` : ''}` : '—' },
+    { label: 'Total', value: total ? `$${total.toFixed(2)}` : '—', bold: true },
+  ];
+
+  document.getElementById('summary-rows').innerHTML = rows.map(r =>
+    `<div class="summary-row${r.bold ? ' bold' : ''}${r.ok === false ? ' warn' : ''}">
+      <span>${r.label}</span><span>${r.value}</span>
+    </div>`
+  ).join('');
+
+  const warnEl = document.getElementById('summary-warning');
+  if (state.bandcampURLs.length > 0 && state.bandcampURLs.length < state.quantity) {
+    warnEl.style.display = 'block';
+    warnEl.textContent = `⚠️ You only have ${state.bandcampURLs.length} codes for ${state.quantity} units.`;
+  } else if (!state.bandcampURLs.length && !state.altURL) {
+    warnEl.style.display = 'block';
+    warnEl.textContent = '⚠️ Please choose Bandcamp codes or enter a URL before placing.';
+  } else {
+    warnEl.style.display = 'none';
+  }
+}
+
+function placeOrder() {
+  const btn = document.getElementById("btn-order");
+  btn.textContent = "Preparing your order…";
+  btn.disabled = true;
+
+  const payload = {
+    units: state.quantity,
+    sleeve: state.hasSleeve ? 'yes' : 'no',
+    albumArtUrl: state.frontArt || '',
+    musicType: state.bandcampMode,
+  };
+
+  if (state.bandcampMode === 'csv' && state.bandcampURLs.length > 0) {
+    payload.csvUrl = state.bandcampCSVUrl || state.bandcampURLs.join('\n');
+    payload.csvCount = state.bandcampURLs.length;
+  } else if (state.bandcampMode === 'url' && state.altURL) {
+    payload.musicUrl = state.altURL;
+  }
+
+  fetch(`${API_BASE}/api/custom-goodz-order`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  })
+  .then(res => {
+    if (!res.ok) throw new Error('Order failed');
+    return res.json();
+  })
+  .then(data => {
+    if (data.checkoutUrl) {
+      window.location.href = data.checkoutUrl;
+    } else {
+      throw new Error('No checkout URL returned');
+    }
+  })
+  .catch(err => {
+    console.error(err);
+    btn.textContent = 'Proceed to Checkout →';
+    btn.disabled = false;
+    const warnEl = document.getElementById('summary-warning');
+    warnEl.style.display = 'block';
+    warnEl.style.background = '#fef2f2';
+    warnEl.style.borderColor = '#fecaca';
+    warnEl.style.color = '#dc2626';
+    warnEl.textContent = 'Could not connect to Shopify. Please try again or contact us directly.';
+  });
+}
+
+function resetBuilder() {
+  state = { frontArt: null, bandcampCSVUrl: null, uploadingCSV: false, hasSleeve: false, bandcampMode: 'csv', bandcampURLs: [], altURL: '', quantity: 50, currentStep: 0 };
+  document.getElementById('front-preview').style.display = 'none';
+  document.getElementById('front-preview').src = '';
+  document.getElementById('front-placeholder').style.display = 'flex';
+  document.getElementById('front-name').textContent = '';
+  document.getElementById('img-delete-btn').style.display = 'none';
+  document.getElementById('sleeve-wrap').style.display = 'none';
+  document.getElementById('sleeve-checkbox').checked = false;
+  document.getElementById('csv-zone-content').style.display = 'block';
+  document.getElementById('csv-filled').style.display = 'none';
+  document.getElementById('csv-success').style.display = 'none';
+  document.getElementById('csv-warning').style.display = 'none';
+  document.getElementById('csv-loading').style.display = 'none';
+  document.getElementById('qty-input').value = 50;
+  document.getElementById('alt-url-input').value = '';
+  document.getElementById('alt-url-success').style.display = 'none';
+  document.getElementById('bandcamp-csv-area').style.display = 'block';
+  document.getElementById('bandcamp-url-area').style.display = 'none';
+  setBandcampMode('csv');
+  updateCardPreview();
+  updatePricing();
+  updateStatusBar();
+  updateSleeveCheckboxDisplay();
+  goToStep(0);
+}
+
+
+// Crop modal removed
+
+init();
+</script>
+</body>
+</html>
