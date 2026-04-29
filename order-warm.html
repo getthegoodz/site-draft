@@ -110,31 +110,18 @@
       padding: 0.25rem;
     }
 
-    .gallery-badges {
+    .gallery-bullets {
+      list-style: disc;
+      padding-left: 1.1rem;
       display: flex;
       flex-direction: column;
-      gap: 0.6rem;
+      gap: 0.45rem;
     }
-    .gallery-badge {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
+    .gallery-bullets li {
       font-size: 0.82rem;
       color: var(--muted);
+      line-height: 1.4;
     }
-    .gallery-badge-icon {
-      width: 28px;
-      height: 28px;
-      background: var(--off-white);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.85rem;
-      flex-shrink: 0;
-    }
-    .gallery-badge-text strong { color: var(--text); }
 
     /* Config column */
     .config-col {
@@ -256,12 +243,21 @@
       line-height: 1.4;
     }
     .option-card.selected .option-card-sub { color: rgba(14,12,10,0.65); }
+    .option-upcharge {
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--muted);
+      display: block;
+      margin-top: 0.1rem;
+    }
+    .option-card.selected .option-upcharge { color: rgba(14,12,10,0.6); }
 
     /* Pricing table */
     .qty-section { margin-bottom: 0; }
     .pricing-table {
       width: 100%;
       border-collapse: collapse;
+      table-layout: fixed;
       margin-top: 0.6rem;
       border: 1px solid var(--border);
       border-radius: 10px;
@@ -278,7 +274,12 @@
       background: var(--off-white);
       border-bottom: 1px solid var(--border);
     }
-    .pricing-table thead th:last-child { text-align: right; }
+    .pricing-table th:nth-child(1),
+    .pricing-table td:nth-child(1) { width: 45%; }
+    .pricing-table th:nth-child(2),
+    .pricing-table td:nth-child(2) { width: 27%; text-align: right; }
+    .pricing-table th:nth-child(3),
+    .pricing-table td:nth-child(3) { width: 28%; text-align: right; }
     .pricing-row {
       cursor: pointer;
       border-bottom: 1px solid var(--border);
@@ -293,7 +294,6 @@
       vertical-align: middle;
     }
     .pricing-row.selected td { font-weight: 600; }
-    .pricing-row td:last-child { text-align: right; font-weight: 600; }
     .pricing-qty-cell {
       display: flex;
       align-items: center;
@@ -575,39 +575,33 @@
     <!-- Left: Gallery -->
     <div class="gallery-col">
       <div class="gallery-hero">
-        <img id="gallery-hero-img" src="templates/Goodz_Standard_back.png" alt="Custom Goodz tile">
+        <img id="gallery-hero-img" src="photos/TMBG_crate_grass.jpg" alt="Custom Goodz tile">
       </div>
 
       <div class="gallery-thumbs">
-        <div class="gallery-thumb active" data-img="templates/Goodz_Standard_back.png" title="Standard back">
-          <img src="templates/Goodz_Standard_back.png" alt="Standard back">
+        <div class="gallery-thumb active" data-img="photos/TMBG_crate_grass.jpg" title="Goodz in the wild">
+          <img src="photos/TMBG_crate_grass.jpg" alt="Goodz in the wild">
         </div>
-        <div class="gallery-thumb" data-placeholder title="Custom front">
-          <div class="gallery-thumb-placeholder">Your Art Here</div>
+        <div class="gallery-thumb" data-img="photos/BritneySpearsGoodzMockup2.png" title="Custom mockup">
+          <img src="photos/BritneySpearsGoodzMockup2.png" alt="Custom Goodz mockup">
         </div>
-        <div class="gallery-thumb" data-placeholder title="With sleeve">
-          <div class="gallery-thumb-placeholder">With Sleeve</div>
+        <div class="gallery-thumb" data-img="photos/bourbon_1_1.jpeg" title="Goodz lifestyle">
+          <img src="photos/bourbon_1_1.jpeg" alt="Goodz lifestyle">
+        </div>
+        <div class="gallery-thumb" data-img="photos/PXL_20251003_220145577.MP.jpg" title="Goodz close-up">
+          <img src="photos/PXL_20251003_220145577.MP.jpg" alt="Goodz close-up">
+        </div>
+        <div class="gallery-thumb" data-img="photos/PXL_20250205_213837796 (1).png" title="Goodz detail">
+          <img src="photos/PXL_20250205_213837796 (1).png" alt="Goodz detail">
         </div>
       </div>
 
-      <div class="gallery-badges">
-        <div class="gallery-badge">
-          <div class="gallery-badge-icon">🪵</div>
-          <div class="gallery-badge-text"><strong>Eco basswood</strong> — sustainably sourced</div>
-        </div>
-        <div class="gallery-badge">
-          <div class="gallery-badge-icon">📡</div>
-          <div class="gallery-badge-text"><strong>NFC embedded</strong> — tap to play, no app needed</div>
-        </div>
-        <div class="gallery-badge">
-          <div class="gallery-badge-icon">🎨</div>
-          <div class="gallery-badge-text"><strong>Custom printed</strong> — min. 50 units</div>
-        </div>
-        <div class="gallery-badge">
-          <div class="gallery-badge-icon">📦</div>
-          <div class="gallery-badge-text"><strong>Ships within 2 weeks</strong> of artwork approval</div>
-        </div>
-      </div>
+      <ul class="gallery-bullets">
+        <li>Your artwork UV-printed on basswood</li>
+        <li>Tap any phone — music opens instantly, no app needed</li>
+        <li>Links to Bandcamp, Spotify, Apple Music, or any URL</li>
+        <li>50-unit minimum, ships in 2–3 weeks</li>
+      </ul>
     </div>
 
     <!-- Right: Config -->
@@ -615,12 +609,11 @@
 
       <div class="product-heading" id="product-heading">
         <h1 class="product-title">Custom Goodz</h1>
-        <p class="product-subtitle">Custom-printed NFC wood tiles for artists, labels, and events. Fans tap to play your music instantly — no app, no account.</p>
+        <p class="product-subtitle">A run of wooden cards, printed with your art, linked to your music. Fans tap it and your album opens. Merch that actually does something.</p>
         <div class="product-price-line">
           <span class="product-price-from">from <strong id="from-price">$3.44/unit</strong></span>
           <span class="product-min">min. 50 units</span>
         </div>
-        <div class="product-proof">Used by artists on Sony Music &middot; Warner Music &middot; Craft Recordings</div>
       </div>
 
       <hr class="option-divider">
@@ -636,7 +629,6 @@
               </svg>
             </div>
             <div class="option-card-title">No Sleeve</div>
-            <div class="option-card-sub">Just the tile &mdash; included</div>
           </div>
           <div class="option-card" data-value="sleeve">
             <div class="option-card-icon">
@@ -645,15 +637,14 @@
                 <rect x="4" y="4" width="18" height="18" rx="3" stroke="currentColor" stroke-width="2"/>
               </svg>
             </div>
-            <div class="option-card-title">With Sleeve</div>
-            <div class="option-card-sub">Branded protective sleeve &mdash; +$0.20/unit</div>
+            <div class="option-card-title">With Sleeve <span class="option-upcharge">+$0.20/unit</span></div>
           </div>
         </div>
       </div>
 
       <!-- Option 2: Keychain Hole -->
       <div class="option-section">
-        <div class="option-section-label">Keychain hole <span class="badge-new">NEW</span></div>
+        <div class="option-section-label">Keychain</div>
         <div class="option-cards" data-option="keychain">
           <div class="option-card selected" data-value="none">
             <div class="option-card-icon">
@@ -662,7 +653,6 @@
               </svg>
             </div>
             <div class="option-card-title">None</div>
-            <div class="option-card-sub">Standard tile &mdash; included</div>
           </div>
           <div class="option-card" data-value="top-left">
             <div class="option-card-icon">
@@ -671,8 +661,7 @@
                 <circle cx="6" cy="6" r="2.5" fill="currentColor"/>
               </svg>
             </div>
-            <div class="option-card-title">Top Left</div>
-            <div class="option-card-sub">Hole + keychain ring &mdash; +$0.15/unit</div>
+            <div class="option-card-title">Top Left <span class="option-upcharge">+$0.15/unit</span></div>
           </div>
           <div class="option-card" data-value="top-right">
             <div class="option-card-icon">
@@ -681,8 +670,7 @@
                 <circle cx="20" cy="6" r="2.5" fill="currentColor"/>
               </svg>
             </div>
-            <div class="option-card-title">Top Right</div>
-            <div class="option-card-sub">Hole + keychain ring &mdash; +$0.15/unit</div>
+            <div class="option-card-title">Top Right <span class="option-upcharge">+$0.15/unit</span></div>
           </div>
         </div>
       </div>
@@ -696,7 +684,6 @@
               <img src="templates/Goodz_Standard_back.png" alt="Standard Goodz back">
             </div>
             <div class="option-card-title">Standard Goodz Back</div>
-            <div class="option-card-sub">Pre-designed Goodz branding &mdash; included</div>
           </div>
           <div class="option-card" data-value="custom">
             <div class="option-card-icon">
@@ -705,8 +692,7 @@
                 <path d="M13 8v10M8 13h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
               </svg>
             </div>
-            <div class="option-card-title">Upload My Own Back</div>
-            <div class="option-card-sub">Your own back artwork &mdash; +$0.10/unit</div>
+            <div class="option-card-title">Upload My Own Back <span class="option-upcharge">+$0.10/unit</span></div>
           </div>
         </div>
       </div>
@@ -798,10 +784,6 @@
       <div class="cta-block">
         <div class="cta-summary" id="cta-summary"></div>
         <button class="btn-upload" onclick="continueToUpload()">Upload Your Artwork &rarr;</button>
-        <div class="cta-note">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#6b6354" stroke-width="1.5"/><path d="M7 5v4M7 4v.5" stroke="#6b6354" stroke-width="1.5" stroke-linecap="round"/></svg>
-          No payment until checkout
-        </div>
       </div>
 
     </div><!-- /config-col -->
@@ -883,6 +865,17 @@ function selectOption(group, value) {
   document.querySelectorAll(`[data-option="${group}"] .option-card`).forEach(c => {
     c.classList.toggle('selected', c.dataset.value === value);
   });
+
+  if (group === 'back') {
+    const hero = document.getElementById('gallery-hero-img');
+    if (value === 'standard') {
+      hero.src = 'templates/Goodz_Standard_back.png';
+    } else {
+      const activeThumb = document.querySelector('.gallery-thumb.active');
+      if (activeThumb && activeThumb.dataset.img) hero.src = activeThumb.dataset.img;
+    }
+  }
+
   renderTable();
   updateSummary();
   updateFromPrice();
