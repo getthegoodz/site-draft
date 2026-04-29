@@ -252,53 +252,42 @@
     }
     .option-card.selected .option-upcharge { color: rgba(14,12,10,0.6); }
 
-    /* Pricing table */
+    /* Pricing grid */
     .qty-section { margin-bottom: 0; }
-    .pricing-table {
-      width: 100%;
-      border-collapse: collapse;
-      table-layout: fixed;
+    .pricing-grid {
       margin-top: 0.6rem;
       border: 1px solid var(--border);
       border-radius: 10px;
       overflow: hidden;
     }
-    .pricing-table thead th {
+    .pricing-grid-row {
+      display: grid;
+      grid-template-columns: 1fr 120px 120px;
+      border-bottom: 1px solid var(--border);
+    }
+    .pricing-grid-row:last-child { border-bottom: none; }
+    .pricing-grid-row.hdr { background: var(--off-white); }
+    .pricing-grid-row.data { cursor: pointer; transition: background 0.1s; }
+    .pricing-grid-row.data:hover { background: #fafaf7; }
+    .pricing-grid-row.data.selected { background: rgba(255,200,82,0.18); }
+    .pricing-grid-row.data.selected .pricing-grid-cell { font-weight: 600; }
+    .pricing-grid-hdr {
       padding: 0.65rem 1rem;
-      text-align: left;
       font-size: 0.7rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.07em;
       color: var(--muted);
-      background: var(--off-white);
-      border-bottom: 1px solid var(--border);
     }
-    .pricing-table th:nth-child(1),
-    .pricing-table td:nth-child(1) { width: 45%; }
-    .pricing-table th:nth-child(2),
-    .pricing-table td:nth-child(2) { width: 27%; text-align: right; }
-    .pricing-table th:nth-child(3),
-    .pricing-table td:nth-child(3) { width: 28%; text-align: right; }
-    .pricing-row {
-      cursor: pointer;
-      border-bottom: 1px solid var(--border);
-      transition: background 0.1s;
-    }
-    .pricing-row:last-child { border-bottom: none; }
-    .pricing-row:hover { background: #fafaf7; }
-    .pricing-row.selected { background: rgba(255,200,82,0.18); }
-    .pricing-row td {
+    .pricing-grid-hdr.r { text-align: right; }
+    .pricing-grid-cell {
       padding: 0.9rem 1rem;
       font-size: 0.92rem;
-      vertical-align: middle;
-    }
-    .pricing-row.selected td { font-weight: 600; }
-    .pricing-qty-cell {
       display: flex;
       align-items: center;
       gap: 0.6rem;
     }
+    .pricing-grid-cell.r { justify-content: flex-end; }
     .recommended-badge {
       font-size: 0.6rem;
       font-weight: 800;
@@ -316,7 +305,7 @@
       flex-shrink: 0;
       visibility: hidden;
     }
-    .pricing-row.selected .pricing-selected-dot { visibility: visible; }
+    .pricing-grid-row.selected .pricing-selected-dot { visibility: visible; }
     .pricing-contact {
       font-size: 0.8rem;
       color: var(--muted);
@@ -591,8 +580,8 @@
         <div class="gallery-thumb" data-img="photos/PXL_20251003_220145577.MP.jpg" title="Goodz close-up">
           <img src="photos/PXL_20251003_220145577.MP.jpg" alt="Goodz close-up">
         </div>
-        <div class="gallery-thumb" data-img="photos/PXL_20250205_213837796 (1).png" title="Goodz detail">
-          <img src="photos/PXL_20250205_213837796 (1).png" alt="Goodz detail">
+        <div class="gallery-thumb" data-img="photos/PXL_20250205_213837796.png" title="Goodz detail">
+          <img src="photos/PXL_20250205_213837796.png" alt="Goodz detail">
         </div>
       </div>
 
@@ -702,18 +691,14 @@
       <!-- Pricing table -->
       <div class="qty-section">
         <div class="option-section-label">Choose your quantity</div>
-        <table class="pricing-table" id="pricing-table">
-          <thead>
-            <tr>
-              <th>Quantity</th>
-              <th>Price per Goodz</th>
-              <th>Order Total</th>
-            </tr>
-          </thead>
-          <tbody id="pricing-tbody">
-            <!-- Populated by JS -->
-          </tbody>
-        </table>
+        <div class="pricing-grid" id="pricing-grid">
+          <div class="pricing-grid-row hdr">
+            <div class="pricing-grid-hdr">Quantity</div>
+            <div class="pricing-grid-hdr r">Price per Goodz</div>
+            <div class="pricing-grid-hdr r">Order Total</div>
+          </div>
+          <!-- Rows populated by JS -->
+        </div>
         <p class="pricing-contact">Need 3,000+? <a href="mailto:hello@getthegoodz.com">Contact us for bulk pricing &rarr;</a></p>
         <p class="pricing-note" id="pricing-upcharge-note" style="display:none"></p>
       </div>
@@ -834,23 +819,22 @@ function fmt(n) {
 }
 
 function renderTable() {
-  const tbody = document.getElementById('pricing-tbody');
-  tbody.innerHTML = TIERS.map((tier, i) => {
+  const grid = document.getElementById('pricing-grid');
+  const hdr = grid.querySelector('.hdr').outerHTML;
+  grid.innerHTML = hdr + TIERS.map((tier, i) => {
     const price = unitPrice(tier);
     const total = tier.max ? price * tier.qty : null;
     const sel = i === state.tierIdx;
     return `
-      <tr class="pricing-row${sel ? ' selected' : ''}" onclick="selectTier(${i})">
-        <td>
-          <div class="pricing-qty-cell">
-            <span class="pricing-selected-dot"></span>
-            <span>${tier.qty.toLocaleString()}${tier.max ? '' : '+'}</span>
-            ${tier.recommended ? '<span class="recommended-badge">RECOMMENDED</span>' : ''}
-          </div>
-        </td>
-        <td>${fmt(price)}</td>
-        <td>${total ? fmt(total) : '<span style="color:#999;font-weight:400">Contact us</span>'}</td>
-      </tr>`;
+      <div class="pricing-grid-row data${sel ? ' selected' : ''}" onclick="selectTier(${i})">
+        <div class="pricing-grid-cell">
+          <span class="pricing-selected-dot"></span>
+          <span>${tier.qty.toLocaleString()}${tier.max ? '' : '+'}</span>
+          ${tier.recommended ? '<span class="recommended-badge">RECOMMENDED</span>' : ''}
+        </div>
+        <div class="pricing-grid-cell r">${fmt(price)}</div>
+        <div class="pricing-grid-cell r">${total ? fmt(total) : '<span style="color:#999;font-weight:400">Contact us</span>'}</div>
+      </div>`;
   }).join('');
 }
 
