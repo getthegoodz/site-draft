@@ -906,7 +906,8 @@ function selectOption(group, value) {
 }
 
 function updateFromPrice() {
-  document.getElementById('from-price').textContent = fmt(unitPrice(TIERS[0])) + '/unit';
+  const cheapest = TIERS[TIERS.length - 1];
+  document.getElementById('from-price').textContent = fmt(unitPrice(cheapest)) + '/unit';
 }
 
 function updateUpchargeNote() {
