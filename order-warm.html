@@ -890,8 +890,7 @@ function selectOption(group, value) {
 }
 
 function updateFromPrice() {
-  const minPrice = Math.min(...TIERS.map(t => unitPrice(t)));
-  document.getElementById('from-price').textContent = fmt(minPrice) + '/unit';
+  document.getElementById('from-price').textContent = fmt(unitPrice(TIERS[0])) + '/unit';
 }
 
 function updateUpchargeNote() {
