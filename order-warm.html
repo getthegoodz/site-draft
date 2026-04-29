@@ -427,6 +427,35 @@
     }
     .spec-guidelines-link:hover { text-decoration: underline; }
 
+    /* Revenue note */
+    .pricing-revenue-note {
+      font-size: 0.76rem;
+      color: var(--muted);
+      font-style: italic;
+      margin-top: 0.6rem;
+    }
+
+    /* Testimonial */
+    .testimonial-slot {
+      margin: 1.75rem 0 0;
+      padding: 1rem 1.25rem;
+      border-left: 3px solid var(--yellow);
+      background: var(--off-white);
+      border-radius: 0 8px 8px 0;
+    }
+    .testimonial-quote {
+      font-size: 0.88rem;
+      color: var(--text);
+      line-height: 1.6;
+      font-style: italic;
+      margin-bottom: 0.35rem;
+    }
+    .testimonial-attr {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
     /* CTA block */
     .cta-block {
       margin-top: 2rem;
@@ -589,9 +618,9 @@
 
       <ul class="gallery-bullets">
         <li>Your artwork UV-printed on basswood</li>
-        <li>Tap any phone — music opens instantly, no app needed</li>
-        <li>Links to Bandcamp, Spotify, Apple Music, or any URL</li>
-        <li>50-unit minimum, ships in 2–3 weeks</li>
+        <li>Pre-loaded with your Bandcamp album, Spotify, or any URL</li>
+        <li>Tap any phone, no app required</li>
+        <li>50-unit minimum, ships in 4–5 weeks</li>
       </ul>
     </div>
 
@@ -600,7 +629,7 @@
 
       <div class="product-heading" id="product-heading">
         <h1 class="product-title">Custom Goodz</h1>
-        <p class="product-subtitle">A run of wooden cards, printed with your art, linked to your music. Fans tap it and your album opens. Merch that actually does something.</p>
+        <p class="product-subtitle">A run of wooden cards, printed with your art, pre-loaded with your music. Fans tap it and your album opens. The physical album is back, this time it streams.</p>
         <div class="product-price-line">
           <span class="product-price-from">from <strong id="from-price">$3.44/unit</strong></span>
           <span class="product-min">min. 50 units</span>
@@ -701,6 +730,8 @@
           </div>
           <!-- Rows populated by JS -->
         </div>
+        <p class="pricing-revenue-note">A 50-unit run is $172. Sell them for $10 at the merch table and you break even after selling 18. The other 32 are pure margin.</p>
+        <p class="pricing-contact" style="margin-top:0.5rem">Not ready for 50? <a href="https://shop.getthegoodz.com/products/the-mixtape-black-gold" target="_blank">Try a single Goodz first &rarr;</a></p>
         <p class="pricing-contact">Need 3,000+? <a href="mailto:hello@getthegoodz.com">Contact us for bulk pricing &rarr;</a></p>
         <p class="pricing-note" id="pricing-upcharge-note" style="display:none"></p>
       </div>
@@ -708,7 +739,7 @@
       <hr class="option-divider">
 
       <!-- Artwork guidelines -->
-      <div class="guidelines-section">
+      <div class="guidelines-section" id="artwork-guidelines">
         <div class="option-section-label">Artwork Guidelines</div>
 
         <div class="guidelines-inner">
@@ -765,6 +796,12 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- Testimonial -->
+      <div class="testimonial-slot">
+        <p class="testimonial-quote">"Sold 70% of our run across 8 shows. Paid for itself by show 3."</p>
+        <p class="testimonial-attr">The Clover House <span style="font-weight:400;color:#aaa9a0"> — FPO, replace before launch</span></p>
       </div>
 
       <!-- CTA -->
