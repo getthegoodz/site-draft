@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Your Artwork — Goodz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style-warm.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --yellow: #ffc852;
+      --yellow-light: #fff4d6;
+      --black: #0e0c0a;
+      --cream: #efefe2;
+      --off-white: #e4e4d6;
+      --border: #cdc8b2;
+      --text: #1a1510;
+      --muted: #6b6354;
+      --green-bg: #f0fdf4; --green-border: #bbf7d0; --green-text: #166534;
+      --blue-bg: #eff6ff;  --blue-border: #bfdbfe;  --blue-text: #1e40af;
+      --red-bg: #fef2f2;   --red-border: #fecaca;   --red-text: #dc2626;
+      --warn-bg: #fffbeb;  --warn-border: #fde68a;  --warn-text: #92400e;
+    }
+
+    body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); }
+
+    /* Order config banner */
+    .config-banner {
+      background: var(--black);
+      color: #c8c2b4;
+      padding: 0.6rem 2rem;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .config-banner strong { color: var(--yellow); }
+    .config-banner a { color: #c8c2b4; text-decoration: underline; font-size: 0.75rem; margin-left: auto; white-space: nowrap; }
+    .config-banner a:hover { color: #fff; }
+
+    /* Two-column layout */
+    .layout {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    /* Preview panel */
+    .preview-panel { position: sticky; top: 2rem; }
+    .goodz-preview {
+      background: var(--black);
+      border-radius: 16px;
+      padding: 1.5rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .preview-label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--yellow);
+    }
+
+    /* Card preview */
+    .card-wrap { position: relative; }
+    .card {
+      width: 150px;
+      height: 150px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3), inset 0 0 0 2px rgba(255,255,255,0.08);
+      background: #1a1510;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card-art { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .card-placeholder { font-size: 0.62rem; color: #6b6354; text-align: center; line-height: 1.6; padding: 1rem; }
+    .zone-guide {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      object-fit: contain; pointer-events: none; z-index: 10; opacity: 0.6;
+    }
+    /* Keychain hole overlay */
+    .keychain-dot {
+      position: absolute;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: rgba(255,200,82,0.9);
+      border: 2px solid #fff;
+      z-index: 20;
+      display: none;
+    }
+    .keychain-dot.top-left  { top: 8px; left: 8px; display: block; }
+    .keychain-dot.top-right { top: 8px; right: 8px; display: block; }
+
+    /* Sleeve preview */
+    .sleeve-wrap { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .sleeve-box {
+      width: 162px; height: 162px; border-radius: 4px; background: #d4d0c8;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: flex-start; padding-top: 6px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2); position: relative;
+    }
+    .sleeve-card-peek {
+      width: 146px; height: 146px; border-radius: 10px 10px 0 0;
+      overflow: hidden; box-shadow: 0 -2px 8px rgba(0,0,0,0.2);
+    }
+    .sleeve-label { font-size: 0.5rem; color: #6b6354; letter-spacing: 0.05em; text-transform: uppercase; }
+
+    .preview-hint { font-size: 0.65rem; color: #6b6354; text-align: center; }
+
+    /* Status badges */
+    .status-badge {
+      width: 100%;
+      padding: 0.6rem 0.75rem;
+      border-radius: 7px;
+      font-size: 0.78rem;
+      margin-top: 0.5rem;
+    }
+    .status-badge.ok   { background: var(--green-bg); border: 1px solid var(--green-border); color: var(--green-text); }
+    .status-badge.info { background: var(--blue-bg);  border: 1px solid var(--blue-border);  color: var(--blue-text); }
+    .status-badge.warn { background: var(--warn-bg);  border: 1px solid var(--warn-border);  color: var(--warn-text); }
+
+    /* Step bar */
+    .step-bar-wrapper { margin-bottom: 1.75rem; }
+    .step-bar { display: flex; gap: 0.25rem; margin-bottom: 0.4rem; }
+    .step-seg { flex: 1; height: 3px; border-radius: 2px; background: #e0ddd4; transition: background 0.2s; }
+    .step-seg.done   { background: var(--yellow); cursor: pointer; }
+    .step-seg.active { background: var(--black); }
+    .step-labels { display: flex; }
+    .step-labels span {
+      flex: 1; text-align: center; font-size: 0.62rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.08em; color: #b0a898; transition: color 0.2s;
+    }
+    .step-labels span.done   { color: var(--yellow); cursor: pointer; }
+    .step-labels span.done:hover { text-decoration: underline; }
+    .step-labels span.active { color: var(--black); }
+
+    /* Config panel */
+    .config-panel h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.3rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: -0.01em;
+      margin-bottom: 0.25rem;
+    }
+    .step-sub { font-size: 0.88rem; color: var(--muted); line-height: 1.6; margin-bottom: 1.25rem; }
+
+    /* Steps */
+    .step { display: none; }
+    .step.active { display: block; }
+
+    /* Upload zones */
+    .upload-grid { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .upload-box { flex: 1; min-width: 180px; }
+    .upload-box-label {
+      font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.5rem; display: block;
+    }
+    .drop-zone {
+      width: 100%; aspect-ratio: 1; border: 2px dashed var(--border);
+      border-radius: 10px; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; background: #fafaf7; transition: all 0.15s;
+      overflow: hidden; position: relative; flex-direction: column; text-align: center;
+    }
+    .drop-zone:hover, .drop-zone.drag-over { border-color: var(--black); background: var(--yellow-light); }
+    .drop-zone.has-image { border-style: solid; border-color: var(--green-border); }
+    .dz-content { padding: 1rem; }
+    .dz-icon { font-size: 1.8rem; margin-bottom: 0.4rem; }
+    .dz-req { background: var(--black); color: var(--cream); font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 0.04em; padding: 0.25rem 0.5rem; border-radius: 4px; margin-bottom: 0.5rem; }
+    .dz-text { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
+    .dz-text span { color: var(--black); font-weight: 700; }
+    .drop-zone img.preview-img { width: 100%; height: 100%; object-fit: cover; }
+    .img-delete-btn {
+      position: absolute; top: 8px; right: 8px; width: 24px; height: 24px;
+      border-radius: 50%; background: rgba(0,0,0,0.55); border: none;
+      color: #fff; font-size: 14px; cursor: pointer; z-index: 10;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .file-name { margin-top: 0.4rem; font-size: 0.72rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .file-input { display: none; }
+
+    .size-warning {
+      margin-top: 0.5rem;
+      padding: 0.6rem 0.75rem;
+      background: var(--warn-bg);
+      border: 1px solid var(--warn-border);
+      border-radius: 7px;
+      font-size: 0.78rem;
+      color: var(--warn-text);
+      display: none;
+    }
+
+    .template-shortcut {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+    }
+    .template-shortcut a { color: var(--black); font-weight: 700; text-decoration: none; }
+    .template-shortcut a:hover { text-decoration: underline; }
+
+    /* Music step */
+    .mode-toggle {
+      display: flex; border-radius: 8px; overflow: hidden;
+      border: 2px solid var(--black); margin-bottom: 1rem;
+    }
+    .mode-btn {
+      flex: 1; padding: 0.6rem 1rem; background: #fff; border: none;
+      font-size: 0.85rem; font-weight: 600; color: var(--muted); cursor: pointer;
+      transition: all 0.12s; font-family: 'DM Sans', sans-serif; text-align: center;
+    }
+    .mode-btn.active { background: var(--black); color: var(--yellow); }
+
+    .music-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; margin-bottom: 0.75rem; }
+    .music-desc a { color: var(--black); font-weight: 700; text-decoration: underline; }
+
+    .csv-zone {
+      border: 2px dashed var(--border); border-radius: 10px; padding: 1.75rem 1.5rem;
+      text-align: center; cursor: pointer; background: #fafaf7; transition: all 0.15s;
+    }
+    .csv-zone:hover, .csv-zone.drag-over { border-color: var(--black); background: var(--yellow-light); }
+    .csv-zone.has-error { border-color: var(--red-text); background: var(--red-bg); }
+    .csv-icon { font-size: 1.8rem; margin-bottom: 0.5rem; }
+    .csv-title { font-weight: 700; font-family: 'Poppins', sans-serif; font-size: 0.95rem; margin-bottom: 0.2rem; }
+    .csv-sub { font-size: 0.82rem; color: var(--muted); }
+    .csv-sub span { color: var(--black); font-weight: 700; }
+
+    .csv-error  { margin-top: 0.75rem; padding: 0.75rem; background: var(--red-bg);  border: 1px solid var(--red-border);  border-radius: 8px; color: var(--red-text);  font-size: 0.82rem; }
+    .csv-success { margin-top: 0.75rem; padding: 0.85rem; background: var(--green-bg); border: 1px solid var(--green-border); border-radius: 8px; }
+    .csv-success-title { font-weight: 600; color: var(--green-text); margin-bottom: 0.3rem; font-size: 0.88rem; }
+    .csv-success-sub { font-size: 0.78rem; color: #15803d; }
+    .csv-preview summary { font-size: 0.72rem; color: var(--green-text); cursor: pointer; margin-top: 0.4rem; }
+    .csv-preview ul { margin: 0.4rem 0 0 1.25rem; font-size: 0.68rem; color: var(--green-text); word-break: break-all; }
+
+    .url-input {
+      width: 100%; padding: 0.75rem 1rem; border-radius: 8px;
+      border: 2px solid #e0ddd4; font-size: 0.9rem; font-family: 'DM Sans', sans-serif;
+      transition: border-color 0.15s; background: #fff;
+    }
+    .url-input:focus { outline: none; border-color: var(--black); }
+    .url-hint { margin-top: 0.4rem; font-size: 0.73rem; color: #888; }
+
+    .csv-filled-zone {
+      border: 2px solid var(--green-border); border-radius: 10px;
+      padding: 1rem 1.25rem; background: var(--green-bg);
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .csv-filled-text strong { font-weight: 600; color: var(--green-text); font-size: 0.88rem; display: block; }
+    .csv-filled-text span { font-size: 0.78rem; color: #15803d; }
+    .csv-reset { margin-top: 0.5rem; font-size: 0.75rem; color: #888; text-align: center; cursor: pointer; }
+    .csv-reset:hover { color: var(--black); }
+    .csv-warning {
+      margin-top: 0.75rem; padding: 0.75rem 1rem; background: var(--warn-bg);
+      border: 1px solid var(--warn-border); border-radius: 8px;
+      font-size: 0.82rem; color: var(--warn-text);
+    }
+
+    /* Review step */
+    .summary-rows { display: grid; gap: 0.5rem; margin-bottom: 1.5rem; }
+    .summary-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.8rem 1rem; background: #fafaf7;
+      border: 1px solid #e8e4d8; border-radius: 8px; font-size: 0.9rem;
+    }
+    .summary-row-label { color: var(--muted); font-size: 0.82rem; }
+    .summary-row-value { font-weight: 600; text-align: right; max-width: 60%; word-break: break-all; }
+    .summary-row.total-row {
+      background: var(--yellow); border-color: var(--yellow);
+      font-size: 1.05rem; font-weight: 800;
+    }
+    .summary-row.total-row .summary-row-label { color: var(--black); font-size: 0.9rem; }
+    .summary-row.missing { background: var(--red-bg); border-color: var(--red-border); }
+    .summary-row.missing .summary-row-value { color: var(--red-text); }
+    .summary-warning {
+      margin-bottom: 1rem; padding: 0.85rem 1rem; background: var(--red-bg);
+      border: 1px solid var(--red-border); border-radius: 8px;
+      color: var(--red-text); font-size: 0.84rem;
+    }
+
+    /* Buttons */
+    .btn-row { display: flex; justify-content: space-between; margin-top: 1.5rem; gap: 0.75rem; }
+    .btn { padding: 0.7rem 1.5rem; border-radius: 6px; font-weight: 700; font-size: 0.9rem; cursor: pointer; border: 2px solid var(--black); font-family: 'DM Sans', sans-serif; transition: all 0.12s; }
+    .btn-back { background: transparent; color: var(--black); }
+    .btn-back:hover { background: var(--off-white); }
+    .btn-primary { background: var(--yellow); color: var(--black); border-color: var(--yellow); }
+    .btn-primary:hover:not(:disabled) { background: #e6b044; border-color: #e6b044; }
+    .btn-primary:disabled { background: #cdc8b2; border-color: #cdc8b2; color: #9a8e7e; cursor: not-allowed; }
+    .btn-order { padding: 0.9rem 2rem; font-size: 1rem; width: 100%; }
+
+    /* Spinner */
+    .spinner { display: inline-block; width: 15px; height: 15px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 5px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Success */
+    .order-success { text-align: center; padding: 3rem 1.5rem; }
+    .order-success-icon { font-size: 3.5rem; margin-bottom: 1rem; }
+    .order-success h2 { font-family: 'Poppins', sans-serif; font-size: 1.6rem; font-weight: 800; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .order-success p { color: var(--muted); margin-bottom: 1.5rem; line-height: 1.6; }
+    .order-success-detail { display: inline-block; padding: 0.75rem 1.5rem; background: var(--off-white); border: 1px solid var(--border); border-radius: 8px; font-size: 0.88rem; color: var(--muted); margin-bottom: 1.5rem; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .layout { grid-template-columns: 1fr; padding: 1rem; gap: 0; }
+      .preview-panel { position: sticky; top: 0; z-index: 100; background: var(--black); border-radius: 0; padding-bottom: 0.5rem; }
+      .goodz-preview { border-radius: 0; padding: 0.75rem; }
+      .config-panel { padding-top: 1rem; }
+      .btn-row { flex-direction: column-reverse; }
+      .btn-row .btn { width: 100%; text-align: center; padding: 0.9rem; }
+      .upload-grid { gap: 1rem; }
+      .config-banner { padding: 0.5rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index-warm.html" class="nav-logo">((GOODZ))</a>
+  <ul class="nav-links">
+    <li><a href="mixtape-warm.html">Mixtape Goodz</a></li>
+    <li><a href="custom-warm.html">Custom Goodz</a></li>
+    <li><a href="index-warm.html#faq">FAQ</a></li>
+    <li><a href="https://shop.getthegoodz.com" class="nav-shop">Shop</a></li>
+  </ul>
+  <button class="nav-toggle" aria-label="Menu">☰</button>
+</nav>
+
+<!-- Order config banner -->
+<div class="config-banner" id="config-banner">
+  <span id="banner-text">Loading your order...</span>
+  <a href="order-warm.html">&larr; Edit options</a>
+</div>
+
+<div class="layout">
+
+  <!-- Preview panel -->
+  <div class="preview-panel">
+    <div class="goodz-preview">
+      <div class="preview-label">Live Preview</div>
+
+      <div class="card-wrap" id="card-wrap">
+        <div class="card" id="card">
+          <div class="card-placeholder" id="card-placeholder">Your art<br>will appear here</div>
+          <img id="card-art" class="card-art" style="display:none" src="" alt="Front art">
+          <img id="zone-guide" class="zone-guide" src="templates/Goodz_Standard_back.png" style="display:none" alt="">
+          <div class="keychain-dot" id="keychain-dot"></div>
+        </div>
+      </div>
+
+      <!-- Sleeve preview (hidden unless sleeve selected) -->
+      <div id="sleeve-wrap" class="sleeve-wrap" style="display:none">
+        <div class="sleeve-box">
+          <div class="sleeve-card-peek">
+            <div style="width:146px;height:146px;background:#1a1510;border-radius:10px 10px 0 0;overflow:hidden;position:relative">
+              <img id="sleeve-art" style="display:none;width:100%;height:100%;object-fit:cover;clip-path:inset(0 0 82% 0)" src="" alt="">
+            </div>
+          </div>
+          <div class="sleeve-label">Goodz</div>
+        </div>
+      </div>
+
+      <div class="preview-hint" id="preview-hint">Upload artwork to preview</div>
+    </div>
+
+    <div id="status-art"  class="status-badge ok"   style="display:none">&#10003; Front artwork ready</div>
+    <div id="status-back" class="status-badge ok"   style="display:none">&#10003; Back artwork ready</div>
+    <div id="status-music"class="status-badge info" style="display:none"></div>
+  </div>
+
+  <!-- Config panel -->
+  <div class="config-panel">
+
+    <!-- Step bar -->
+    <div class="step-bar-wrapper">
+      <div class="step-bar">
+        <div class="step-seg active" data-step="0" onclick="handleStepClick(0)"></div>
+        <div class="step-seg"        data-step="1" onclick="handleStepClick(1)"></div>
+        <div class="step-seg"        data-step="2" onclick="handleStepClick(2)"></div>
+      </div>
+      <div class="step-labels">
+        <span data-label="0" class="active">Artwork</span>
+        <span data-label="1">Music</span>
+        <span data-label="2">Review</span>
+      </div>
+    </div>
+
+    <!-- STEP 0: Upload artwork -->
+    <div class="step active" id="step-0">
+      <h2>Upload Your Artwork</h2>
+      <p class="step-sub">Your design will be printed on the front of each tile at 300 DPI. Need the template? <a href="templates/Goodz_Template_Front.ai" download>Download .ai</a> or <a href="templates/GoodzArtTemplate.pdf" download>PDF</a>.</p>
+
+      <div class="template-shortcut">
+        Canvas: <strong>70 &times; 70mm</strong> &middot; Trim: <strong>65 &times; 65mm</strong> &middot; Safe area: <strong>1.5mm</strong> from cut line
+      </div>
+
+      <div class="upload-grid" id="upload-grid">
+        <!-- Front art -->
+        <div class="upload-box">
+          <span class="upload-box-label">Front Artwork</span>
+          <div class="drop-zone" id="drop-front" onclick="document.getElementById('input-front').click()">
+            <div class="dz-content" id="front-placeholder-content">
+              <div class="dz-req">300 DPI &middot; RGB &middot; PNG or TIFF</div>
+              <div class="dz-icon">&#128444;</div>
+              <div class="dz-text">Drop image or <span>click to browse</span></div>
+            </div>
+            <img id="front-preview-img" class="preview-img" style="display:none" src="" alt="Front preview">
+            <button class="img-delete-btn" id="front-delete-btn" style="display:none" onclick="clearFront(event)">&#10005;</button>
+          </div>
+          <input type="file" id="input-front" class="file-input" accept=".png,.tiff,.tif">
+          <div class="file-name" id="front-filename"></div>
+          <div class="size-warning" id="front-size-warn">
+            &#9888; This image may be too small for 300 DPI print quality. We recommend at least 827&times;827px (300 DPI at 70mm).
+          </div>
+        </div>
+
+        <!-- Back art (only shown if backDesign === 'custom') -->
+        <div class="upload-box" id="back-upload-box" style="display:none">
+          <span class="upload-box-label">Back Artwork</span>
+          <div class="drop-zone" id="drop-back" onclick="document.getElementById('input-back').click()">
+            <div class="dz-content" id="back-placeholder-content">
+              <div class="dz-req">300 DPI &middot; RGB &middot; PNG or TIFF</div>
+              <div class="dz-icon">&#128444;</div>
+              <div class="dz-text">Drop image or <span>click to browse</span></div>
+            </div>
+            <img id="back-preview-img" class="preview-img" style="display:none" src="" alt="Back preview">
+            <button class="img-delete-btn" id="back-delete-btn" style="display:none" onclick="clearBack(event)">&#10005;</button>
+          </div>
+          <input type="file" id="input-back" class="file-input" accept=".png,.tiff,.tif">
+          <div class="file-name" id="back-filename"></div>
+          <div class="size-warning" id="back-size-warn">
+            &#9888; This image may be too small for 300 DPI print quality. We recommend at least 827&times;827px (300 DPI at 70mm).
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-back" onclick="window.location.href='order-warm.html'">&larr; Back</button>
+        <button class="btn btn-primary" id="btn-step0" onclick="goToStep(1)" disabled>Next: Link Music &rarr;</button>
+      </div>
+    </div>
+
+    <!-- STEP 1: Music -->
+    <div class="step" id="step-1">
+      <h2>Link Your Music</h2>
+      <p class="step-sub">Choose how fans will hear your music when they tap their Goodz.</p>
+
+      <div class="mode-toggle">
+        <button class="mode-btn active" id="mode-csv-btn" onclick="setMode('csv')">Bandcamp download codes (CSV)</button>
+        <button class="mode-btn"        id="mode-url-btn" onclick="setMode('url')">Link to album or song</button>
+      </div>
+
+      <!-- CSV mode -->
+      <div id="csv-area">
+        <p class="music-desc">Upload the CSV of download codes from Bandcamp. Each Goodz gets one unique redemption link. Need one code per unit ordered. <a href="https://get.bandcamp.help/hc/en-us/articles/23020666567191-Track-album-code-tutorial" target="_blank" rel="noreferrer">How to get codes &rarr;</a></p>
+
+        <div id="csv-upload-zone">
+          <div class="csv-zone" id="csv-zone" onclick="document.getElementById('input-csv').click()">
+            <div id="csv-zone-inner">
+              <div class="csv-icon">&#128203;</div>
+              <div class="csv-title">Upload Bandcamp CSV</div>
+              <div class="csv-sub">Drop file or <span>click to browse</span></div>
+            </div>
+            <input type="file" id="input-csv" class="file-input" accept=".csv">
+          </div>
+          <div id="csv-error" class="csv-error" style="display:none"></div>
+        </div>
+
+        <div id="csv-filled-area" style="display:none">
+          <div class="csv-filled-zone">
+            <span style="font-size:1.4rem">&#10003;</span>
+            <div class="csv-filled-text">
+              <strong id="csv-filled-count"></strong>
+              <span>Bandcamp codes loaded</span>
+            </div>
+          </div>
+          <div class="csv-reset" onclick="resetCSV()">&#8635; Upload a different file</div>
+        </div>
+
+        <div id="csv-success-detail" class="csv-success" style="display:none">
+          <div class="csv-success-title" id="csv-success-title"></div>
+          <div class="csv-success-sub">Each Goodz gets one unique download link.</div>
+          <details class="csv-preview"><summary>Preview first 5 URLs</summary><ul id="csv-url-list"></ul></details>
+        </div>
+        <div id="csv-warning" class="csv-warning" style="display:none"></div>
+      </div>
+
+      <!-- URL mode -->
+      <div id="url-area" style="display:none">
+        <p class="music-desc">All Goodz will link to this URL. Works with Bandcamp albums, Spotify, YouTube, SoundCloud, or any link.</p>
+        <input type="url" id="url-input" class="url-input" placeholder="https://yourband.bandcamp.com/album/..." oninput="handleURLInput()">
+        <div class="url-hint">Bandcamp, Spotify, YouTube, or any streaming URL.</div>
+        <div id="url-success" class="csv-success" style="display:none;margin-top:0.75rem">
+          <div class="csv-success-title">&#10003; URL saved</div>
+          <div class="csv-success-sub">All Goodz will link to this URL.</div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-back" onclick="goToStep(0)">&larr; Back</button>
+        <button class="btn btn-primary" id="btn-step1" onclick="goToStep(2)" disabled>Next: Review &rarr;</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: Review -->
+    <div class="step" id="step-2">
+      <h2>Review Your Order</h2>
+      <p class="step-sub">Double-check everything before heading to checkout.</p>
+
+      <div class="summary-rows" id="summary-rows"></div>
+      <div id="summary-warning" class="summary-warning" style="display:none"></div>
+
+      <button class="btn btn-primary btn-order" id="btn-order" onclick="placeOrder()" disabled>
+        Proceed to Checkout &rarr;
+      </button>
+      <div class="btn-row" style="margin-top:0.75rem">
+        <button class="btn btn-back" onclick="goToStep(1)">&larr; Back</button>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="step" id="step-success">
+      <div class="order-success">
+        <div class="order-success-icon">&#127881;</div>
+        <h2>Order Placed!</h2>
+        <p>We will start preparing your Goodz right away. You will receive a confirmation email shortly.</p>
+        <div class="order-success-detail" id="success-detail"></div>
+        <button class="btn btn-primary" onclick="window.location.href='order-warm.html'">Start a New Order</button>
+      </div>
+    </div>
+
+  </div><!-- /config-panel -->
+</div><!-- /layout -->
+
+<script>
+const API_BASE        = 'https://bandcamp-builder.vercel.app';
+const CLOUDINARY_CLOUD  = 'dg6kjrhid';
+const CLOUDINARY_PRESET = 'goodz_uploads';
+
+// ---- Load config from sessionStorage ----
+let orderConfig = null;
+try {
+  const raw = sessionStorage.getItem('goodzOrderConfig');
+  if (raw) orderConfig = JSON.parse(raw);
+} catch(e) {}
+
+if (!orderConfig) {
+  document.getElementById('config-banner').innerHTML =
+    '<span>No order configuration found.</span> <a href="order-warm.html">Configure your order &rarr;</a>';
+} else {
+  const b = document.getElementById('banner-text');
+  b.innerHTML = `<strong>${orderConfig.summaryText}</strong>`;
+  if (orderConfig.baseTotal) {
+    b.innerHTML += ` &mdash; <strong>$${orderConfig.baseTotal.toFixed(2)}</strong>`;
+  }
+  // Show sleeve preview
+  if (orderConfig.sleeve) document.getElementById('sleeve-wrap').style.display = 'flex';
+  // Show back upload box
+  if (orderConfig.backDesign === 'custom') document.getElementById('back-upload-box').style.display = 'block';
+  // Show keychain dot
+  const dot = document.getElementById('keychain-dot');
+  if (orderConfig.keychainHole === 'top-left')  { dot.className = 'keychain-dot top-left'; }
+  if (orderConfig.keychainHole === 'top-right') { dot.className = 'keychain-dot top-right'; }
+}
+
+// ---- App state ----
+let state = {
+  frontArt:      null,   // Cloudinary URL or data URL
+  backArt:       null,
+  uploadingFront: false,
+  uploadingBack:  false,
+  csvUrls:       [],
+  csvCloudUrl:   null,
+  uploadingCSV:  false,
+  altURL:        '',
+  musicMode:     'csv',
+  currentStep:   0,
+};
+
+// ---- Cloudinary upload ----
+function uploadToCloudinary(blob, filename, resourceType) {
+  const fd = new FormData();
+  fd.append('file', blob, filename);
+  fd.append('upload_preset', CLOUDINARY_PRESET);
+  fd.append('folder', 'goodz');
+  return fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/${resourceType}/upload`, {
+    method: 'POST', body: fd,
+  }).then(r => r.json()).then(d => {
+    if (d.error) throw new Error(d.error.message);
+    return d.secure_url;
+  });
+}
+
+// ---- Image size warning ----
+function checkImageSize(dataUrl, warnElId) {
+  const img = new Image();
+  img.onload = () => {
+    const tooSmall = img.naturalWidth < 800 || img.naturalHeight < 800;
+    document.getElementById(warnElId).style.display = tooSmall ? 'block' : 'none';
+  };
+  img.src = dataUrl;
+}
+
+// ---- Front art ----
+function handleFrontFile(file) {
+  const ext = file.name.toLowerCase();
+  if (!ext.endsWith('.png') && !ext.endsWith('.tiff') && !ext.endsWith('.tif')) {
+    alert('Please upload a PNG or TIFF file for best print quality.');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = e => {
+    const dataUrl = e.target.result;
+    state.frontArt = dataUrl;
+    showFrontPreview(dataUrl, file.name);
+    checkImageSize(dataUrl, 'front-size-warn');
+    updateStepButtons();
+    updateStatusBadges();
+
+    // Upload to Cloudinary (non-blocking)
+    state.uploadingFront = true;
+    updateStepButtons();
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.naturalWidth; canvas.height = img.naturalHeight;
+      canvas.getContext('2d').drawImage(img, 0, 0);
+      canvas.toBlob(blob => {
+        if (!blob) { state.uploadingFront = false; return; }
+        uploadToCloudinary(blob, `front_${Date.now()}.png`, 'image')
+          .then(url => { state.frontArt = url; })
+          .catch(() => {})
+          .finally(() => { state.uploadingFront = false; updateStepButtons(); });
+      }, 'image/png');
+    };
+    img.src = dataUrl;
+  };
+  reader.readAsDataURL(file);
+}
+
+function showFrontPreview(src, name) {
+  document.getElementById('front-preview-img').src = src;
+  document.getElementById('front-preview-img').style.display = 'block';
+  document.getElementById('front-placeholder-content').style.display = 'none';
+  document.getElementById('front-delete-btn').style.display = 'flex';
+  document.getElementById('front-filename').textContent = name || '';
+  document.getElementById('drop-front').classList.add('has-image');
+  // Update card preview
+  document.getElementById('card-art').src = src;
+  document.getElementById('card-art').style.display = 'block';
+  document.getElementById('card-placeholder').style.display = 'none';
+  document.getElementById('zone-guide').style.display = 'none';
+  document.getElementById('preview-hint').style.display = 'none';
+  if (orderConfig && orderConfig.sleeve) {
+    const sa = document.getElementById('sleeve-art');
+    sa.src = src; sa.style.display = 'block';
+  }
+}
+
+function clearFront(e) {
+  e.stopPropagation();
+  state.frontArt = null;
+  document.getElementById('front-preview-img').style.display = 'none';
+  document.getElementById('front-preview-img').src = '';
+  document.getElementById('front-placeholder-content').style.display = 'flex';
+  document.getElementById('front-delete-btn').style.display = 'none';
+  document.getElementById('front-filename').textContent = '';
+  document.getElementById('front-size-warn').style.display = 'none';
+  document.getElementById('drop-front').classList.remove('has-image');
+  document.getElementById('card-art').style.display = 'none';
+  document.getElementById('card-placeholder').style.display = 'flex';
+  document.getElementById('input-front').value = '';
+  updateStepButtons();
+  updateStatusBadges();
+}
+
+// ---- Back art ----
+function handleBackFile(file) {
+  const ext = file.name.toLowerCase();
+  if (!ext.endsWith('.png') && !ext.endsWith('.tiff') && !ext.endsWith('.tif')) {
+    alert('Please upload a PNG or TIFF file for best print quality.');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = e => {
+    const dataUrl = e.target.result;
+    state.backArt = dataUrl;
+    showBackPreview(dataUrl, file.name);
+    checkImageSize(dataUrl, 'back-size-warn');
+    updateStepButtons();
+    updateStatusBadges();
+
+    state.uploadingBack = true;
+    updateStepButtons();
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.naturalWidth; canvas.height = img.naturalHeight;
+      canvas.getContext('2d').drawImage(img, 0, 0);
+      canvas.toBlob(blob => {
+        if (!blob) { state.uploadingBack = false; return; }
+        uploadToCloudinary(blob, `back_${Date.now()}.png`, 'image')
+          .then(url => { state.backArt = url; })
+          .catch(() => {})
+          .finally(() => { state.uploadingBack = false; updateStepButtons(); });
+      }, 'image/png');
+    };
+    img.src = dataUrl;
+  };
+  reader.readAsDataURL(file);
+}
+
+function showBackPreview(src, name) {
+  document.getElementById('back-preview-img').src = src;
+  document.getElementById('back-preview-img').style.display = 'block';
+  document.getElementById('back-placeholder-content').style.display = 'none';
+  document.getElementById('back-delete-btn').style.display = 'flex';
+  document.getElementById('back-filename').textContent = name || '';
+  document.getElementById('drop-back').classList.add('has-image');
+}
+
+function clearBack(e) {
+  e.stopPropagation();
+  state.backArt = null;
+  document.getElementById('back-preview-img').style.display = 'none';
+  document.getElementById('back-preview-img').src = '';
+  document.getElementById('back-placeholder-content').style.display = 'flex';
+  document.getElementById('back-delete-btn').style.display = 'none';
+  document.getElementById('back-filename').textContent = '';
+  document.getElementById('back-size-warn').style.display = 'none';
+  document.getElementById('drop-back').classList.remove('has-image');
+  document.getElementById('input-back').value = '';
+  updateStepButtons();
+  updateStatusBadges();
+}
+
+// ---- Drag and drop ----
+function setupDrop(zoneId, handler) {
+  const el = document.getElementById(zoneId);
+  if (!el) return;
+  el.addEventListener('dragover', e => { e.preventDefault(); el.classList.add('drag-over'); });
+  el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
+  el.addEventListener('drop', e => {
+    e.preventDefault(); el.classList.remove('drag-over');
+    if (e.dataTransfer.files[0]) handler(e.dataTransfer.files[0]);
+  });
+}
+
+function setupFileInput(inputId, handler) {
+  const el = document.getElementById(inputId);
+  if (el) el.addEventListener('change', e => { if (e.target.files[0]) handler(e.target.files[0]); });
+}
+
+// ---- CSV ----
+function handleCSVFile(file) {
+  if (!file.name.endsWith('.csv')) { showCSVError('Please upload a .csv file from Bandcamp.'); return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    const urls = parseCSVUrls(e.target.result);
+    if (!urls.length) { showCSVError('No URLs found. Make sure the CSV has http/https links.'); return; }
+    hideCSVError();
+    state.csvUrls = urls;
+    showCSVFilled(urls);
+    updateStepButtons();
+    updateStatusBadges();
+    updateCSVWarning();
+
+    // Upload CSV to Cloudinary
+    state.uploadingCSV = true;
+    updateStepButtons();
+    const blob = new Blob([e.target.result], { type: 'text/csv' });
+    uploadToCloudinary(blob, file.name, 'raw')
+      .then(url => { state.csvCloudUrl = url; })
+      .catch(() => {})
+      .finally(() => { state.uploadingCSV = false; updateStepButtons(); });
+  };
+  reader.readAsText(file);
+}
+
+function parseCSVUrls(text) {
+  const urls = [];
+  for (const line of text.trim().split('\n')) {
+    for (const cell of line.split(',')) {
+      const t = cell.trim().replace(/^["']|["']$/g, '');
+      if (t.startsWith('http://') || t.startsWith('https://')) urls.push(t);
+    }
+  }
+  return urls;
+}
+
+function showCSVFilled(urls) {
+  document.getElementById('csv-upload-zone').style.display = 'none';
+  document.getElementById('csv-filled-area').style.display = 'block';
+  document.getElementById('csv-filled-count').textContent = `${urls.length} codes loaded`;
+  document.getElementById('csv-success-detail').style.display = 'block';
+  document.getElementById('csv-success-title').textContent = `${urls.length} unique Bandcamp URLs`;
+  document.getElementById('csv-url-list').innerHTML =
+    urls.slice(0,5).map(u => `<li>${u}</li>`).join('') +
+    (urls.length > 5 ? `<li style="color:#999">...and ${urls.length-5} more</li>` : '');
+}
+
+function resetCSV() {
+  state.csvUrls = []; state.csvCloudUrl = null;
+  document.getElementById('csv-upload-zone').style.display = 'block';
+  document.getElementById('csv-filled-area').style.display = 'none';
+  document.getElementById('csv-success-detail').style.display = 'none';
+  document.getElementById('csv-warning').style.display = 'none';
+  document.getElementById('input-csv').value = '';
+  updateStepButtons(); updateStatusBadges();
+}
+
+function showCSVError(msg) {
+  const el = document.getElementById('csv-error');
+  el.textContent = msg; el.style.display = 'block';
+  document.getElementById('csv-zone').classList.add('has-error');
+}
+function hideCSVError() {
+  document.getElementById('csv-error').style.display = 'none';
+  document.getElementById('csv-zone').classList.remove('has-error');
+}
+
+function updateCSVWarning() {
+  const qty = orderConfig ? orderConfig.quantity : 50;
+  const warnEl = document.getElementById('csv-warning');
+  if (state.csvUrls.length > 0 && state.csvUrls.length < qty) {
+    warnEl.innerHTML = `&#9888; You have <strong>${state.csvUrls.length}</strong> codes for <strong>${qty}</strong> units. You need at least ${qty} codes.`;
+    warnEl.style.display = 'block';
+  } else {
+    warnEl.style.display = 'none';
+  }
+}
+
+// ---- URL mode ----
+function handleURLInput() {
+  const val = document.getElementById('url-input').value.trim();
+  state.altURL = val;
+  const ok = val.startsWith('http://') || val.startsWith('https://');
+  document.getElementById('url-success').style.display = ok ? 'block' : 'none';
+  updateStepButtons();
+  updateStatusBadges();
+}
+
+function setMode(mode) {
+  state.musicMode = mode;
+  document.getElementById('mode-csv-btn').classList.toggle('active', mode === 'csv');
+  document.getElementById('mode-url-btn').classList.toggle('active', mode === 'url');
+  document.getElementById('csv-area').style.display = mode === 'csv' ? 'block' : 'none';
+  document.getElementById('url-area').style.display = mode === 'url' ? 'block' : 'none';
+  updateStepButtons();
+}
+
+// ---- Step navigation ----
+function goToStep(n) {
+  state.currentStep = n;
+  document.querySelectorAll('.step').forEach((el, i) => el.classList.toggle('active', i === n));
+  document.querySelectorAll('.step-seg').forEach((el, i) => {
+    el.classList.toggle('active', i === n);
+    el.classList.toggle('done', i < n);
+  });
+  document.querySelectorAll('[data-label]').forEach(el => {
+    const i = +el.dataset.label;
+    el.classList.toggle('active', i === n);
+    el.classList.toggle('done', i < n);
+  });
+  if (n === 2) renderSummary();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function handleStepClick(n) {
+  if (n < state.currentStep) goToStep(n);
+}
+
+// ---- Button state ----
+function needsBack() { return orderConfig && orderConfig.backDesign === 'custom'; }
+
+function hasMusic() {
+  if (state.musicMode === 'csv') return state.csvUrls.length > 0;
+  return state.altURL.startsWith('http://') || state.altURL.startsWith('https://');
+}
+
+function updateStepButtons() {
+  const frontReady = !!state.frontArt && !state.uploadingFront;
+  const backReady = !needsBack() || (!!state.backArt && !state.uploadingBack);
+
+  document.getElementById('btn-step0').disabled = !(frontReady && backReady);
+  document.getElementById('btn-step1').disabled = !hasMusic() || state.uploadingCSV;
+
+  const orderReady = frontReady && backReady && hasMusic() && !state.uploadingCSV;
+  const orderBtn = document.getElementById('btn-order');
+  orderBtn.disabled = !orderReady;
+  if (state.uploadingCSV) orderBtn.textContent = 'Uploading CSV...';
+  else if (state.uploadingFront || state.uploadingBack) orderBtn.textContent = 'Uploading artwork...';
+  else orderBtn.textContent = 'Proceed to Checkout →';
+
+  updateCSVWarning();
+}
+
+// ---- Status badges ----
+function updateStatusBadges() {
+  document.getElementById('status-art').style.display  = state.frontArt ? 'block' : 'none';
+  document.getElementById('status-back').style.display = (needsBack() && state.backArt) ? 'block' : 'none';
+  const music = document.getElementById('status-music');
+  if (hasMusic()) {
+    music.style.display = 'block';
+    music.textContent = state.musicMode === 'csv'
+      ? `${state.csvUrls.length} Bandcamp codes loaded`
+      : 'Music URL saved';
+  } else {
+    music.style.display = 'none';
+  }
+}
+
+// ---- Review summary ----
+function fmt(n) { return '$' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+
+function renderSummary() {
+  const cfg = orderConfig || {};
+  const rows = [];
+
+  rows.push({ label: 'Front artwork',   value: state.frontArt ? 'Uploaded ✓' : 'Missing ✗', missing: !state.frontArt });
+  if (needsBack()) {
+    rows.push({ label: 'Back artwork', value: state.backArt ? 'Uploaded ✓' : 'Missing ✗', missing: !state.backArt });
+  } else {
+    rows.push({ label: 'Back design', value: 'Standard Goodz Back' });
+  }
+  rows.push({ label: 'Packaging',     value: cfg.sleeve      ? 'With Sleeve (+$0.20/unit)' : 'No Sleeve' });
+  rows.push({ label: 'Keychain hole', value: cfg.keychainHole === 'none' || !cfg.keychainHole ? 'None' : `${cfg.keychainHole === 'top-left' ? 'Top Left' : 'Top Right'} (+$0.15/unit)` });
+  rows.push({ label: 'Music',
+    value: state.musicMode === 'csv'
+      ? (state.csvUrls.length ? `${state.csvUrls.length} Bandcamp codes` : 'Missing ✗')
+      : (state.altURL || 'Missing ✗'),
+    missing: !hasMusic(),
+  });
+  rows.push({ label: 'Quantity',     value: cfg.quantity ? `${cfg.quantity.toLocaleString()} units` : '—' });
+  rows.push({ label: 'Price per unit', value: cfg.unitPrice ? fmt(cfg.unitPrice) : '—' });
+  if (cfg.baseTotal) {
+    rows.push({ label: 'Order Total', value: fmt(cfg.baseTotal), total: true });
+  }
+
+  document.getElementById('summary-rows').innerHTML = rows.map(r => `
+    <div class="summary-row${r.total ? ' total-row' : ''}${r.missing ? ' missing' : ''}">
+      <span class="summary-row-label">${r.label}</span>
+      <span class="summary-row-value">${r.value}</span>
+    </div>`).join('');
+
+  const warnEl = document.getElementById('summary-warning');
+  const issues = [];
+  if (!state.frontArt) issues.push('front artwork');
+  if (needsBack() && !state.backArt) issues.push('back artwork');
+  if (!hasMusic()) issues.push('music link');
+  if (state.musicMode === 'csv' && state.csvUrls.length > 0 && cfg.quantity && state.csvUrls.length < cfg.quantity) {
+    issues.push(`${cfg.quantity - state.csvUrls.length} more Bandcamp codes`);
+  }
+  if (issues.length) {
+    warnEl.style.display = 'block';
+    warnEl.textContent = `Still needed: ${issues.join(', ')}.`;
+  } else {
+    warnEl.style.display = 'none';
+  }
+
+  updateStepButtons();
+}
+
+// ---- Place order ----
+function placeOrder() {
+  const btn = document.getElementById('btn-order');
+  btn.textContent = 'Preparing your order...';
+  btn.disabled = true;
+  const cfg = orderConfig || {};
+
+  const payload = {
+    units:        cfg.quantity || 50,
+    sleeve:       cfg.sleeve ? 'yes' : 'no',
+    keychainHole: cfg.keychainHole || 'none',
+    backDesign:   cfg.backDesign || 'standard',
+    albumArtUrl:  state.frontArt || '',
+    backArtUrl:   state.backArt  || '',
+    musicType:    state.musicMode,
+  };
+
+  if (state.musicMode === 'csv' && state.csvUrls.length) {
+    payload.csvUrl   = state.csvCloudUrl || state.csvUrls.join('\n');
+    payload.csvCount = state.csvUrls.length;
+  } else if (state.musicMode === 'url' && state.altURL) {
+    payload.musicUrl = state.altURL;
+  }
+
+  fetch(`${API_BASE}/api/custom-goodz-order`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  })
+  .then(r => { if (!r.ok) throw new Error('Order failed'); return r.json(); })
+  .then(data => {
+    if (data.checkoutUrl) { window.location.href = data.checkoutUrl; }
+    else throw new Error('No checkout URL');
+  })
+  .catch(() => {
+    btn.textContent = 'Proceed to Checkout →';
+    btn.disabled = false;
+    const w = document.getElementById('summary-warning');
+    w.style.display = 'block';
+    w.textContent = 'Could not connect to checkout. Please try again or contact hello@getthegoodz.com.';
+  });
+}
+
+// ---- Init ----
+setupDrop('drop-front', handleFrontFile);
+setupDrop('drop-back',  handleBackFile);
+setupFileInput('input-front', handleFrontFile);
+setupFileInput('input-back',  handleBackFile);
+
+const csvZone = document.getElementById('csv-zone');
+if (csvZone) {
+  csvZone.addEventListener('dragover', e => { e.preventDefault(); csvZone.classList.add('drag-over'); });
+  csvZone.addEventListener('dragleave', () => csvZone.classList.remove('drag-over'));
+  csvZone.addEventListener('drop', e => { e.preventDefault(); csvZone.classList.remove('drag-over'); if (e.dataTransfer.files[0]) handleCSVFile(e.dataTransfer.files[0]); });
+}
+setupFileInput('input-csv', handleCSVFile);
+
+updateStepButtons();
+</script>
+</body>
+</html>
