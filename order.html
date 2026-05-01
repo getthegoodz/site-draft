@@ -82,7 +82,7 @@
       border: none;
       background: rgba(255, 255, 255, 0.88);
       color: var(--black);
-      display: none;
+      display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
@@ -91,6 +91,7 @@
       padding: 0;
     }
     .gallery-nav:hover { background: #fff; }
+    .gallery-nav.hidden { display: none; }
     .gallery-nav-prev { left: 10px; }
     .gallery-nav-next { right: 10px; }
     .gallery-hero img {
@@ -583,9 +584,6 @@
       .sticky-summary { display: none; }
       .sticky-bar { padding: 0.75rem 1.25rem; }
 
-      /* Show chevron nav buttons on mobile (desktop uses thumbnails) */
-      .gallery-nav { display: flex; }
-
       /* Carousel dots in place of thumbnails on mobile */
       .gallery-thumbs { justify-content: center; gap: 0.5rem; margin-bottom: 0; }
       .gallery-thumb {
@@ -1043,16 +1041,28 @@ function initGallery() {
       thumb.classList.add('active');
       const src = thumb.dataset.img;
       if (src) document.getElementById('gallery-hero-img').src = src;
+      updateGalleryNavVisibility();
     });
   });
 }
 
-// Mobile carousel: chevron buttons + swipe gesture
+// Carousel: chevron buttons + swipe gesture (no wrap at edges)
+function updateGalleryNavVisibility() {
+  const thumbs = Array.from(document.querySelectorAll('.gallery-thumb'));
+  if (!thumbs.length) return;
+  const activeIdx = Math.max(0, thumbs.findIndex(t => t.classList.contains('active')));
+  const prev = document.querySelector('.gallery-nav-prev');
+  const next = document.querySelector('.gallery-nav-next');
+  if (prev) prev.classList.toggle('hidden', activeIdx === 0);
+  if (next) next.classList.toggle('hidden', activeIdx === thumbs.length - 1);
+}
+
 function navigateGallery(dir) {
   const thumbs = Array.from(document.querySelectorAll('.gallery-thumb'));
   if (!thumbs.length) return;
   const activeIdx = Math.max(0, thumbs.findIndex(t => t.classList.contains('active')));
-  const nextIdx = (activeIdx + dir + thumbs.length) % thumbs.length;
+  const nextIdx = activeIdx + dir;
+  if (nextIdx < 0 || nextIdx >= thumbs.length) return;
   thumbs[nextIdx].click();
 }
 
@@ -1094,6 +1104,7 @@ updateFromPrice();
 initStickyBar();
 initGallery();
 initGalleryNav();
+updateGalleryNavVisibility();
 </script>
 </body>
 </html>
