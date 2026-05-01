@@ -341,11 +341,11 @@
 <body>
 
 <nav class="nav">
-  <a href="index-warm.html" class="nav-logo">((GOODZ))</a>
+  <a href="index.html" class="nav-logo">((GOODZ))</a>
   <ul class="nav-links">
-    <li><a href="mixtape-warm.html">Mixtape Goodz</a></li>
-    <li><a href="custom-warm.html">Custom Goodz</a></li>
-    <li><a href="index-warm.html#faq">FAQ</a></li>
+    <li><a href="mixtape.html">Mixtape Goodz</a></li>
+    <li><a href="custom.html">Custom Goodz</a></li>
+    <li><a href="index.html#faq">FAQ</a></li>
     <li><a href="https://shop.getthegoodz.com" class="nav-shop">Shop</a></li>
   </ul>
   <button class="nav-toggle" aria-label="Menu">☰</button>
@@ -354,7 +354,7 @@
 <!-- Order config banner -->
 <div class="config-banner" id="config-banner">
   <span id="banner-text">Loading your order...</span>
-  <a href="order-warm.html">&larr; Edit options</a>
+  <a href="order.html">&larr; Edit options</a>
 </div>
 
 <div class="layout">
@@ -416,7 +416,7 @@
       <p class="step-sub">Your design will be UV-printed on the front of each tile. Need the template? <a href="templates/Goodz_Template_Front.ai" download>Download .ai</a> or <a href="templates/GoodzArtTemplate.pdf" download>PDF</a>.</p>
 
       <div class="template-shortcut">
-        Need a refresher? <a href="order-warm.html#artwork-guidelines">View artwork guidelines &rarr;</a>
+        Need a refresher? <a href="order.html#artwork-guidelines">View artwork guidelines &rarr;</a>
       </div>
 
       <div class="upload-grid" id="upload-grid">
@@ -460,7 +460,7 @@
       </div>
 
       <div class="btn-row">
-        <button class="btn btn-back" onclick="window.location.href='order-warm.html'">&larr; Back</button>
+        <button class="btn btn-back" onclick="window.location.href='order.html'">&larr; Back</button>
         <button class="btn btn-primary" id="btn-step0" onclick="goToStep(1)" disabled>Next: Link Music &rarr;</button>
       </div>
     </div>
@@ -553,7 +553,7 @@
         <h2>Order Placed.</h2>
         <p>We'll send a digital proof in 1-2 days for your sign-off. Most artists have their Goodz in hand within 4-5 weeks. We'll email you at every step.</p>
         <div class="order-success-detail" id="success-detail"></div>
-        <button class="btn btn-primary" onclick="window.location.href='order-warm.html'">Start a New Order</button>
+        <button class="btn btn-primary" onclick="window.location.href='order.html'">Start a New Order</button>
       </div>
     </div>
 
@@ -574,7 +574,7 @@ try {
 
 if (!orderConfig) {
   document.getElementById('config-banner').innerHTML =
-    '<span>No order configuration found.</span> <a href="order-warm.html">Configure your order &rarr;</a>';
+    '<span>No order configuration found.</span> <a href="order.html">Configure your order &rarr;</a>';
 } else {
   const b = document.getElementById('banner-text');
   b.innerHTML = `<strong>${orderConfig.summaryText}</strong>`;

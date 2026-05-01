@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style-warm.css">
   <style>
     .usp-list { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; margin-bottom: 1.5rem; }
     .usp-list li { display: flex; align-items: center; gap: 0.75rem; font-size: 0.92rem; color: var(--text-light); }
@@ -14,15 +15,13 @@
 
     .audience-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       border: var(--border);
       margin-top: 3rem;
     }
     .audience-card { border-right: var(--border-inner); overflow: hidden; }
     .audience-card:last-child { border-right: none; }
-    .audience-card:nth-child(3) { border-right: none; }
-    .audience-card:nth-child(n+4) { border-top: var(--border-inner); }
-    .audience-img { aspect-ratio: 4/3; }
+    .audience-img { aspect-ratio: 3/4; }
     .audience-label {
       padding: 1rem;
       border-top: var(--border-inner);
@@ -35,9 +34,8 @@
 
     @media (max-width: 900px) {
       .audience-grid { grid-template-columns: 1fr 1fr; }
-      .audience-card:nth-child(3) { border-right: var(--border-inner); }
-      .audience-card:nth-child(2n) { border-right: none; }
-      .audience-card:nth-child(n+3) { border-top: var(--border-inner); }
+      .audience-card:nth-child(2) { border-right: none; }
+      .audience-card:nth-child(3) { border-top: var(--border); }
     }
     @media (max-width: 600px) {
       .audience-grid { grid-template-columns: 1fr; }
@@ -52,7 +50,7 @@
   <ul class="nav-links">
     <li><a href="mixtape.html">Mixtape Goodz</a></li>
     <li><a href="custom.html">Custom Goodz</a></li>
-    <li><a href="about.html">About</a></li>
+    <li><a href="index.html#how-it-works">How It Works</a></li>
     <li><a href="index.html#faq">FAQ</a></li>
     <li><a href="https://shop.getthegoodz.com" class="nav-shop">Shop</a></li>
   </ul>
@@ -63,10 +61,10 @@
 <div class="page-hero">
   <div class="page-hero-inner">
     <p class="section-label on-dark">Custom Goodz</p>
-    <h1>Your album. Your artwork. In their hands.</h1>
-    <p>A run of wooden cards, printed with your art, linked to your music. Fans tap it and your album opens. Merch that actually does something.</p>
+    <h1>Your Art.<br>Your Music.<br>In Their Hands.</h1>
+    <p>Custom-printed wooden cards with your artwork and a link to your music. 50-unit minimum. Merch fans keep.</p>
     <div class="hero-ctas">
-      <a href="https://bandcamp-builder.vercel.app" class="btn btn-amber">Start Your Order →</a>
+      <a href="order.html" class="btn btn-amber">Start Your Order →</a>
       <a href="#examples" class="btn btn-ghost">See Examples</a>
     </div>
   </div>
@@ -87,16 +85,36 @@
       </div>
     </div>
     <div class="revenue-caption">
-      <p>Most artists sell Custom Goodz at the merch table for $10–15. On a run of 50, that's $500–750 back on a $172 investment.</p>
+      <p>Most artists sell Custom Goodz for $10–15 at their merch table. That's $500–750 back on a $172 investment.</p>
     </div>
+  </div>
+</div>
+
+<!-- PROOF BAR -->
+<div class="proof-bar">
+  <div class="proof-item">
+    <span class="proof-num">13K+</span>
+    <span class="proof-label">Custom Units Shipped</span>
+  </div>
+  <div class="proof-item">
+    <span class="proof-num">2–3 wks</span>
+    <span class="proof-label">Avg. Turnaround</span>
+  </div>
+  <div class="proof-item">
+    <span class="proof-num">50</span>
+    <span class="proof-label">Unit Minimum</span>
+  </div>
+  <div class="proof-item">
+    <span class="proof-num">Any URL</span>
+    <span class="proof-label">Music · Video · Page</span>
   </div>
 </div>
 
 <!-- WHO ORDERS -->
 <section class="section-full" id="examples">
   <div style="max-width:1200px;margin:0 auto;">
-    <p class="section-label">Who Uses Them</p>
-    <h2 style="font-size:2rem;">Made for artists. Useful for a lot more.</h2>
+    <p class="section-label">Who Orders Custom Goodz</p>
+    <h2 style="font-size:2rem;">Built for Artists, Events &amp; Brands.</h2>
     <div class="audience-grid">
       <div class="audience-card">
         <div class="audience-img img-placeholder dark"></div>
@@ -108,19 +126,11 @@
       </div>
       <div class="audience-card">
         <div class="audience-img img-placeholder dark"></div>
-        <div class="audience-label">Labels</div>
-      </div>
-      <div class="audience-card">
-        <div class="audience-img img-placeholder dark"></div>
         <div class="audience-label">Festivals &amp; Events</div>
       </div>
       <div class="audience-card">
-        <div class="audience-img img-placeholder warm"></div>
-        <div class="audience-label">Weddings &amp; Gifts</div>
-      </div>
-      <div class="audience-card">
-        <div class="audience-img img-placeholder warm"></div>
-        <div class="audience-label">Brands</div>
+        <div class="audience-img img-placeholder dark"></div>
+        <div class="audience-label">Labels &amp; Brands</div>
       </div>
     </div>
   </div>
@@ -128,15 +138,11 @@
 
 <!-- CREDIBILITY -->
 <div class="cred-bar">
-  <p>Artists and labels we've worked with</p>
+  <p>Trusted by artists and brands</p>
   <div class="cred-names">
     <span class="cred-name">Sony Music</span>
-    <span class="cred-name">Concord</span>
+    <span class="cred-name">Warner Music</span>
     <span class="cred-name">Craft Recordings</span>
-    <span class="cred-name">Fania</span>
-    <span class="cred-name">They Might Be Giants</span>
-    <span class="cred-name">Britney Spears</span>
-    <span class="cred-name">Outkast</span>
   </div>
 </div>
 
@@ -144,23 +150,23 @@
 <div class="tap-section" id="how-it-works">
   <div class="tap-inner">
     <p class="section-label">The Process</p>
-    <h2 style="font-size:2rem;margin-bottom:0.75rem;">From idea to your fan's hands.</h2>
-    <p style="color:var(--text-light);max-width:520px;line-height:1.7;font-size:0.92rem;">You upload, we print and encode, they tap. Nothing in between.</p>
+    <h2 style="font-size:2rem;margin-bottom:0.4rem;">From Idea to Fan's Hands.</h2>
+    <p style="color:var(--text-light);max-width:520px;line-height:1.7;font-size:0.92rem;">You upload, we print and encode. Fans hold their phone to the card and your music opens instantly — no app, no friction.</p>
     <div class="steps">
       <div class="step">
         <span class="step-num">01</span>
         <h3>Upload Your Artwork</h3>
-        <p>PNG or TIFF, 300 DPI, RGB. Our builder shows a live print preview before you submit — you'll see exactly what lands on wood.</p>
+        <p>PNG or TIFF, 300 DPI, RGB. Our builder shows a live print preview before you submit.</p>
       </div>
       <div class="step">
         <span class="step-num">02</span>
-        <h3>Link Your Music</h3>
-        <p>A Bandcamp album URL, a CSV of your Bandcamp download codes (one per card), or any link you want. Your call.</p>
+        <h3>Link Your Content</h3>
+        <p>Paste a Bandcamp URL, upload download codes (one per card), or link to any URL.</p>
       </div>
       <div class="step">
         <span class="step-num">03</span>
         <h3>We Print &amp; Ship</h3>
-        <p>UV-printed on basswood, chip encoded, shipped in 4–6 weeks from artwork approval. Boxed, counted, ready to sell.</p>
+        <p>UV-printed on basswood, chip encoded, ships in 2–3 weeks from artwork approval.</p>
       </div>
     </div>
   </div>
@@ -175,13 +181,13 @@
 <div class="bandcamp-section">
   <div class="bandcamp-inner">
     <div class="bandcamp-text">
-      <p class="section-label on-dark">Built for Bandcamp</p>
-      <h2>Your Bandcamp album, made physical.</h2>
-      <p>Bandcamp already sells your music the way you want it sold — to fans, at a fair price, with the download included. Goodz gives those fans something physical to go with it.</p>
+      <p class="section-label on-dark">Bandcamp Native</p>
+      <h2>Built for Bandcamp Artists.</h2>
+      <p>Give your Bandcamp supporters something physical — a card that opens your music the second they tap it.</p>
       <ul class="bandcamp-features" style="margin-top:1.5rem;">
-        <li>Link any Bandcamp album or track URL</li>
-        <li>Upload a CSV of your Bandcamp download codes so fans are buying your digital music and getting something physical</li>
-        <li>Works alongside your Bandcamp store, not against it</li>
+        <li>Link to any Bandcamp album or track URL</li>
+        <li>Upload a download code CSV — one unique code per card</li>
+        <li>Works alongside your Bandcamp store, not instead of it</li>
       </ul>
     </div>
     <div class="img-placeholder dark" style="aspect-ratio:1;min-height:300px;"></div>
@@ -192,14 +198,14 @@
 <div class="split reverse" style="background:var(--off-white);">
   <div class="split-text">
     <p class="section-label">Know Your Fans</p>
-    <h2>Every tap, counted.</h2>
-    <p>Every run of Custom Goodz comes with tap analytics. When your cards get scanned. Where. How often. Data you can actually use, not a dashboard you'll never open.</p>
-    <ul class="usp-list" style="margin-top:0.5rem;">
-      <li>Real-time, no setup</li>
+    <h2>Track Every Tap</h2>
+    <p>Every Custom Goodz order includes tap analytics — when, where, and how many times your cards get scanned.</p>
+    <ul class="usp-list" style="margin-top:1rem;">
+      <li>Real-time data, no extra setup</li>
       <li>See which cards are getting tapped most</li>
       <li>Understand what's resonating after the show</li>
     </ul>
-    <a href="https://www.getthegoodz.com/contact" class="btn btn-outline" style="align-self:flex-start;margin-top:0.5rem;">Ask us about analytics</a>
+    <a href="https://www.getthegoodz.com/contact" class="btn btn-outline" style="align-self:flex-start;margin-top:0.5rem;">Talk to us about analytics</a>
   </div>
   <div class="split-img img-placeholder" style="min-height:420px;"></div>
 </div>
@@ -207,13 +213,13 @@
 <!-- PRICING -->
 <section class="section-sm" id="pricing">
   <p class="section-label">Pricing</p>
-  <h2 style="font-size:2rem;margin-bottom:0.35rem;">Volume pricing. No surprises.</h2>
+  <h2 style="font-size:2rem;margin-bottom:0.35rem;">Volume Pricing. No Surprises.</h2>
   <p style="color:var(--text-light);font-size:0.875rem;">Per unit. Includes UV printing and chip encoding. +$0.20/unit for a cardboard sleeve.</p>
 
   <div class="sample-box">
     <div class="sample-box-text">
-      <h3>Want to try one first?</h3>
-      <p>Order a single sample for $5 and we'll send you one we made for a different band so you can see how they feel. Ships in 1–3 days.</p>
+      <h3>Try One First</h3>
+      <p>Order a single Custom Goodz — your artwork, your link — before committing to a full run. Ships in 1–3 days.</p>
     </div>
     <div style="text-align:center;">
       <div class="sample-price">$5</div>
@@ -248,18 +254,18 @@
     </div>
     <div class="pricing-row">
       <div class="pricing-cell">2,000+</div>
-      <div class="pricing-cell"><a href="https://www.getthegoodz.com/contact" style="font-weight:700;text-decoration:underline;">Let's talk</a></div>
+      <div class="pricing-cell"><a href="https://www.getthegoodz.com/contact" style="font-weight:700;text-decoration:underline;">Contact us</a></div>
     </div>
   </div>
 </section>
 
 <!-- CTA -->
 <div class="cta-band">
-  <h2>Ready to put your album in their hands?</h2>
-  <p>Upload your artwork, link your music, ship in 4–6 weeks.</p>
+  <h2>Ready to Make Custom Goodz?</h2>
+  <p>Upload your artwork and link your music. Ships in 2–3 weeks.</p>
   <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
-    <a href="https://bandcamp-builder.vercel.app" class="btn btn-amber">Start Your Order →</a>
-    <a href="https://www.getthegoodz.com/contact" class="btn btn-ghost">Talk to us</a>
+    <a href="order.html" class="btn btn-amber">Start Your Order →</a>
+    <a href="https://www.getthegoodz.com/contact" class="btn btn-ghost">Get in touch</a>
   </div>
 </div>
 
@@ -269,44 +275,43 @@
 
   <div class="faq-item">
     <button class="faq-q" onclick="toggleFaq(this)">What's the minimum order? <span class="icon">+</span></button>
-    <div class="faq-a">50 units for a printed run. If you want to try one first, order a single sample for $5 and we'll send you one we made for a different band — so you can see how they feel before committing.</div>
+    <div class="faq-a">50 units for a custom printed run. Want to try one first? Order a single card for $5 — your artwork, your link — before committing.</div>
   </div>
 
   <div class="faq-item">
-    <button class="faq-q" onclick="toggleFaq(this)">What artwork files do I need? <span class="icon">+</span></button>
-    <div class="faq-a">PNG or TIFF, 300 DPI, RGB, at least 1000×1000px. Our builder shows a live preview with bleed guides so you know what's getting printed before you submit.</div>
+    <button class="faq-q" onclick="toggleFaq(this)">What file do I need for artwork? <span class="icon">+</span></button>
+    <div class="faq-a">PNG or TIFF, 300 DPI, RGB, at least 1000×1000px. Our builder shows a live preview with bleed guides before you submit.</div>
   </div>
 
   <div class="faq-item">
     <button class="faq-q" onclick="toggleFaq(this)">How does the tap work for my fans? <span class="icon">+</span></button>
-    <div class="faq-a">Fans tap the card with their phone — top of the phone for iPhone, back for Android. The link opens in their browser in seconds. No extra app. No account. Works on iPhone 7 and newer, and nearly every Android made after 2015.</div>
+    <div class="faq-a">Fans hold their phone near the card — top for iPhone, back for Android. The link opens in their browser in seconds. No app, no account. Works on iPhone 7+ and virtually all modern Android phones.</div>
   </div>
 
   <div class="faq-item">
     <button class="faq-q" onclick="toggleFaq(this)">Can I link to Bandcamp? <span class="icon">+</span></button>
-    <div class="faq-a">Yes. Any Bandcamp album URL will play. Or upload a CSV of your Bandcamp download codes so fans buy your album with your Goodz.</div>
+    <div class="faq-a">Yes — any Bandcamp album URL, or upload a CSV of download codes (one unique code per card). The builder walks you through both options.</div>
   </div>
 
   <div class="faq-item">
     <button class="faq-q" onclick="toggleFaq(this)">How long does it take? <span class="icon">+</span></button>
-    <div class="faq-a">4–6 weeks from artwork approval to delivery. If you have a hard deadline, tell us when you inquire — we'll let you know what's possible.</div>
+    <div class="faq-a">About 2–3 weeks from artwork approval to delivery. Rush options may be available — contact us if you have a hard deadline.</div>
   </div>
 
   <div class="faq-item">
-    <button class="faq-q" onclick="toggleFaq(this)">I'm not a musician. Can I still order? <span class="icon">+</span></button>
-    <div class="faq-a">Yes. Weddings, anniversary gifts, conferences, hotels, festivals. Anything with artwork and a URL can become Goodz. We started with music but the format travels.</div>
+    <button class="faq-q" onclick="toggleFaq(this)">I'm not a musician — can I still order? <span class="icon">+</span></button>
+    <div class="faq-a">Absolutely. Custom Goodz are used for weddings, brand activations, hotels, conferences, and more. If you have artwork and a URL, we can make it a Goodz.</div>
   </div>
 </div>
 
 <footer>
   <div>
     <div class="footer-logo">((GOODZ))</div>
-    <div class="footer-tagline">Music you can hold.</div>
+    <div class="footer-tagline">Streaming music you can hold.</div>
   </div>
   <ul class="footer-links">
     <li><a href="mixtape.html">Mixtape Goodz</a></li>
     <li><a href="custom.html">Custom Goodz</a></li>
-    <li><a href="about.html">About</a></li>
     <li><a href="https://shop.getthegoodz.com">Shop</a></li>
     <li><a href="index.html#faq">FAQ</a></li>
     <li><a href="https://www.getthegoodz.com/support">Support</a></li>
