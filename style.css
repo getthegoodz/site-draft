@@ -73,6 +73,9 @@ img { display: block; width: 100%; }
 
 .nav-links a:hover { color: var(--white); }
 
+.nav-links a.is-current { color: var(--white); box-shadow: 0 4px 0 var(--amber); }
+.nav-links a.is-current:hover { color: var(--white); }
+
 .nav-shop {
   background: var(--amber) !important;
   color: var(--black) !important;
