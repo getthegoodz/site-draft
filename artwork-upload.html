@@ -64,38 +64,35 @@
       .page-header .step-bar-wrapper { width: auto; justify-self: stretch; }
     }
 
-    /* Two-column layout */
+    /* Single-column layout */
     .layout {
-      max-width: 1100px;
+      max-width: 640px;
       margin: 0 auto;
-      padding: 2rem;
-      display: grid;
-      grid-template-columns: 300px 1fr;
-      gap: 2.5rem;
-      align-items: start;
+      padding: 2rem 1.5rem 4rem;
     }
 
-    /* Preview panel */
-    .preview-panel { position: sticky; top: 5.5rem; }
-    .goodz-preview {
-      background: var(--black);
-      border-radius: 16px;
-      padding: 1.5rem 1.25rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.75rem;
+    .page-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--black);
+      text-align: center;
+      margin-bottom: 1.5rem;
     }
 
-    /* Card preview / upload zone */
-    .card-wrap { position: relative; }
+    /* Upload card (combined preview + upload zone) */
+    .card-wrap { position: relative; display: flex; justify-content: center; }
     .card {
-      width: 220px;
-      height: 220px;
-      border-radius: 10px;
+      width: 320px;
+      max-width: 100%;
+      aspect-ratio: 1;
+      border-radius: 12px;
       overflow: hidden;
-      background: rgba(255, 255, 255, 0.06);
-      border: 2px dashed rgba(255, 255, 255, 0.35);
+      background: #fff;
+      border: 2px dashed var(--border);
       position: relative;
       display: flex;
       align-items: center;
@@ -104,37 +101,63 @@
       transition: border-color 0.15s, background 0.15s;
     }
     .card:hover, .card.drag-over {
-      border-color: var(--yellow);
-      background: rgba(255, 200, 82, 0.12);
+      border-color: var(--black);
+      background: var(--yellow-light);
     }
     .card.has-art {
-      background: #1a1510;
-      border: 2px solid transparent;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3), inset 0 0 0 2px rgba(255,255,255,0.08);
+      background: #fff;
+      border: 1px solid var(--border);
+      cursor: pointer;
     }
-    .card.has-art:hover { background: #1a1510; }
+    .card.has-art:hover { border-color: var(--black); background: #fff; }
     .card-art { width: 100%; height: 100%; object-fit: cover; display: block; }
     .card-placeholder {
-      font-size: 0.78rem;
-      color: rgba(255, 255, 255, 0.78);
       text-align: center;
-      line-height: 1.5;
-      padding: 1rem;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
     }
-    .card-upload-icon { font-size: 2.2rem; margin-bottom: 0.4rem; display: block; }
-    .card-upload-cta { font-weight: 700; color: #fff; font-size: 0.92rem; }
-    .card-upload-meta { font-size: 0.7rem; color: rgba(255,255,255,0.55); margin-top: 0.3rem; }
+    .upload-btn {
+      display: none;
+      padding: 0.75rem 1.5rem;
+      background: var(--yellow);
+      color: var(--black);
+      border: 2px solid var(--yellow);
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      font-family: 'DM Sans', sans-serif;
+      letter-spacing: -0.01em;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+      pointer-events: none;
+    }
+    .upload-hint {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.4;
+    }
+    .upload-hint-desktop { display: none; }
+    .upload-hint-mobile { display: block; font-weight: 700; color: var(--black); }
+    @media (min-width: 769px) {
+      .upload-btn { display: inline-block; }
+      .upload-hint-desktop { display: block; }
+      .upload-hint-mobile { display: none; }
+    }
     .card .img-delete-btn {
       position: absolute;
-      top: 8px;
-      right: 8px;
-      width: 28px;
-      height: 28px;
+      top: 10px;
+      right: 10px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
       background: rgba(0,0,0,0.6);
       border: none;
       color: #fff;
-      font-size: 14px;
+      font-size: 15px;
       cursor: pointer;
       z-index: 20;
       display: flex;
@@ -142,39 +165,40 @@
       justify-content: center;
     }
     .card-meta {
-      width: 100%;
-      max-width: 240px;
-      margin-top: 0.5rem;
+      max-width: 320px;
+      margin: 0.75rem auto 0;
       text-align: center;
     }
     .card-meta .file-name {
-      font-size: 0.72rem;
-      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.78rem;
+      color: var(--muted);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       margin: 0;
     }
     .card-meta .size-warning {
-      margin-top: 0.4rem;
-      padding: 0.5rem 0.65rem;
+      margin-top: 0.5rem;
+      padding: 0.55rem 0.75rem;
       background: var(--warn-bg);
       border: 1px solid var(--warn-border);
       border-radius: 6px;
-      font-size: 0.72rem;
+      font-size: 0.78rem;
       color: var(--warn-text);
       display: none;
+      text-align: left;
     }
     .zone-guide {
       position: absolute; top: 0; left: 0; width: 100%; height: 100%;
       object-fit: contain; pointer-events: none; z-index: 10; opacity: 0.6;
     }
+
     /* Keychain hole overlay */
     .keychain-dot {
       position: absolute;
       width: 14px; height: 14px;
       border-radius: 50%;
-      background: rgba(255,200,82,0.9);
+      background: rgba(255, 200, 82, 0.9);
       border: 2px solid #fff;
       z-index: 20;
       display: none;
@@ -182,21 +206,63 @@
     .keychain-dot.top-left  { top: 8px; left: 8px; display: block; }
     .keychain-dot.top-right { top: 8px; right: 8px; display: block; }
 
-    /* Sleeve preview */
-    .sleeve-wrap { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    /* Canvas / artwork specs (using artwork-guidelines palette) */
+    .canvas-info {
+      max-width: 320px;
+      margin: 1.25rem auto 0;
+      padding: 0.85rem 1rem;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.82rem;
+      color: var(--text);
+    }
+    .canvas-info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.75rem;
+      padding: 0.3rem 0;
+    }
+    .canvas-info-row + .canvas-info-row { border-top: 1px dashed var(--border); }
+    .canvas-info-label { color: var(--muted); font-size: 0.78rem; }
+    .canvas-info-value { font-weight: 600; }
+    .unit-toggle {
+      margin-top: 0.65rem;
+      width: 100%;
+      padding: 0.45rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--off-white);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .unit-toggle:hover { background: var(--cream); }
+
+    /* Sleeve preview (kept compact, restyled to fit new palette) */
+    .sleeve-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      margin-top: 1.25rem;
+    }
     .sleeve-box {
-      width: 162px; height: 162px; border-radius: 4px; background: #d4d0c8;
+      width: 162px; height: 162px; border-radius: 4px; background: var(--off-white);
       display: flex; flex-direction: column; align-items: center;
       justify-content: flex-start; padding-top: 6px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.2); position: relative;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08); position: relative;
+      border: 1px solid var(--border);
     }
     .sleeve-card-peek {
       width: 146px; height: 146px; border-radius: 10px 10px 0 0;
-      overflow: hidden; box-shadow: 0 -2px 8px rgba(0,0,0,0.2);
+      overflow: hidden;
     }
-    .sleeve-label { font-size: 0.5rem; color: #6b6354; letter-spacing: 0.05em; text-transform: uppercase; }
-
-    .preview-hint { font-size: 0.65rem; color: rgba(255,255,255,0.5); text-align: center; }
+    .sleeve-label { font-size: 0.5rem; color: var(--muted); letter-spacing: 0.05em; text-transform: uppercase; }
 
     /* Status badges */
     .status-badge {
@@ -225,8 +291,8 @@
     .step-labels span.done:hover { text-decoration: underline; }
     .step-labels span.active { color: var(--black); }
 
-    /* Config panel */
-    .config-panel h2 {
+    /* Step headings */
+    .step h2 {
       font-family: 'Poppins', sans-serif;
       font-size: 1.55rem; font-weight: 800;
       text-transform: uppercase; letter-spacing: -0.02em;
@@ -403,10 +469,8 @@
 
     /* Responsive */
     @media (max-width: 768px) {
-      .layout { grid-template-columns: 1fr; padding: 1rem; gap: 0; }
-      .preview-panel { position: relative; top: 0; background: transparent; border-bottom: 1px solid var(--border); padding-bottom: 1rem; margin-bottom: 1rem; }
-      .goodz-preview { border-radius: 12px; padding: 1rem; }
-      .config-panel { padding-top: 1rem; }
+      .layout { padding: 1.25rem 1rem 3rem; }
+      .page-title { font-size: 1.35rem; margin-bottom: 1rem; }
       .btn-row { flex-direction: column-reverse; }
       .btn-row .btn { width: 100%; text-align: center; padding: 0.9rem; }
       .upload-grid { gap: 1rem; }
@@ -444,93 +508,90 @@
   <div></div>
 </header>
 
-<div class="layout">
+<main class="layout">
 
-  <!-- Preview panel (now also the front upload zone) -->
-  <div class="preview-panel">
-    <div class="goodz-preview">
+  <!-- STEP 0: Upload artwork -->
+  <div class="step active" id="step-0">
+    <h1 class="page-title">Upload your artwork</h1>
 
-      <div class="card-wrap" id="card-wrap">
-        <div class="card" id="card">
-          <div class="card-placeholder" id="card-placeholder">
-            <span class="card-upload-icon">&#128444;</span>
-            <span class="card-upload-cta">Tap to upload artwork</span>
-            <span class="card-upload-meta">PNG or TIFF</span>
-          </div>
-          <img id="card-art" class="card-art" style="display:none" src="" alt="Front art">
-          <img id="zone-guide" class="zone-guide" src="templates/Goodz_Standard_back.png" style="display:none" alt="">
-          <div class="keychain-dot" id="keychain-dot"></div>
-          <button class="img-delete-btn" id="front-delete-btn" type="button" style="display:none" onclick="clearFront(event)" aria-label="Remove artwork">&#10005;</button>
+    <div class="card-wrap" id="card-wrap">
+      <div class="card" id="card">
+        <div class="card-placeholder" id="card-placeholder">
+          <button type="button" class="upload-btn">Choose file</button>
+          <p class="upload-hint upload-hint-desktop">or drag and drop here</p>
+          <p class="upload-hint upload-hint-mobile">Tap to upload artwork</p>
         </div>
+        <img id="card-art" class="card-art" style="display:none" src="" alt="Your artwork">
+        <img id="zone-guide" class="zone-guide" src="templates/Goodz_Standard_back.png" style="display:none" alt="">
+        <div class="keychain-dot" id="keychain-dot"></div>
+        <button class="img-delete-btn" id="front-delete-btn" type="button" style="display:none" onclick="clearFront(event)" aria-label="Remove artwork">&#10005;</button>
       </div>
-
-      <div class="card-meta">
-        <div class="file-name" id="front-filename"></div>
-        <div class="size-warning" id="front-size-warn">
-          &#9888; Image may be too small for 300 DPI print quality. We recommend at least 827&times;827px.
-        </div>
-      </div>
-
-      <!-- Sleeve preview (hidden unless sleeve selected) -->
-      <div id="sleeve-wrap" class="sleeve-wrap" style="display:none">
-        <div class="sleeve-box">
-          <div class="sleeve-card-peek">
-            <div style="width:146px;height:146px;background:#1a1510;border-radius:10px 10px 0 0;overflow:hidden;position:relative">
-              <img id="sleeve-art" style="display:none;width:100%;height:100%;object-fit:cover;clip-path:inset(0 0 82% 0)" src="" alt="">
-            </div>
-          </div>
-          <div class="sleeve-label">Goodz</div>
-        </div>
-      </div>
-
-      <div class="preview-hint" id="preview-hint" style="display:none">Upload artwork to preview</div>
     </div>
 
-    <div id="status-art"  class="status-badge ok"   style="display:none">&#10003; Front artwork ready</div>
-    <div id="status-back" class="status-badge ok"   style="display:none">&#10003; Back artwork ready</div>
-    <div id="status-music"class="status-badge info" style="display:none"></div>
+    <div class="card-meta">
+      <div class="file-name" id="front-filename"></div>
+      <div class="size-warning" id="front-size-warn">
+        &#9888; Image may be too small for 300 DPI print quality. We recommend at least 827&times;827px (<span data-mm-value data-mm="70">2.76 in</span>).
+      </div>
+    </div>
+
+    <div class="canvas-info">
+      <div class="canvas-info-row">
+        <span class="canvas-info-label">Canvas (with bleed)</span>
+        <span class="canvas-info-value"><span data-mm-value data-mm="70">2.76 in</span> &times; <span data-mm-value data-mm="70">2.76 in</span></span>
+      </div>
+      <div class="canvas-info-row">
+        <span class="canvas-info-label">Trim size</span>
+        <span class="canvas-info-value"><span data-mm-value data-mm="65">2.56 in</span> &times; <span data-mm-value data-mm="65">2.56 in</span></span>
+      </div>
+      <div class="canvas-info-row">
+        <span class="canvas-info-label">Safe area inside trim</span>
+        <span class="canvas-info-value"><span data-mm-value data-mm="1.5">0.06 in</span></span>
+      </div>
+      <button type="button" class="unit-toggle" id="unit-toggle">Show in mm</button>
+    </div>
+
+    <input type="file" id="input-front" class="file-input" accept=".png,.tiff,.tif">
+
+    <p class="step-sub" style="text-align:center;margin-top:1.25rem">UV-printed at 300 DPI. Need the template? <a href="templates/Goodz_Template_Front.ai" download>Download .ai</a> or <a href="templates/GoodzArtTemplate.pdf" download>PDF</a>.</p>
+
+    <!-- Sleeve preview (hidden unless sleeve selected) -->
+    <div id="sleeve-wrap" class="sleeve-wrap" style="display:none">
+      <div class="sleeve-box">
+        <div class="sleeve-card-peek">
+          <div style="width:146px;height:146px;background:#fff;border-radius:10px 10px 0 0;overflow:hidden;position:relative;border:1px solid var(--border)">
+            <img id="sleeve-art" style="display:none;width:100%;height:100%;object-fit:cover;clip-path:inset(0 0 82% 0)" src="" alt="">
+          </div>
+        </div>
+        <div class="sleeve-label">Goodz</div>
+      </div>
+    </div>
+
+    <!-- Back art (only shown if backDesign === 'custom') -->
+    <div class="upload-grid" id="upload-grid" style="margin-top:1.5rem">
+      <div class="upload-box" id="back-upload-box" style="display:none">
+        <span class="upload-box-label">Back Artwork</span>
+        <div class="drop-zone" id="drop-back" onclick="document.getElementById('input-back').click()">
+          <div class="dz-content" id="back-placeholder-content">
+            <div class="dz-req">300 DPI &middot; RGB &middot; PNG or TIFF</div>
+            <div class="dz-text">Drop image or <span>click to browse</span></div>
+          </div>
+          <img id="back-preview-img" class="preview-img" style="display:none" src="" alt="Back preview">
+          <button class="img-delete-btn" id="back-delete-btn" style="display:none" onclick="clearBack(event)">&#10005;</button>
+        </div>
+        <input type="file" id="input-back" class="file-input" accept=".png,.tiff,.tif">
+        <div class="file-name" id="back-filename"></div>
+        <div class="size-warning" id="back-size-warn">
+          &#9888; Image may be too small for 300 DPI print quality. We recommend at least 827&times;827px (<span data-mm-value data-mm="70">2.76 in</span>).
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <div></div>
+      <button class="btn btn-primary" id="btn-step0" onclick="goToStep(1)" disabled>Next: Link Music &rarr;</button>
+    </div>
   </div>
-
-  <!-- Config panel -->
-  <div class="config-panel">
-
-    <!-- STEP 0: Upload artwork -->
-    <div class="step active" id="step-0">
-      <h2>Drop your art. We'll handle the print specs.</h2>
-      <p class="step-sub">Tap the Goodz preview to choose your file. UV-printed on the front of each tile at 300 DPI. Need the template? <a href="templates/Goodz_Template_Front.ai" download>Download .ai</a> or <a href="templates/GoodzArtTemplate.pdf" download>PDF</a>.</p>
-
-      <div class="template-shortcut">
-        Need a refresher? <a href="order.html#artwork-guidelines">View artwork guidelines &rarr;</a>
-      </div>
-
-      <input type="file" id="input-front" class="file-input" accept=".png,.tiff,.tif">
-
-      <!-- Back art (only shown if backDesign === 'custom') -->
-      <div class="upload-grid" id="upload-grid">
-        <div class="upload-box" id="back-upload-box" style="display:none">
-          <span class="upload-box-label">Back Artwork</span>
-          <div class="drop-zone" id="drop-back" onclick="document.getElementById('input-back').click()">
-            <div class="dz-content" id="back-placeholder-content">
-              <div class="dz-req">300 DPI &middot; RGB &middot; PNG or TIFF</div>
-              <div class="dz-icon">&#128444;</div>
-              <div class="dz-text">Drop image or <span>click to browse</span></div>
-            </div>
-            <img id="back-preview-img" class="preview-img" style="display:none" src="" alt="Back preview">
-            <button class="img-delete-btn" id="back-delete-btn" style="display:none" onclick="clearBack(event)">&#10005;</button>
-          </div>
-          <input type="file" id="input-back" class="file-input" accept=".png,.tiff,.tif">
-          <div class="file-name" id="back-filename"></div>
-          <div class="size-warning" id="back-size-warn">
-            &#9888; This image may be too small for 300 DPI print quality. We recommend at least 827&times;827px (300 DPI at 70mm).
-          </div>
-        </div>
-      </div>
-
-      <div class="btn-row">
-        <div></div>
-        <button class="btn btn-primary" id="btn-step0" onclick="goToStep(1)" disabled>Next: Link Music &rarr;</button>
-      </div>
-    </div>
 
     <!-- STEP 1: Music -->
     <div class="step" id="step-1">
@@ -624,8 +685,7 @@
       </div>
     </div>
 
-  </div><!-- /config-panel -->
-</div><!-- /layout -->
+</main><!-- /layout -->
 
 <script>
 const API_BASE        = 'https://bandcamp-builder.vercel.app';
@@ -977,20 +1037,8 @@ function updateStepButtons() {
   updateCSVWarning();
 }
 
-// ---- Status badges ----
-function updateStatusBadges() {
-  document.getElementById('status-art').style.display  = state.frontArt ? 'block' : 'none';
-  document.getElementById('status-back').style.display = (needsBack() && state.backArt) ? 'block' : 'none';
-  const music = document.getElementById('status-music');
-  if (hasMusic()) {
-    music.style.display = 'block';
-    music.textContent = state.musicMode === 'csv'
-      ? `${state.csvUrls.length} Bandcamp codes loaded`
-      : 'Music URL saved';
-  } else {
-    music.style.display = 'none';
-  }
-}
+// ---- Status badges (now derived from card state, not separate elements) ----
+function updateStatusBadges() { /* no-op: card itself shows status */ }
 
 // ---- Review summary ----
 function fmt(n) { return '$' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
@@ -1094,6 +1142,32 @@ function placeOrder() {
     w.textContent = 'Could not connect to checkout. Please try again or contact hello@getthegoodz.com.';
   });
 }
+
+// ---- Unit toggle (in / mm) ----
+function fmtIn(mm) {
+  const inches = mm / 25.4;
+  return inches.toFixed(2) + ' in';
+}
+function fmtMm(mm) {
+  return (Math.round(mm * 10) / 10) + ' mm';
+}
+function applyUnits(unit) {
+  document.querySelectorAll('[data-mm-value]').forEach(el => {
+    const mm = parseFloat(el.dataset.mm);
+    el.textContent = unit === 'in' ? fmtIn(mm) : fmtMm(mm);
+  });
+  const btn = document.getElementById('unit-toggle');
+  if (btn) btn.textContent = unit === 'in' ? 'Show in mm' : 'Show in inches';
+}
+let currentUnit = 'in';
+const unitToggleBtn = document.getElementById('unit-toggle');
+if (unitToggleBtn) {
+  unitToggleBtn.addEventListener('click', () => {
+    currentUnit = currentUnit === 'in' ? 'mm' : 'in';
+    applyUnits(currentUnit);
+  });
+}
+applyUnits(currentUnit);
 
 // ---- Init ----
 setupDrop('card', handleFrontFile);
