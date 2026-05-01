@@ -463,6 +463,26 @@
     .specs-template-ext.pdf { background: #DC2626; color: #fff; }
     .specs-template-label { font-size: 0.7rem; color: var(--muted); font-weight: 600; }
 
+    /* Custom-back upcharge notice */
+    .upcharge-notice {
+      max-width: 420px;
+      margin: 0.85rem auto 0;
+      padding: 0.7rem 0.95rem;
+      background: var(--yellow-light);
+      border: 1px solid var(--yellow);
+      border-radius: 8px;
+      font-size: 0.82rem;
+      color: var(--text);
+      line-height: 1.5;
+      text-align: center;
+    }
+    .upcharge-notice strong { font-weight: 700; }
+    .upcharge-notice-reassure {
+      margin-top: 0.35rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
     /* Sleeve preview (kept compact, restyled to fit new palette) */
     .sleeve-wrap {
       display: flex;
@@ -783,6 +803,8 @@
       </div>
     </div>
 
+    <div class="upcharge-notice" id="custom-back-upcharge-notice" style="display:none"></div>
+
     <div class="canvas-info">
       <div class="canvas-info-toggle-wrap">
         <div class="unit-toggle-group" id="unit-toggle">
@@ -970,6 +992,7 @@
 const API_BASE        = 'https://bandcamp-builder.vercel.app';
 const CLOUDINARY_CLOUD  = 'dg6kjrhid';
 const CLOUDINARY_PRESET = 'goodz_uploads';
+const CUSTOM_BACK_UPCHARGE = 0.10; // per unit, when upgrading from standard back here
 
 // ---- Load config from sessionStorage ----
 let orderConfig = null;
@@ -1069,6 +1092,47 @@ function updateCardState() {
   document.getElementById('card').classList.toggle('has-art', hasContent);
 }
 
+// ---- Pricing helpers (dynamic custom-back upcharge) ----
+function isUpgradedToCustomBack() {
+  return state.customBackChosen && (!orderConfig || orderConfig.backDesign !== 'custom');
+}
+
+function effectiveUnitPrice() {
+  const cfg = orderConfig || {};
+  let unit = cfg.unitPrice || 0;
+  if (isUpgradedToCustomBack()) unit += CUSTOM_BACK_UPCHARGE;
+  return unit;
+}
+
+function effectiveTotal() {
+  const cfg = orderConfig || {};
+  return effectiveUnitPrice() * (cfg.quantity || 0);
+}
+
+function fmtMoney(n) {
+  return '$' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+function updateUpchargeNotice() {
+  const el = document.getElementById('custom-back-upcharge-notice');
+  if (!el) return;
+  const cfg = orderConfig || {};
+  if (!isUpgradedToCustomBack() || !cfg.unitPrice || !cfg.quantity) {
+    el.style.display = 'none';
+    el.innerHTML = '';
+    return;
+  }
+  const newUnit = effectiveUnitPrice();
+  const newTotal = effectiveTotal();
+  el.innerHTML = `
+    Custom backs cost +${fmtMoney(CUSTOM_BACK_UPCHARGE)}/unit.
+    New unit price <strong>${fmtMoney(newUnit)}</strong> &middot;
+    new order total <strong>${fmtMoney(newTotal)}</strong>.
+    <div class="upcharge-notice-reassure">You'll have a chance to review everything before placing your order.</div>
+  `;
+  el.style.display = 'block';
+}
+
 function showFrontPreview(src, name) {
   document.getElementById('card-art').src = src;
   document.getElementById('card-art').style.display = 'block';
@@ -1156,6 +1220,7 @@ function showBackPreview(src, name) {
   // Allow reverting to standard only if custom wasn't required by the order config
   const backIsRequired = orderConfig && orderConfig.backDesign === 'custom';
   document.getElementById('use-standard-back-btn').style.display = backIsRequired ? 'none' : 'inline-block';
+  updateUpchargeNotice();
 }
 
 function clearBack(e) {
@@ -1166,15 +1231,9 @@ function clearBack(e) {
   document.getElementById('thumb-back-img').src = 'templates/Goodz_Standard_back.png';
   document.getElementById('back-size-warn').style.display = 'none';
   document.getElementById('input-back').value = '';
-  // Reset add-custom-back button visibility based on whether custom was originally selected
-  if (orderConfig && orderConfig.backDesign === 'custom') {
-    // Custom is required; keep the button visible to upload
-    document.getElementById('add-custom-back-btn').style.display = 'inline-block';
-    document.getElementById('use-standard-back-btn').style.display = 'none';
-  } else {
-    document.getElementById('add-custom-back-btn').style.display = 'inline-block';
-    document.getElementById('use-standard-back-btn').style.display = 'none';
-  }
+  document.getElementById('add-custom-back-btn').style.display = 'inline-block';
+  document.getElementById('use-standard-back-btn').style.display = 'none';
+  updateUpchargeNotice();
   updateStepButtons();
   updateStatusBadges();
 }
@@ -1372,7 +1431,10 @@ function renderSummary() {
 
   rows.push({ label: 'Front artwork',   value: state.frontArt ? 'Uploaded ✓' : 'Missing ✗', missing: !state.frontArt });
   if (needsBack()) {
-    rows.push({ label: 'Back artwork', value: state.backArt ? 'Uploaded ✓' : 'Missing ✗', missing: !state.backArt });
+    const backLabel = isUpgradedToCustomBack()
+      ? `Custom back (+${fmtMoney(CUSTOM_BACK_UPCHARGE)}/unit)`
+      : 'Back artwork';
+    rows.push({ label: backLabel, value: state.backArt ? 'Uploaded ✓' : 'Missing ✗', missing: !state.backArt });
   } else {
     rows.push({ label: 'Back design', value: 'Standard Goodz Back' });
   }
@@ -1385,9 +1447,9 @@ function renderSummary() {
     missing: !hasMusic(),
   });
   rows.push({ label: 'Quantity',     value: cfg.quantity ? `${cfg.quantity.toLocaleString()} units` : '—' });
-  rows.push({ label: 'Price per unit', value: cfg.unitPrice ? fmt(cfg.unitPrice) : '—' });
-  if (cfg.baseTotal) {
-    rows.push({ label: 'Order Total', value: fmt(cfg.baseTotal), total: true });
+  rows.push({ label: 'Price per unit', value: cfg.unitPrice ? fmt(effectiveUnitPrice()) : '—' });
+  if (cfg.quantity && cfg.unitPrice) {
+    rows.push({ label: 'Order Total', value: fmt(effectiveTotal()), total: true });
   }
 
   document.getElementById('summary-rows').innerHTML = rows.map(r => `
@@ -1397,8 +1459,9 @@ function renderSummary() {
     </div>`).join('');
 
   const mathEl = document.getElementById('revenue-math-note');
-  if (cfg.baseTotal && cfg.quantity) {
-    const breakEven = Math.ceil(cfg.baseTotal / 10);
+  const total = effectiveTotal();
+  if (total && cfg.quantity) {
+    const breakEven = Math.ceil(total / 10);
     mathEl.textContent = `At $10 each at the merch table, you break even after selling ${breakEven} of ${cfg.quantity}. The rest is yours.`;
     mathEl.style.display = 'block';
   } else {
