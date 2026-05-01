@@ -83,11 +83,18 @@
       margin-bottom: 1.5rem;
     }
 
-    /* Upload card (combined preview + upload zone) */
-    .card-wrap { position: relative; display: flex; justify-content: center; }
+    /* Upload area (card + side thumbnails) */
+    .upload-area {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 0.6rem;
+      margin-bottom: 0.5rem;
+    }
+    .card-wrap { position: relative; flex: 0 1 320px; }
     .card {
-      width: 320px;
-      max-width: 100%;
+      width: 100%;
+      max-width: 320px;
       aspect-ratio: 1;
       border-radius: 12px;
       overflow: hidden;
@@ -193,6 +200,108 @@
       object-fit: contain; pointer-events: none; z-index: 10; opacity: 0.6;
     }
 
+    /* Side thumbnails (Front / Back selector) */
+    .thumbs {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      flex-shrink: 0;
+    }
+    .thumb {
+      width: 70px;
+      height: 70px;
+      border-radius: 6px;
+      border: 1.5px solid var(--border);
+      background: #fff;
+      position: relative;
+      cursor: pointer;
+      padding: 0;
+      overflow: hidden;
+      font-family: inherit;
+      transition: border-color 0.15s;
+    }
+    .thumb:hover { border-color: var(--black); }
+    .thumb.thumb-active { border-color: var(--black); border-width: 2px; }
+    .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .thumb-empty-bg {
+      position: absolute;
+      inset: 0;
+      background: var(--off-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .thumb-label {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      background: rgba(255, 255, 255, 0.72);
+      pointer-events: none;
+    }
+    @media (max-width: 480px) {
+      .upload-area { gap: 0.4rem; }
+      .thumb { width: 56px; height: 56px; }
+      .thumb-label { font-size: 0.62rem; }
+    }
+
+    /* Card view content (front vs back) */
+    .card-content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .card-content img.card-art-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .add-custom-back-btn {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 0.5rem 0.9rem;
+      background: var(--yellow);
+      color: var(--black);
+      border: 2px solid var(--yellow);
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .add-custom-back-btn:hover { background: #e6b044; border-color: #e6b044; }
+    .use-standard-back-link {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.78rem;
+      color: var(--muted);
+      background: rgba(255,255,255,0.85);
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
     /* Keychain hole overlay */
     .keychain-dot {
       position: absolute;
@@ -206,42 +315,153 @@
     .keychain-dot.top-left  { top: 8px; left: 8px; display: block; }
     .keychain-dot.top-right { top: 8px; right: 8px; display: block; }
 
-    /* Canvas / artwork specs (using artwork-guidelines palette) */
+    /* Canvas / artwork dimensions */
     .canvas-info {
-      max-width: 320px;
-      margin: 1.25rem auto 0;
-      padding: 0.85rem 1rem;
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 10px;
+      max-width: 420px;
+      margin: 1rem auto 0;
       font-size: 0.82rem;
       color: var(--text);
+    }
+    .canvas-info-toggle-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 0.5rem;
     }
     .canvas-info-row {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
       gap: 0.75rem;
-      padding: 0.3rem 0;
+      padding: 0.1rem 0;
+      line-height: 1.3;
     }
-    .canvas-info-row + .canvas-info-row { border-top: 1px dashed var(--border); }
     .canvas-info-label { color: var(--muted); font-size: 0.78rem; }
     .canvas-info-value { font-weight: 600; }
-    .unit-toggle {
-      margin-top: 0.65rem;
-      width: 100%;
-      padding: 0.45rem;
-      font-size: 0.75rem;
-      font-weight: 600;
-      font-family: 'DM Sans', sans-serif;
-      background: var(--off-white);
+
+    /* Segmented unit toggle */
+    .unit-toggle-group {
+      display: inline-flex;
       border: 1px solid var(--border);
       border-radius: 6px;
-      color: var(--text);
-      cursor: pointer;
-      transition: background 0.15s;
+      overflow: hidden;
+      background: #fff;
     }
-    .unit-toggle:hover { background: var(--cream); }
+    .unit-toggle-btn {
+      padding: 0.32rem 0.95rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      font-family: 'DM Sans', sans-serif;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      transition: background 0.15s, color 0.15s;
+    }
+    .unit-toggle-btn + .unit-toggle-btn { border-left: 1px solid var(--border); }
+    .unit-toggle-btn.active {
+      background: var(--black);
+      color: var(--cream);
+    }
+    .unit-toggle-btn:hover:not(.active) { background: var(--off-white); color: var(--black); }
+
+    /* Artwork specs (mirrors order page guidelines) */
+    .artwork-specs {
+      max-width: 540px;
+      margin: 2.5rem auto 0;
+      padding-top: 1.75rem;
+      border-top: 1px solid var(--border);
+    }
+    .artwork-specs-heading {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 0.85rem;
+      text-align: center;
+    }
+    .specs-grid {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1.5rem;
+      align-items: start;
+      margin-bottom: 1.25rem;
+    }
+    @media (max-width: 540px) {
+      .specs-grid { grid-template-columns: 1fr; justify-items: center; }
+    }
+    .specs-diagram svg { width: 160px; height: 160px; display: block; }
+    .specs-legend {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      margin-top: 0.55rem;
+    }
+    .specs-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.7rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .specs-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .specs-list-item {
+      position: relative;
+      padding-left: 0.9rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .specs-list-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.5rem;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--muted);
+    }
+    .specs-list-item strong { color: var(--text); font-weight: 700; }
+    .specs-templates {
+      display: flex;
+      gap: 0.6rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .specs-template-tile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.7rem 0.9rem;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--text);
+      transition: border-color 0.12s, box-shadow 0.12s;
+      min-width: 72px;
+      text-align: center;
+      background: #fff;
+    }
+    .specs-template-tile:hover { border-color: var(--black); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .specs-template-ext {
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 0.25rem 0.45rem;
+      border-radius: 4px;
+      letter-spacing: 0.04em;
+    }
+    .specs-template-ext.ai { background: #E46F2A; color: #fff; }
+    .specs-template-ext.pdf { background: #DC2626; color: #fff; }
+    .specs-template-label { font-size: 0.7rem; color: var(--muted); font-weight: 600; }
 
     /* Sleeve preview (kept compact, restyled to fit new palette) */
     .sleeve-wrap {
@@ -514,17 +734,42 @@
   <div class="step active" id="step-0">
     <h1 class="page-title">Upload your artwork</h1>
 
-    <div class="card-wrap" id="card-wrap">
-      <div class="card" id="card">
-        <div class="card-placeholder" id="card-placeholder">
-          <button type="button" class="upload-btn">Choose file</button>
-          <p class="upload-hint upload-hint-desktop">or drag and drop here</p>
-          <p class="upload-hint upload-hint-mobile">Tap to upload artwork</p>
+    <div class="upload-area">
+      <div class="card-wrap" id="card-wrap">
+        <div class="card" id="card">
+          <!-- Front view: upload zone OR uploaded art -->
+          <div class="card-content" id="card-content-front">
+            <div class="card-placeholder" id="card-placeholder">
+              <button type="button" class="upload-btn">Choose file</button>
+              <p class="upload-hint upload-hint-desktop">or drag and drop here</p>
+              <p class="upload-hint upload-hint-mobile">Tap to upload artwork</p>
+            </div>
+            <img id="card-art" class="card-art card-art-image" style="display:none" src="" alt="Your artwork">
+          </div>
+
+          <!-- Back view: standard back image with optional custom-back upgrade -->
+          <div class="card-content" id="card-content-back" style="display:none">
+            <img id="back-image" class="card-art card-art-image" src="templates/Goodz_Standard_back.png" alt="Standard Goodz back">
+            <button type="button" class="add-custom-back-btn" id="add-custom-back-btn" onclick="addCustomBack()">Add a custom back</button>
+            <span class="use-standard-back-link" id="use-standard-back-btn" style="display:none" onclick="useStandardBack()">Use standard back</span>
+          </div>
+
+          <img id="zone-guide" class="zone-guide" src="templates/Goodz_Standard_back.png" style="display:none" alt="">
+          <div class="keychain-dot" id="keychain-dot"></div>
+          <button class="img-delete-btn" id="front-delete-btn" type="button" style="display:none" onclick="clearFront(event)" aria-label="Remove artwork">&#10005;</button>
         </div>
-        <img id="card-art" class="card-art" style="display:none" src="" alt="Your artwork">
-        <img id="zone-guide" class="zone-guide" src="templates/Goodz_Standard_back.png" style="display:none" alt="">
-        <div class="keychain-dot" id="keychain-dot"></div>
-        <button class="img-delete-btn" id="front-delete-btn" type="button" style="display:none" onclick="clearFront(event)" aria-label="Remove artwork">&#10005;</button>
+      </div>
+
+      <div class="thumbs">
+        <button type="button" class="thumb thumb-active" id="thumb-front" onclick="setView('front')" aria-label="View front">
+          <div class="thumb-empty-bg" id="thumb-front-empty"></div>
+          <img id="thumb-front-img" src="" alt="" style="display:none">
+          <span class="thumb-label">Front</span>
+        </button>
+        <button type="button" class="thumb" id="thumb-back" onclick="setView('back')" aria-label="View back">
+          <img id="thumb-back-img" src="templates/Goodz_Standard_back.png" alt="">
+          <span class="thumb-label">Back</span>
+        </button>
       </div>
     </div>
 
@@ -533,9 +778,18 @@
       <div class="size-warning" id="front-size-warn">
         &#9888; Image may be too small for 300 DPI print quality. We recommend at least 827&times;827px (<span data-mm-value data-mm="70">2.76 in</span>).
       </div>
+      <div class="size-warning" id="back-size-warn">
+        &#9888; Back image may be too small for 300 DPI print quality. We recommend at least 827&times;827px.
+      </div>
     </div>
 
     <div class="canvas-info">
+      <div class="canvas-info-toggle-wrap">
+        <div class="unit-toggle-group" id="unit-toggle">
+          <button type="button" class="unit-toggle-btn active" data-unit="in">in</button>
+          <button type="button" class="unit-toggle-btn" data-unit="mm">mm</button>
+        </div>
+      </div>
       <div class="canvas-info-row">
         <span class="canvas-info-label">Canvas (with bleed)</span>
         <span class="canvas-info-value"><span data-mm-value data-mm="70">2.76 in</span> &times; <span data-mm-value data-mm="70">2.76 in</span></span>
@@ -548,12 +802,10 @@
         <span class="canvas-info-label">Safe area inside trim</span>
         <span class="canvas-info-value"><span data-mm-value data-mm="1.5">0.06 in</span></span>
       </div>
-      <button type="button" class="unit-toggle" id="unit-toggle">Show in mm</button>
     </div>
 
     <input type="file" id="input-front" class="file-input" accept=".png,.tiff,.tif">
-
-    <p class="step-sub" style="text-align:center;margin-top:1.25rem">UV-printed at 300 DPI. Need the template? <a href="templates/Goodz_Template_Front.ai" download>Download .ai</a> or <a href="templates/GoodzArtTemplate.pdf" download>PDF</a>.</p>
+    <input type="file" id="input-back"  class="file-input" accept=".png,.tiff,.tif">
 
     <!-- Sleeve preview (hidden unless sleeve selected) -->
     <div id="sleeve-wrap" class="sleeve-wrap" style="display:none">
@@ -567,30 +819,57 @@
       </div>
     </div>
 
-    <!-- Back art (only shown if backDesign === 'custom') -->
-    <div class="upload-grid" id="upload-grid" style="margin-top:1.5rem">
-      <div class="upload-box" id="back-upload-box" style="display:none">
-        <span class="upload-box-label">Back Artwork</span>
-        <div class="drop-zone" id="drop-back" onclick="document.getElementById('input-back').click()">
-          <div class="dz-content" id="back-placeholder-content">
-            <div class="dz-req">300 DPI &middot; RGB &middot; PNG or TIFF</div>
-            <div class="dz-text">Drop image or <span>click to browse</span></div>
-          </div>
-          <img id="back-preview-img" class="preview-img" style="display:none" src="" alt="Back preview">
-          <button class="img-delete-btn" id="back-delete-btn" style="display:none" onclick="clearBack(event)">&#10005;</button>
-        </div>
-        <input type="file" id="input-back" class="file-input" accept=".png,.tiff,.tif">
-        <div class="file-name" id="back-filename"></div>
-        <div class="size-warning" id="back-size-warn">
-          &#9888; Image may be too small for 300 DPI print quality. We recommend at least 827&times;827px (<span data-mm-value data-mm="70">2.76 in</span>).
-        </div>
-      </div>
-    </div>
-
     <div class="btn-row">
       <div></div>
       <button class="btn btn-primary" id="btn-step0" onclick="goToStep(1)" disabled>Next: Link Music &rarr;</button>
     </div>
+
+    <!-- Print specs reference (mirrors order page artwork guidelines) -->
+    <section class="artwork-specs" aria-label="Print specs">
+      <div class="artwork-specs-heading">Artwork specs</div>
+      <div class="specs-grid">
+        <div class="specs-diagram">
+          <svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="10" width="200" height="200" fill="rgba(244,63,94,0.04)" stroke="#f43f5e" stroke-width="1.5" stroke-dasharray="5,3"/>
+            <rect x="17" y="17" width="186" height="186" rx="16" fill="rgba(14,12,10,0.03)" stroke="#0e0c0a" stroke-width="2"/>
+            <rect x="22" y="22" width="176" height="176" rx="13" fill="none" stroke="#888" stroke-width="1.5" stroke-dasharray="5,3"/>
+            <text x="110" y="106" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="11" font-weight="600" fill="#444">Your artwork</text>
+            <text x="110" y="122" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="9.5" fill="#888"><tspan data-mm-value data-mm="70">2.76 in</tspan> &times; <tspan data-mm-value data-mm="70">2.76 in</tspan></text>
+          </svg>
+          <div class="specs-legend">
+            <div class="specs-legend-item">
+              <svg width="22" height="4" style="flex-shrink:0"><line x1="0" y1="2" x2="22" y2="2" stroke="#f43f5e" stroke-width="2" stroke-dasharray="5,3"/></svg>
+              Bleed: <span data-mm-value data-mm="70">2.76 in</span> &times; <span data-mm-value data-mm="70">2.76 in</span>
+            </div>
+            <div class="specs-legend-item">
+              <svg width="22" height="4" style="flex-shrink:0"><line x1="0" y1="2" x2="22" y2="2" stroke="#0e0c0a" stroke-width="2"/></svg>
+              Trim: <span data-mm-value data-mm="65">2.56 in</span> &times; <span data-mm-value data-mm="65">2.56 in</span>, <span data-mm-value data-mm="6">0.24 in</span> corners
+            </div>
+            <div class="specs-legend-item">
+              <svg width="22" height="4" style="flex-shrink:0"><line x1="0" y1="2" x2="22" y2="2" stroke="#888" stroke-width="2" stroke-dasharray="5,3"/></svg>
+              Safe area: <span data-mm-value data-mm="1.5">0.06 in</span> from trim
+            </div>
+          </div>
+        </div>
+        <div class="specs-list">
+          <div class="specs-list-item"><strong>300 DPI</strong> minimum resolution</div>
+          <div class="specs-list-item"><strong>RGB</strong> color mode</div>
+          <div class="specs-list-item"><strong>PNG or TIFF</strong> file format (lossless)</div>
+          <div class="specs-list-item"><strong><span data-mm-value data-mm="70">2.76 in</span> &times; <span data-mm-value data-mm="70">2.76 in</span> canvas</strong> with <span data-mm-value data-mm="2.5">0.10 in</span> bleed on all sides</div>
+          <div class="specs-list-item">Keep important elements <strong><span data-mm-value data-mm="1.5">0.06 in</span> inside</strong> the trim edge</div>
+        </div>
+      </div>
+      <div class="specs-templates">
+        <a href="templates/Goodz_Template_Front.ai" class="specs-template-tile" download title="Download Illustrator template">
+          <span class="specs-template-ext ai">ai</span>
+          <span class="specs-template-label">Illustrator</span>
+        </a>
+        <a href="templates/GoodzArtTemplate.pdf" class="specs-template-tile" download title="Download PDF template">
+          <span class="specs-template-ext pdf">pdf</span>
+          <span class="specs-template-label">PDF</span>
+        </a>
+      </div>
+    </section>
   </div>
 
     <!-- STEP 1: Music -->
@@ -702,8 +981,6 @@ try {
 if (orderConfig) {
   // Show sleeve preview
   if (orderConfig.sleeve) document.getElementById('sleeve-wrap').style.display = 'flex';
-  // Show back upload box
-  if (orderConfig.backDesign === 'custom') document.getElementById('back-upload-box').style.display = 'block';
   // Show keychain dot
   const dot = document.getElementById('keychain-dot');
   if (orderConfig.keychainHole === 'top-left')  { dot.className = 'keychain-dot top-left'; }
@@ -722,6 +999,8 @@ let state = {
   altURL:        '',
   musicMode:     'csv',
   currentStep:   0,
+  viewMode:      'front',                                              // 'front' | 'back'
+  customBackChosen: !!(orderConfig && orderConfig.backDesign === 'custom'),
 };
 
 // ---- Cloudinary upload ----
@@ -785,18 +1064,30 @@ function handleFrontFile(file) {
   reader.readAsDataURL(file);
 }
 
+function updateCardState() {
+  const hasContent = state.viewMode === 'back' || !!state.frontArt;
+  document.getElementById('card').classList.toggle('has-art', hasContent);
+}
+
 function showFrontPreview(src, name) {
   document.getElementById('card-art').src = src;
   document.getElementById('card-art').style.display = 'block';
   document.getElementById('card-placeholder').style.display = 'none';
   document.getElementById('zone-guide').style.display = 'none';
-  document.getElementById('card').classList.add('has-art');
-  document.getElementById('front-delete-btn').style.display = 'flex';
+  if (state.viewMode === 'front') {
+    document.getElementById('front-delete-btn').style.display = 'flex';
+  }
   document.getElementById('front-filename').textContent = name || '';
+  // Front thumbnail mirror
+  const tImg = document.getElementById('thumb-front-img');
+  tImg.src = src;
+  tImg.style.display = 'block';
+  document.getElementById('thumb-front-empty').style.display = 'none';
   if (orderConfig && orderConfig.sleeve) {
     const sa = document.getElementById('sleeve-art');
     sa.src = src; sa.style.display = 'block';
   }
+  updateCardState();
 }
 
 function clearFront(e) {
@@ -805,10 +1096,13 @@ function clearFront(e) {
   document.getElementById('card-art').style.display = 'none';
   document.getElementById('card-art').src = '';
   document.getElementById('card-placeholder').style.display = 'flex';
-  document.getElementById('card').classList.remove('has-art');
   document.getElementById('front-delete-btn').style.display = 'none';
   document.getElementById('front-filename').textContent = '';
   document.getElementById('front-size-warn').style.display = 'none';
+  const tImg = document.getElementById('thumb-front-img');
+  tImg.style.display = 'none';
+  tImg.src = '';
+  document.getElementById('thumb-front-empty').style.display = 'flex';
   const sa = document.getElementById('sleeve-art');
   if (sa) { sa.style.display = 'none'; sa.src = ''; }
   document.getElementById('input-front').value = '';
@@ -853,27 +1147,56 @@ function handleBackFile(file) {
 }
 
 function showBackPreview(src, name) {
-  document.getElementById('back-preview-img').src = src;
-  document.getElementById('back-preview-img').style.display = 'block';
-  document.getElementById('back-placeholder-content').style.display = 'none';
-  document.getElementById('back-delete-btn').style.display = 'flex';
-  document.getElementById('back-filename').textContent = name || '';
-  document.getElementById('drop-back').classList.add('has-image');
+  // Update main back image and back thumbnail
+  document.getElementById('back-image').src = src;
+  document.getElementById('thumb-back-img').src = src;
+  // Once a custom back is loaded, the back design is custom regardless of orderConfig
+  state.customBackChosen = true;
+  document.getElementById('add-custom-back-btn').style.display = 'none';
+  // Allow reverting to standard only if custom wasn't required by the order config
+  const backIsRequired = orderConfig && orderConfig.backDesign === 'custom';
+  document.getElementById('use-standard-back-btn').style.display = backIsRequired ? 'none' : 'inline-block';
 }
 
 function clearBack(e) {
-  e.stopPropagation();
+  if (e) e.stopPropagation();
   state.backArt = null;
-  document.getElementById('back-preview-img').style.display = 'none';
-  document.getElementById('back-preview-img').src = '';
-  document.getElementById('back-placeholder-content').style.display = 'flex';
-  document.getElementById('back-delete-btn').style.display = 'none';
-  document.getElementById('back-filename').textContent = '';
+  state.customBackChosen = (orderConfig && orderConfig.backDesign === 'custom');
+  document.getElementById('back-image').src = 'templates/Goodz_Standard_back.png';
+  document.getElementById('thumb-back-img').src = 'templates/Goodz_Standard_back.png';
   document.getElementById('back-size-warn').style.display = 'none';
-  document.getElementById('drop-back').classList.remove('has-image');
   document.getElementById('input-back').value = '';
+  // Reset add-custom-back button visibility based on whether custom was originally selected
+  if (orderConfig && orderConfig.backDesign === 'custom') {
+    // Custom is required; keep the button visible to upload
+    document.getElementById('add-custom-back-btn').style.display = 'inline-block';
+    document.getElementById('use-standard-back-btn').style.display = 'none';
+  } else {
+    document.getElementById('add-custom-back-btn').style.display = 'inline-block';
+    document.getElementById('use-standard-back-btn').style.display = 'none';
+  }
   updateStepButtons();
   updateStatusBadges();
+}
+
+// ---- Front/back view toggle and custom back logic ----
+function setView(mode) {
+  state.viewMode = mode;
+  document.getElementById('thumb-front').classList.toggle('thumb-active', mode === 'front');
+  document.getElementById('thumb-back').classList.toggle('thumb-active', mode === 'back');
+  document.getElementById('card-content-front').style.display = mode === 'front' ? '' : 'none';
+  document.getElementById('card-content-back').style.display  = mode === 'back'  ? '' : 'none';
+  document.getElementById('front-delete-btn').style.display =
+    (mode === 'front' && state.frontArt) ? 'flex' : 'none';
+  updateCardState();
+}
+
+function addCustomBack() {
+  document.getElementById('input-back').click();
+}
+
+function useStandardBack() {
+  clearBack();
 }
 
 // ---- Drag and drop ----
@@ -1013,7 +1336,7 @@ function handleStepClick(n) {
 }
 
 // ---- Button state ----
-function needsBack() { return orderConfig && orderConfig.backDesign === 'custom'; }
+function needsBack() { return state.customBackChosen; }
 
 function hasMusic() {
   if (state.musicMode === 'csv') return state.csvUrls.length > 0;
@@ -1111,7 +1434,7 @@ function placeOrder() {
     units:        cfg.quantity || 50,
     sleeve:       cfg.sleeve ? 'yes' : 'no',
     keychainHole: cfg.keychainHole || 'none',
-    backDesign:   cfg.backDesign || 'standard',
+    backDesign:   state.customBackChosen ? 'custom' : 'standard',
     albumArtUrl:  state.frontArt || '',
     backArtUrl:   state.backArt  || '',
     musicType:    state.musicMode,
@@ -1143,7 +1466,7 @@ function placeOrder() {
   });
 }
 
-// ---- Unit toggle (in / mm) ----
+// ---- Unit toggle (segmented in / mm) ----
 function fmtIn(mm) {
   const inches = mm / 25.4;
   return inches.toFixed(2) + ' in';
@@ -1156,24 +1479,29 @@ function applyUnits(unit) {
     const mm = parseFloat(el.dataset.mm);
     el.textContent = unit === 'in' ? fmtIn(mm) : fmtMm(mm);
   });
-  const btn = document.getElementById('unit-toggle');
-  if (btn) btn.textContent = unit === 'in' ? 'Show in mm' : 'Show in inches';
 }
 let currentUnit = 'in';
-const unitToggleBtn = document.getElementById('unit-toggle');
-if (unitToggleBtn) {
-  unitToggleBtn.addEventListener('click', () => {
-    currentUnit = currentUnit === 'in' ? 'mm' : 'in';
+document.querySelectorAll('.unit-toggle-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    currentUnit = btn.dataset.unit;
+    document.querySelectorAll('.unit-toggle-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.unit === currentUnit)
+    );
     applyUnits(currentUnit);
   });
-}
+});
 applyUnits(currentUnit);
 
 // ---- Init ----
-setupDrop('card', handleFrontFile);
-setupDrop('drop-back',  handleBackFile);
+setupDrop('card', file => {
+  // Drag-drop on the card always feeds the front (the back is loaded via the explicit button)
+  if (state.viewMode === 'front') handleFrontFile(file);
+});
 document.getElementById('card').addEventListener('click', e => {
   if (e.target.closest('#front-delete-btn')) return;
+  if (e.target.closest('#add-custom-back-btn')) return;
+  if (e.target.closest('#use-standard-back-btn')) return;
+  if (state.viewMode !== 'front') return;
   document.getElementById('input-front').click();
 });
 setupFileInput('input-front', handleFrontFile);
