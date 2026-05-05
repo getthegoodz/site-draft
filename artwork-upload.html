@@ -823,7 +823,7 @@
     <div class="card-meta">
       <div class="file-name" id="front-filename"></div>
       <div class="size-warning" id="front-size-warn">
-        &#9888; Image may be too small for 300 DPI print quality. We recommend at least 827&times;827px (<span data-mm-value data-mm="70">2.76 in</span>).
+        &#9888; Image may be too small for 300 DPI print quality. We recommend at least 827&times;827px (<span data-mm-value data-mm="70">2.76"</span>).
       </div>
       <div class="size-warning" id="back-size-warn">
         &#9888; Back image may be too small for 300 DPI print quality. We recommend at least 827&times;827px.
@@ -853,9 +853,9 @@
         <div class="overlay-legend-text">
           <div class="overlay-legend-title-row">
             <span class="overlay-legend-title">Canvas (with bleed)</span>
-            <span class="overlay-legend-dim"><span data-mm-value data-mm="70">2.76 in</span> &times; <span data-mm-value data-mm="70">2.76 in</span></span>
+            <span class="overlay-legend-dim"><span data-mm-value data-mm="70">2.76"</span> &times; <span data-mm-value data-mm="70">2.76"</span></span>
           </div>
-          <div class="overlay-legend-desc">Full artwork file. The outer <span data-mm-value data-mm="2.5">0.10 in</span> is bleed and gets cut off when the tile is trimmed.</div>
+          <div class="overlay-legend-desc">Full artwork file. The outer <span data-mm-value data-mm="2.5">0.10"</span> is bleed and gets cut off when the tile is trimmed.</div>
         </div>
       </div>
 
@@ -866,7 +866,7 @@
         <div class="overlay-legend-text">
           <div class="overlay-legend-title-row">
             <span class="overlay-legend-title">Trim</span>
-            <span class="overlay-legend-dim"><span data-mm-value data-mm="65">2.56 in</span> &times; <span data-mm-value data-mm="65">2.56 in</span>, <span data-mm-value data-mm="6">0.24 in</span> corners</span>
+            <span class="overlay-legend-dim"><span data-mm-value data-mm="65">2.56"</span> &times; <span data-mm-value data-mm="65">2.56"</span>, <span data-mm-value data-mm="6">0.24"</span> corners</span>
           </div>
           <div class="overlay-legend-desc">Cut edge of the goodz.</div>
         </div>
@@ -879,7 +879,7 @@
         <div class="overlay-legend-text">
           <div class="overlay-legend-title-row">
             <span class="overlay-legend-title">Safe-area line</span>
-            <span class="overlay-legend-dim"><span data-mm-value data-mm="1.5">0.06 in</span> inside trim</span>
+            <span class="overlay-legend-dim"><span data-mm-value data-mm="1.5">0.06"</span> inside trim</span>
           </div>
           <div class="overlay-legend-desc">Keep important elements inside this line.</div>
         </div>
@@ -913,8 +913,8 @@
         <div class="specs-list-item"><strong>300 DPI</strong> minimum resolution</div>
         <div class="specs-list-item"><strong>RGB</strong> color mode</div>
         <div class="specs-list-item"><strong>PNG or TIFF</strong> file format (lossless)</div>
-        <div class="specs-list-item"><strong><span data-mm-value data-mm="70">2.76 in</span> &times; <span data-mm-value data-mm="70">2.76 in</span> canvas</strong> with <span data-mm-value data-mm="2.5">0.10 in</span> bleed on all sides</div>
-        <div class="specs-list-item">Keep important elements <strong><span data-mm-value data-mm="1.5">0.06 in</span> inside</strong> the trim edge</div>
+        <div class="specs-list-item"><strong><span data-mm-value data-mm="70">2.76"</span> &times; <span data-mm-value data-mm="70">2.76"</span> canvas</strong> with <span data-mm-value data-mm="2.5">0.10"</span> bleed on all sides</div>
+        <div class="specs-list-item">Keep important elements <strong><span data-mm-value data-mm="1.5">0.06"</span> inside</strong> the trim edge</div>
       </div>
       <div class="specs-templates">
         <a href="templates/Goodz_Template_Front.ai" class="specs-template-tile" download title="Download Illustrator template">
@@ -1569,7 +1569,7 @@ function placeOrder() {
 // ---- Unit toggle (segmented in / mm) ----
 function fmtIn(mm) {
   const inches = mm / 25.4;
-  return inches.toFixed(2) + ' in';
+  return inches.toFixed(2) + '"';
 }
 function fmtMm(mm) {
   return (Math.round(mm * 10) / 10) + ' mm';
