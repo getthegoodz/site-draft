@@ -270,37 +270,38 @@
       height: 100%;
       object-fit: cover;
     }
-    .add-custom-back-btn {
-      position: absolute;
-      bottom: 12px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 0.5rem 0.9rem;
+    /* Card action row — sits below the preview, keeps the artwork pristine */
+    .card-actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.85rem;
+      margin-top: 0.6rem;
+      min-height: 1.4rem;
+      flex-wrap: wrap;
+    }
+    .card-action {
+      background: none;
+      border: none;
+      padding: 0.2rem 0.1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      color: var(--muted);
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .card-action:hover { color: var(--black); }
+    .card-action-primary {
       background: var(--yellow);
       color: var(--black);
       border: 2px solid var(--yellow);
       border-radius: 6px;
-      font-size: 0.82rem;
+      padding: 0.5rem 0.95rem;
       font-weight: 700;
-      font-family: 'DM Sans', sans-serif;
-      cursor: pointer;
-      white-space: nowrap;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      text-decoration: none;
+      font-size: 0.85rem;
     }
-    .add-custom-back-btn:hover { background: #e6b044; border-color: #e6b044; }
-    .use-standard-back-link {
-      position: absolute;
-      bottom: 12px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.78rem;
-      color: var(--muted);
-      background: rgba(255,255,255,0.85);
-      padding: 0.3rem 0.6rem;
-      border-radius: 4px;
-      cursor: pointer;
-      text-decoration: underline;
-    }
+    .card-action-primary:hover { background: #e6b044; border-color: #e6b044; color: var(--black); }
 
     /* Keychain hole overlay */
     .keychain-dot {
@@ -767,16 +768,13 @@
             <img id="card-art" class="card-art card-art-image" style="display:none" src="" alt="Your artwork">
           </div>
 
-          <!-- Back view: standard back image with optional custom-back upgrade -->
+          <!-- Back view: standard back image (custom replaces it once uploaded) -->
           <div class="card-content" id="card-content-back" style="display:none">
             <img id="back-image" class="card-art card-art-image" src="templates/Goodz_Standard_back.png" alt="Standard Goodz back">
-            <button type="button" class="add-custom-back-btn" id="add-custom-back-btn" onclick="addCustomBack()">Add a custom back</button>
-            <span class="use-standard-back-link" id="use-standard-back-btn" style="display:none" onclick="useStandardBack()">Use standard back</span>
           </div>
 
           <img id="zone-guide" class="zone-guide" src="templates/Goodz_Standard_back.png" style="display:none" alt="">
           <div class="keychain-dot" id="keychain-dot"></div>
-          <button class="img-delete-btn" id="front-delete-btn" type="button" style="display:none" onclick="clearFront(event)" aria-label="Remove artwork">&#10005;</button>
         </div>
       </div>
 
@@ -791,6 +789,14 @@
           <span class="thumb-label">Back</span>
         </button>
       </div>
+    </div>
+
+    <div class="card-actions" id="card-actions">
+      <button type="button" class="card-action" id="action-front-replace" style="display:none" onclick="document.getElementById('input-front').click()">Replace</button>
+      <button type="button" class="card-action" id="action-front-remove" style="display:none" onclick="clearFront(event)">Remove</button>
+      <button type="button" class="card-action card-action-primary" id="action-add-custom-back" style="display:none" onclick="addCustomBack()">Add a custom back</button>
+      <button type="button" class="card-action" id="action-back-replace" style="display:none" onclick="addCustomBack()">Replace</button>
+      <button type="button" class="card-action" id="action-use-standard" style="display:none" onclick="useStandardBack()">Use standard back</button>
     </div>
 
     <div class="card-meta">
@@ -1092,6 +1098,17 @@ function updateCardState() {
   document.getElementById('card').classList.toggle('has-art', hasContent);
 }
 
+function renderCardActions() {
+  const isFront = state.viewMode === 'front';
+  const isMandatory = !!(orderConfig && orderConfig.backDesign === 'custom');
+  const set = (id, on) => { const el = document.getElementById(id); if (el) el.style.display = on ? 'inline-block' : 'none'; };
+  set('action-front-replace',   isFront && !!state.frontArt);
+  set('action-front-remove',    isFront && !!state.frontArt);
+  set('action-add-custom-back', !isFront && !state.backArt);
+  set('action-back-replace',    !isFront && !!state.backArt);
+  set('action-use-standard',    !isFront && !!state.backArt && !isMandatory);
+}
+
 // ---- Pricing helpers (dynamic custom-back upcharge) ----
 function isUpgradedToCustomBack() {
   return state.customBackChosen && (!orderConfig || orderConfig.backDesign !== 'custom');
@@ -1138,11 +1155,7 @@ function showFrontPreview(src, name) {
   document.getElementById('card-art').style.display = 'block';
   document.getElementById('card-placeholder').style.display = 'none';
   document.getElementById('zone-guide').style.display = 'none';
-  if (state.viewMode === 'front') {
-    document.getElementById('front-delete-btn').style.display = 'flex';
-  }
   document.getElementById('front-filename').textContent = name || '';
-  // Front thumbnail mirror
   const tImg = document.getElementById('thumb-front-img');
   tImg.src = src;
   tImg.style.display = 'block';
@@ -1152,15 +1165,15 @@ function showFrontPreview(src, name) {
     sa.src = src; sa.style.display = 'block';
   }
   updateCardState();
+  renderCardActions();
 }
 
 function clearFront(e) {
-  e.stopPropagation();
+  if (e) e.stopPropagation();
   state.frontArt = null;
   document.getElementById('card-art').style.display = 'none';
   document.getElementById('card-art').src = '';
   document.getElementById('card-placeholder').style.display = 'flex';
-  document.getElementById('front-delete-btn').style.display = 'none';
   document.getElementById('front-filename').textContent = '';
   document.getElementById('front-size-warn').style.display = 'none';
   const tImg = document.getElementById('thumb-front-img');
@@ -1170,6 +1183,8 @@ function clearFront(e) {
   const sa = document.getElementById('sleeve-art');
   if (sa) { sa.style.display = 'none'; sa.src = ''; }
   document.getElementById('input-front').value = '';
+  updateCardState();
+  renderCardActions();
   updateStepButtons();
   updateStatusBadges();
 }
@@ -1211,29 +1226,23 @@ function handleBackFile(file) {
 }
 
 function showBackPreview(src, name) {
-  // Update main back image and back thumbnail
   document.getElementById('back-image').src = src;
   document.getElementById('thumb-back-img').src = src;
-  // Once a custom back is loaded, the back design is custom regardless of orderConfig
   state.customBackChosen = true;
-  document.getElementById('add-custom-back-btn').style.display = 'none';
-  // Allow reverting to standard only if custom wasn't required by the order config
-  const backIsRequired = orderConfig && orderConfig.backDesign === 'custom';
-  document.getElementById('use-standard-back-btn').style.display = backIsRequired ? 'none' : 'inline-block';
   updateUpchargeNotice();
+  renderCardActions();
 }
 
 function clearBack(e) {
   if (e) e.stopPropagation();
   state.backArt = null;
-  state.customBackChosen = (orderConfig && orderConfig.backDesign === 'custom');
+  state.customBackChosen = !!(orderConfig && orderConfig.backDesign === 'custom');
   document.getElementById('back-image').src = 'templates/Goodz_Standard_back.png';
   document.getElementById('thumb-back-img').src = 'templates/Goodz_Standard_back.png';
   document.getElementById('back-size-warn').style.display = 'none';
   document.getElementById('input-back').value = '';
-  document.getElementById('add-custom-back-btn').style.display = 'inline-block';
-  document.getElementById('use-standard-back-btn').style.display = 'none';
   updateUpchargeNotice();
+  renderCardActions();
   updateStepButtons();
   updateStatusBadges();
 }
@@ -1245,9 +1254,8 @@ function setView(mode) {
   document.getElementById('thumb-back').classList.toggle('thumb-active', mode === 'back');
   document.getElementById('card-content-front').style.display = mode === 'front' ? '' : 'none';
   document.getElementById('card-content-back').style.display  = mode === 'back'  ? '' : 'none';
-  document.getElementById('front-delete-btn').style.display =
-    (mode === 'front' && state.frontArt) ? 'flex' : 'none';
   updateCardState();
+  renderCardActions();
 }
 
 function addCustomBack() {
@@ -1560,13 +1568,11 @@ setupDrop('card', file => {
   // Drag-drop on the card always feeds the front (the back is loaded via the explicit button)
   if (state.viewMode === 'front') handleFrontFile(file);
 });
-document.getElementById('card').addEventListener('click', e => {
-  if (e.target.closest('#front-delete-btn')) return;
-  if (e.target.closest('#add-custom-back-btn')) return;
-  if (e.target.closest('#use-standard-back-btn')) return;
+document.getElementById('card').addEventListener('click', () => {
   if (state.viewMode !== 'front') return;
   document.getElementById('input-front').click();
 });
+renderCardActions();
 setupFileInput('input-front', handleFrontFile);
 setupFileInput('input-back',  handleBackFile);
 
