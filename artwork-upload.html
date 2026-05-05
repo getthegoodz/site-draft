@@ -335,6 +335,25 @@
       height: 100%;
       object-fit: cover;
     }
+    /* Back view: render the back image at trim size (65mm of 70mm = 92.86%)
+       with the card's white canvas showing in the bleed region, so flipping
+       between front and back keeps the visible "actual goodz" footprint
+       consistent with the trim overlay on the front. */
+    #card-content-back { background: #fff; }
+    .back-image-frame {
+      position: absolute;
+      top: 3.57%;
+      left: 3.57%;
+      width: 92.86%;
+      height: 92.86%;
+      border-radius: 9.23%;
+      overflow: hidden;
+    }
+    .back-image-frame img.card-art-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
     /* Card action row — sits below the preview, keeps the artwork pristine */
     .card-actions {
       display: flex;
@@ -797,9 +816,13 @@
             </svg>
           </div>
 
-          <!-- Back view: standard back image (custom replaces it once uploaded) -->
+          <!-- Back view: standard back image (custom replaces it once uploaded).
+               Image sits inside a trim-sized frame so the white canvas around it
+               matches the bleed region shown on the front. -->
           <div class="card-content" id="card-content-back" style="display:none">
-            <img id="back-image" class="card-art card-art-image" src="templates/Goodz_Standard_back.png" alt="Standard Goodz back">
+            <div class="back-image-frame">
+              <img id="back-image" class="card-art card-art-image" src="templates/Goodz_Standard_back.png" alt="Standard Goodz back">
+            </div>
           </div>
 
           <img id="zone-guide" class="zone-guide" src="templates/Goodz_Standard_back.png" style="display:none" alt="">
