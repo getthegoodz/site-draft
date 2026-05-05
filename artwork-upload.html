@@ -335,10 +335,10 @@
       height: 100%;
       object-fit: cover;
     }
-    /* Back view: render the back image at trim size (65mm of 70mm = 92.86%)
-       with the card's white canvas showing in the bleed region, so flipping
-       between front and back keeps the visible "actual goodz" footprint
-       consistent with the trim overlay on the front. */
+    /* Back view (standard): render the back image at trim size (65mm of 70mm
+       = 92.86%) with the card's white canvas showing in the bleed region, so
+       flipping between front and back keeps the visible "actual goodz"
+       footprint consistent with the trim overlay on the front. */
     #card-content-back { background: #fff; }
     .back-image-frame {
       position: absolute;
@@ -354,6 +354,17 @@
       height: 100%;
       object-fit: cover;
     }
+    /* Back view (custom uploaded): full-bleed art with the same overlay as the
+       front. The standard frame is hidden in this state. */
+    #card-content-back.has-custom-back { background: transparent; }
+    #card-content-back.has-custom-back .back-image-frame { display: none; }
+    .back-custom-art { display: none; }
+    .back-overlay { display: none; }
+    #card-content-back.has-custom-back .back-custom-art { display: block; }
+    #card-content-back.has-custom-back .back-overlay { display: block; }
+    /* Custom back is always present when its overlay shows, so darken the
+       bleed dim the same way the front does when art is loaded. */
+    .back-overlay .card-overlay-bleed { fill-opacity: 0.42; }
     /* Card action row — sits below the preview, keeps the artwork pristine */
     .card-actions {
       display: flex;
@@ -816,13 +827,26 @@
             </svg>
           </div>
 
-          <!-- Back view: standard back image (custom replaces it once uploaded).
-               Image sits inside a trim-sized frame so the white canvas around it
-               matches the bleed region shown on the front. -->
+          <!-- Back view: standard back image sits in a trim-sized frame on a
+               white canvas. Once a custom back is uploaded, the .has-custom-back
+               class swaps in a full-bleed image plus the same bleed/trim/safe
+               overlay used on the front. -->
           <div class="card-content" id="card-content-back" style="display:none">
             <div class="back-image-frame">
               <img id="back-image" class="card-art card-art-image" src="templates/Goodz_Standard_back.png" alt="Standard Goodz back">
             </div>
+            <img id="back-art" class="card-art card-art-image back-custom-art" src="" alt="Your back artwork">
+            <svg class="card-overlay-guides back-overlay" viewBox="0 0 70 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <mask id="bleed-mask-back" maskUnits="userSpaceOnUse">
+                  <rect width="70" height="70" fill="white"/>
+                  <rect x="2.5" y="2.5" width="65" height="65" rx="6" ry="6" fill="black"/>
+                </mask>
+              </defs>
+              <rect class="card-overlay-bleed" width="70" height="70" mask="url(#bleed-mask-back)"/>
+              <rect class="card-overlay-trim" x="2.5" y="2.5" width="65" height="65" rx="6" ry="6"/>
+              <rect class="card-overlay-safe" x="4" y="4" width="62" height="62" rx="4.5" ry="4.5"/>
+            </svg>
           </div>
 
           <img id="zone-guide" class="zone-guide" src="templates/Goodz_Standard_back.png" style="display:none" alt="">
@@ -1278,7 +1302,8 @@ function handleBackFile(file) {
 }
 
 function showBackPreview(src, name) {
-  document.getElementById('back-image').src = src;
+  document.getElementById('back-art').src = src;
+  document.getElementById('card-content-back').classList.add('has-custom-back');
   document.getElementById('thumb-back-img').src = src;
   state.customBackChosen = true;
   updateUpchargeNotice();
@@ -1289,7 +1314,8 @@ function clearBack(e) {
   if (e) e.stopPropagation();
   state.backArt = null;
   state.customBackChosen = !!(orderConfig && orderConfig.backDesign === 'custom');
-  document.getElementById('back-image').src = 'templates/Goodz_Standard_back.png';
+  document.getElementById('back-art').src = '';
+  document.getElementById('card-content-back').classList.remove('has-custom-back');
   document.getElementById('thumb-back-img').src = 'templates/Goodz_Standard_back.png';
   document.getElementById('back-size-warn').style.display = 'none';
   document.getElementById('input-back').value = '';
