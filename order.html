@@ -359,22 +359,66 @@
     .diagram-legend {
       display: flex;
       flex-direction: column;
-      gap: 0.4rem;
-      margin-top: 0.6rem;
+      gap: 0.85rem;
+    }
+    .legend-toggle-wrap {
+      display: flex;
+      justify-content: flex-start;
     }
     .legend-item {
       display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.72rem;
-      color: var(--muted);
-      line-height: 1.4;
+      align-items: flex-start;
+      gap: 0.7rem;
+      font-size: 0.8rem;
+      color: var(--text);
+      line-height: 1.45;
     }
-    .legend-swatch {
-      width: 22px;
-      height: 2px;
+    .legend-mark {
+      width: 26px;
       flex-shrink: 0;
+      display: inline-block;
+      margin-top: 0.3rem;
     }
+    .legend-text { flex: 1; min-width: 0; }
+    .legend-title-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.5rem;
+      margin-bottom: 0.1rem;
+    }
+    .legend-title { font-weight: 700; color: var(--text); }
+    .legend-dim { font-size: 0.78rem; font-weight: 500; color: var(--muted); }
+    .legend-desc { font-size: 0.74rem; color: var(--muted); }
+    .legend-mark-bleed {
+      height: 14px;
+      background: rgba(0, 0, 0, 0.32);
+      border-radius: 2px;
+    }
+
+    /* Segmented in/mm toggle */
+    .unit-toggle-group {
+      display: inline-flex;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .unit-toggle-btn {
+      padding: 0.32rem 0.95rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      font-family: 'DM Sans', sans-serif;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      transition: background 0.15s, color 0.15s;
+    }
+    .unit-toggle-btn + .unit-toggle-btn { border-left: 1px solid var(--border); }
+    .unit-toggle-btn.active { background: var(--black); color: var(--cream); }
+    .unit-toggle-btn:hover:not(.active) { background: var(--off-white); color: var(--black); }
 
     .guidelines-downloads {}
     .dl-heading {
@@ -798,36 +842,71 @@
 
         <div class="guidelines-inner">
           <div class="guidelines-diagram">
-            <svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" style="width:180px;height:180px;display:block">
-              <!-- Bleed area (70x70mm) -->
-              <rect x="10" y="10" width="200" height="200" fill="rgba(244,63,94,0.04)" stroke="#f43f5e" stroke-width="1.5" stroke-dasharray="5,3"/>
-              <!-- Trim area (65x65mm, 6mm corner radius) -->
-              <rect x="17" y="17" width="186" height="186" rx="16" fill="rgba(14,12,10,0.03)" stroke="#0e0c0a" stroke-width="2"/>
-              <!-- Safe area (1.5mm inside trim) -->
-              <rect x="22" y="22" width="176" height="176" rx="13" fill="none" stroke="#888" stroke-width="1.5" stroke-dasharray="5,3"/>
-              <!-- Center label -->
-              <text x="110" y="106" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="11" font-weight="600" fill="#444">Your artwork</text>
-              <text x="110" y="122" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="9.5" fill="#888">70 x 70mm canvas</text>
+            <svg viewBox="0 0 70 70" xmlns="http://www.w3.org/2000/svg" style="width:200px;height:200px;display:block;border-radius:4px;overflow:hidden">
+              <defs>
+                <mask id="bleed-mask-order" maskUnits="userSpaceOnUse">
+                  <rect width="70" height="70" fill="white"/>
+                  <rect x="2.5" y="2.5" width="65" height="65" rx="6" ry="6" fill="black"/>
+                </mask>
+              </defs>
+              <rect width="70" height="70" fill="#fff"/>
+              <rect width="70" height="70" fill="#000" fill-opacity="0.32" mask="url(#bleed-mask-order)"/>
+              <rect x="2.5" y="2.5" width="65" height="65" rx="6" ry="6"
+                    fill="none" stroke="rgba(0,0,0,0.82)" stroke-width="0.45"/>
+              <rect x="4" y="4" width="62" height="62" rx="4.5" ry="4.5"
+                    fill="none" stroke="rgba(0,0,0,0.65)" stroke-width="0.3" stroke-dasharray="0.9 0.7"/>
+              <text x="35" y="38" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="3.6" font-weight="600" fill="rgba(0,0,0,0.55)">Your artwork</text>
             </svg>
-
-            <div class="diagram-legend">
-              <div class="legend-item">
-                <svg width="22" height="4" style="flex-shrink:0"><line x1="0" y1="2" x2="22" y2="2" stroke="#f43f5e" stroke-width="2" stroke-dasharray="5,3"/></svg>
-                Bleed: 70 x 70mm
-              </div>
-              <div class="legend-item">
-                <svg width="22" height="4" style="flex-shrink:0"><line x1="0" y1="2" x2="22" y2="2" stroke="#0e0c0a" stroke-width="2"/></svg>
-                Trim: 65 x 65mm, 6mm corners
-              </div>
-              <div class="legend-item">
-                <svg width="22" height="4" style="flex-shrink:0"><line x1="0" y1="2" x2="22" y2="2" stroke="#888" stroke-width="2" stroke-dasharray="5,3"/></svg>
-                Safe area: 1.5mm from trim
-              </div>
-            </div>
           </div>
 
           <div class="guidelines-downloads">
-            <div class="dl-heading">Download Artwork Template</div>
+            <div class="diagram-legend">
+              <div class="legend-toggle-wrap">
+                <div class="unit-toggle-group" id="unit-toggle">
+                  <button type="button" class="unit-toggle-btn active" data-unit="in">in</button>
+                  <button type="button" class="unit-toggle-btn" data-unit="mm">mm</button>
+                </div>
+              </div>
+
+              <div class="legend-item">
+                <span class="legend-mark legend-mark-bleed"></span>
+                <div class="legend-text">
+                  <div class="legend-title-row">
+                    <span class="legend-title">Canvas (with bleed)</span>
+                    <span class="legend-dim"><span data-mm-value data-mm="70">2.76"</span> &times; <span data-mm-value data-mm="70">2.76"</span></span>
+                  </div>
+                  <div class="legend-desc">Full artwork file. The outer <span data-mm-value data-mm="2.5">0.10"</span> is bleed and gets cut off when the tile is trimmed.</div>
+                </div>
+              </div>
+
+              <div class="legend-item">
+                <svg class="legend-mark" width="26" height="6" viewBox="0 0 26 6" aria-hidden="true">
+                  <line x1="0" y1="3" x2="26" y2="3" stroke="rgba(0,0,0,0.82)" stroke-width="1.5"/>
+                </svg>
+                <div class="legend-text">
+                  <div class="legend-title-row">
+                    <span class="legend-title">Trim</span>
+                    <span class="legend-dim"><span data-mm-value data-mm="65">2.56"</span> &times; <span data-mm-value data-mm="65">2.56"</span>, <span data-mm-value data-mm="6">0.24"</span> corners</span>
+                  </div>
+                  <div class="legend-desc">Cut edge of the goodz.</div>
+                </div>
+              </div>
+
+              <div class="legend-item">
+                <svg class="legend-mark" width="26" height="6" viewBox="0 0 26 6" aria-hidden="true">
+                  <line x1="0" y1="3" x2="26" y2="3" stroke="rgba(0,0,0,0.65)" stroke-width="1.2" stroke-dasharray="3,2"/>
+                </svg>
+                <div class="legend-text">
+                  <div class="legend-title-row">
+                    <span class="legend-title">Safe-area line</span>
+                    <span class="legend-dim"><span data-mm-value data-mm="1.5">0.06"</span> inside trim</span>
+                  </div>
+                  <div class="legend-desc">Keep important elements inside this line.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="dl-heading" style="margin-top:1.5rem">Download Artwork Template</div>
             <div class="template-tiles">
               <a href="templates/Goodz_Template_Front.ai" class="template-tile" download title="Download Illustrator template">
                 <span class="tile-ext ai">ai</span>
@@ -845,8 +924,8 @@
               <div class="spec-item"><strong>300 DPI</strong> minimum resolution</div>
               <div class="spec-item"><strong>RGB</strong> color mode</div>
               <div class="spec-item"><strong>PNG or TIFF</strong> file format (lossless)</div>
-              <div class="spec-item"><strong>70 x 70mm canvas</strong> with 2.5mm bleed on all sides</div>
-              <div class="spec-item">Keep important elements <strong>1.5mm inside</strong> the trim edge</div>
+              <div class="spec-item"><strong><span data-mm-value data-mm="70">2.76"</span> &times; <span data-mm-value data-mm="70">2.76"</span> canvas</strong> with <strong><span data-mm-value data-mm="2.5">0.10"</span> bleed</strong> on all sides</div>
+              <div class="spec-item">Keep important elements <strong><span data-mm-value data-mm="1.5">0.06"</span> inside</strong> the trim edge</div>
             </div>
           </div>
         </div>
@@ -1083,6 +1162,26 @@ updateFromPrice();
 initGallery();
 initGalleryNav();
 updateGalleryNavVisibility();
+
+// In/mm toggle for the artwork guidelines legend
+function fmtIn(mm) { return (mm / 25.4).toFixed(2) + '"'; }
+function fmtMm(mm) { return (Math.round(mm * 10) / 10) + ' mm'; }
+function applyUnits(unit) {
+  document.querySelectorAll('[data-mm-value]').forEach(el => {
+    const mm = parseFloat(el.dataset.mm);
+    el.textContent = unit === 'in' ? fmtIn(mm) : fmtMm(mm);
+  });
+}
+document.querySelectorAll('.unit-toggle-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const unit = btn.dataset.unit;
+    document.querySelectorAll('.unit-toggle-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.unit === unit)
+    );
+    applyUnits(unit);
+  });
+});
+applyUnits('in');
 </script>
 </body>
 </html>
