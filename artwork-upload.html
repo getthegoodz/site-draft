@@ -92,11 +92,15 @@
       margin-bottom: 0.5rem;
     }
     .card-wrap { position: relative; flex: 0 1 320px; }
+    /* The card represents the full artwork bleed (70mm x 70mm).
+       Outer corners are minimal so it reads as a bleed rectangle;
+       the trim shape (with the actual goodz corner radius) is drawn
+       as an overlay inside once artwork is uploaded. */
     .card {
       width: 100%;
       max-width: 320px;
       aspect-ratio: 1;
-      border-radius: 12px;
+      border-radius: 4px;
       overflow: hidden;
       background: #fff;
       border: 2px dashed var(--border);
@@ -118,6 +122,18 @@
     }
     .card.has-art:hover { border-color: var(--black); background: #fff; }
     .card-art { width: 100%; height: 100%; object-fit: cover; display: block; }
+    /* Overlay: trim outline (matching goodz corner radius) and safe area,
+       with the bleed region dimmed so cropped-off content is visible.
+       Only shown once artwork is loaded. */
+    .card-overlay-guides {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      display: none;
+    }
+    .card.has-art .card-overlay-guides { display: block; }
     .card-placeholder {
       text-align: center;
       padding: 1.5rem;
@@ -382,35 +398,11 @@
       margin-bottom: 0.85rem;
       text-align: center;
     }
-    .specs-grid {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 1.5rem;
-      align-items: start;
-      margin-bottom: 1.25rem;
-    }
-    @media (max-width: 540px) {
-      .specs-grid { grid-template-columns: 1fr; justify-items: center; }
-    }
-    .specs-diagram > svg { width: 160px; height: 160px; display: block; }
-    .specs-legend {
-      display: flex;
-      flex-direction: column;
-      gap: 0.35rem;
-      margin-top: 0.55rem;
-    }
-    .specs-legend-item {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.7rem;
-      color: var(--muted);
-      line-height: 1.4;
-    }
     .specs-list {
       display: flex;
       flex-direction: column;
       gap: 0.4rem;
+      margin-bottom: 1.25rem;
     }
     .specs-list-item {
       position: relative;
@@ -766,6 +758,19 @@
               <p class="upload-hint upload-hint-mobile">Tap to upload artwork</p>
             </div>
             <img id="card-art" class="card-art card-art-image" style="display:none" src="" alt="Your artwork">
+            <svg class="card-overlay-guides" viewBox="0 0 70 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <mask id="bleed-mask-front" maskUnits="userSpaceOnUse">
+                  <rect width="70" height="70" fill="white"/>
+                  <rect x="2.5" y="2.5" width="65" height="65" rx="6" ry="6" fill="black"/>
+                </mask>
+              </defs>
+              <rect width="70" height="70" fill="rgba(0,0,0,0.42)" mask="url(#bleed-mask-front)"/>
+              <rect x="2.5" y="2.5" width="65" height="65" rx="6" ry="6"
+                    fill="none" stroke="rgba(255,255,255,0.92)" stroke-width="0.45"/>
+              <rect x="4" y="4" width="62" height="62" rx="4.5" ry="4.5"
+                    fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="0.3" stroke-dasharray="0.9,0.7"/>
+            </svg>
           </div>
 
           <!-- Back view: standard back image (custom replaces it once uploaded) -->
@@ -852,40 +857,15 @@
       <button class="btn btn-primary" id="btn-step0" onclick="goToStep(1)" disabled>Next: Link Music &rarr;</button>
     </div>
 
-    <!-- Print specs reference (mirrors order page artwork guidelines) -->
+    <!-- Print specs reference -->
     <section class="artwork-specs" aria-label="Print specs">
       <div class="artwork-specs-heading">Artwork specs</div>
-      <div class="specs-grid">
-        <div class="specs-diagram">
-          <svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
-            <rect x="10" y="10" width="200" height="200" fill="rgba(244,63,94,0.04)" stroke="#f43f5e" stroke-width="1.5" stroke-dasharray="5,3"/>
-            <rect x="17" y="17" width="186" height="186" rx="16" fill="rgba(14,12,10,0.03)" stroke="#0e0c0a" stroke-width="2"/>
-            <rect x="22" y="22" width="176" height="176" rx="13" fill="none" stroke="#888" stroke-width="1.5" stroke-dasharray="5,3"/>
-            <text x="110" y="106" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="11" font-weight="600" fill="#444">Your artwork</text>
-            <text x="110" y="122" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="9.5" fill="#888"><tspan data-mm-value data-mm="70">2.76 in</tspan> &times; <tspan data-mm-value data-mm="70">2.76 in</tspan></text>
-          </svg>
-          <div class="specs-legend">
-            <div class="specs-legend-item">
-              <svg width="22" height="4" style="flex-shrink:0"><line x1="0" y1="2" x2="22" y2="2" stroke="#f43f5e" stroke-width="2" stroke-dasharray="5,3"/></svg>
-              <span>Bleed: <span data-mm-value data-mm="70">2.76 in</span> &times; <span data-mm-value data-mm="70">2.76 in</span></span>
-            </div>
-            <div class="specs-legend-item">
-              <svg width="22" height="4" style="flex-shrink:0"><line x1="0" y1="2" x2="22" y2="2" stroke="#0e0c0a" stroke-width="2"/></svg>
-              <span>Trim: <span data-mm-value data-mm="65">2.56 in</span> &times; <span data-mm-value data-mm="65">2.56 in</span>, <span data-mm-value data-mm="6">0.24 in</span> corners</span>
-            </div>
-            <div class="specs-legend-item">
-              <svg width="22" height="4" style="flex-shrink:0"><line x1="0" y1="2" x2="22" y2="2" stroke="#888" stroke-width="2"/></svg>
-              <span>Safe area: <span data-mm-value data-mm="1.5">0.06 in</span> from trim</span>
-            </div>
-          </div>
-        </div>
-        <div class="specs-list">
-          <div class="specs-list-item"><strong>300 DPI</strong> minimum resolution</div>
-          <div class="specs-list-item"><strong>RGB</strong> color mode</div>
-          <div class="specs-list-item"><strong>PNG or TIFF</strong> file format (lossless)</div>
-          <div class="specs-list-item"><strong><span data-mm-value data-mm="70">2.76 in</span> &times; <span data-mm-value data-mm="70">2.76 in</span> canvas</strong> with <span data-mm-value data-mm="2.5">0.10 in</span> bleed on all sides</div>
-          <div class="specs-list-item">Keep important elements <strong><span data-mm-value data-mm="1.5">0.06 in</span> inside</strong> the trim edge</div>
-        </div>
+      <div class="specs-list">
+        <div class="specs-list-item"><strong>300 DPI</strong> minimum resolution</div>
+        <div class="specs-list-item"><strong>RGB</strong> color mode</div>
+        <div class="specs-list-item"><strong>PNG or TIFF</strong> file format (lossless)</div>
+        <div class="specs-list-item"><strong><span data-mm-value data-mm="70">2.76 in</span> &times; <span data-mm-value data-mm="70">2.76 in</span> canvas</strong> with <span data-mm-value data-mm="2.5">0.10 in</span> bleed on all sides</div>
+        <div class="specs-list-item">Keep important elements <strong><span data-mm-value data-mm="1.5">0.06 in</span> inside</strong> the trim edge</div>
       </div>
       <div class="specs-templates">
         <a href="templates/Goodz_Template_Front.ai" class="specs-template-tile" download title="Download Illustrator template">
