@@ -436,16 +436,8 @@ img { display: block; width: 100%; }
   background: var(--off-white);
   border-top: var(--border);
   border-bottom: var(--border);
-  padding: 3rem 2rem;
+  padding: 5rem 2rem;
   text-align: center;
-}
-
-.cred-bar > p {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--text-light);
-  margin-bottom: 2rem;
 }
 
 .cred-logos {
@@ -459,11 +451,11 @@ img { display: block; width: 100%; }
 .cred-logo {
   width: auto;
   display: block;
-  filter: grayscale(1) brightness(0) opacity(0.6);
+  filter: grayscale(1) brightness(0) opacity(0.72);
   transition: opacity 0.2s ease;
 }
 
-.cred-logo:hover { opacity: 0.9; }
+.cred-logo:hover { opacity: 0.95; }
 
 .cred-logo--sony   { height: 55px; }
 .cred-logo--warner { height: 38px; }
