@@ -436,34 +436,38 @@ img { display: block; width: 100%; }
   background: var(--off-white);
   border-top: var(--border);
   border-bottom: var(--border);
-  padding: 2.5rem 2rem;
+  padding: 3rem 2rem;
   text-align: center;
 }
 
 .cred-bar > p {
-  font-size: 0.62rem;
+  font-size: 0.7rem;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--text-lighter);
-  margin-bottom: 1.5rem;
+  letter-spacing: 0.18em;
+  color: var(--text-light);
+  margin-bottom: 2rem;
 }
 
-.cred-names {
+.cred-logos {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 3rem;
+  gap: 4.5rem;
   flex-wrap: wrap;
 }
 
-.cred-name {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 800;
-  font-size: 0.82rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #bbb;
+.cred-logo {
+  width: auto;
+  display: block;
+  filter: grayscale(1) brightness(0) opacity(0.6);
+  transition: opacity 0.2s ease;
 }
+
+.cred-logo:hover { opacity: 0.9; }
+
+.cred-logo--sony   { height: 46px; }
+.cred-logo--warner { height: 32px; }
+.cred-logo--craft  { height: 64px; }
 
 /* ── CTA BAND ── */
 .cta-band {
@@ -711,7 +715,10 @@ footer {
 @media (max-width: 600px) {
   .use-cases { grid-template-columns: 1fr; }
   .use-case { border-right: none; border-bottom: var(--border); }
-  .cred-names { gap: 1.5rem; }
+  .cred-logos { gap: 2.5rem; }
+  .cred-logo--sony   { height: 38px; }
+  .cred-logo--warner { height: 26px; }
+  .cred-logo--craft  { height: 52px; }
   .revenue-math { gap: 1rem; }
   .hero-text { padding: 2.5rem 1.25rem; }
 }
