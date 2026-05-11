@@ -302,16 +302,17 @@ img { display: block; width: 100%; }
 
 /* ── COMPAT NOTE BAR ── */
 .compat-bar {
-  background: var(--black);
-  color: #888;
+  background: var(--off-white);
+  color: var(--text-light);
   padding: 1rem 2rem;
   text-align: center;
   font-size: 0.78rem;
   letter-spacing: 0.02em;
   border-top: var(--border);
+  border-bottom: var(--border);
 }
 
-.compat-bar strong { color: #ccc; }
+.compat-bar strong { color: var(--black); }
 
 /* ── SPLIT ── */
 .split {

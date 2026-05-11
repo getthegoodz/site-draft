@@ -85,8 +85,8 @@ body {
 
 /* ── COMPAT BAR ── */
 .compat-bar {
-  background: var(--black);
-  border-color: #2a2520;
+  background: var(--off-white);
+  border-color: #2e2a1e;
 }
 
 /* ── CRED BAR ── */
