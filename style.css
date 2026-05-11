@@ -440,6 +440,14 @@ img { display: block; width: 100%; }
   text-align: center;
 }
 
+.cred-subhead {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--text-light);
+  margin-bottom: 2.5rem;
+  line-height: 1.5;
+}
+
 .cred-logos {
   display: flex;
   justify-content: center;
