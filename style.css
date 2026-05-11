@@ -445,6 +445,40 @@ img { display: block; width: 100%; }
 .sample-box-text p  { font-size: 0.875rem; color: var(--text-light); line-height: 1.65; max-width: 460px; }
 .sample-price { font-family: 'Poppins', sans-serif; font-size: 1.75rem; font-weight: 800; white-space: nowrap; }
 
+/* ── AUDIENCE / USE-CASE GRID ── */
+.audience-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border: var(--border);
+  margin-top: 2.5rem;
+  overflow: hidden;
+}
+.audience-card {
+  border-right: var(--border-inner);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.audience-card:last-child { border-right: none; }
+.audience-img {
+  aspect-ratio: 4/5;
+  overflow: hidden;
+}
+.audience-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.audience-label {
+  border-top: var(--border-inner);
+  padding: 1rem 1rem;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
 /* ── USE CASES ── */
 .use-cases {
   display: grid;
@@ -745,6 +779,10 @@ footer {
   .use-cases { grid-template-columns: 1fr 1fr; }
   .use-case:nth-child(2) { border-right: none; }
   .use-case:nth-child(3) { border-top: var(--border); }
+  .audience-grid { grid-template-columns: 1fr 1fr; }
+  .audience-card:nth-child(2) { border-right: none; }
+  .audience-card:nth-child(3) { border-top: var(--border-inner); }
+  .audience-card:nth-child(4) { border-top: var(--border-inner); }
   footer { grid-template-columns: 1fr; gap: 2rem; }
   .footer-right { text-align: left; }
   .footer-social { justify-content: flex-start; }
