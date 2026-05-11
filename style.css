@@ -303,16 +303,50 @@ img { display: block; width: 100%; }
 /* ── COMPAT NOTE BAR ── */
 .compat-bar {
   background: var(--off-white);
-  color: var(--text-light);
-  padding: 1rem 2rem;
-  text-align: center;
-  font-size: 0.78rem;
-  letter-spacing: 0.02em;
+  padding: 2.25rem 2rem;
   border-top: var(--border);
   border-bottom: var(--border);
 }
 
-.compat-bar strong { color: var(--black); }
+.compat-bar-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  align-items: center;
+}
+
+.compat-item {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.compat-icon {
+  flex-shrink: 0;
+  color: var(--black);
+}
+
+.compat-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  line-height: 1.35;
+}
+
+.compat-text strong {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--black);
+}
+
+.compat-text span {
+  font-size: 0.8rem;
+  color: var(--text-light);
+}
 
 /* ── SPLIT ── */
 .split {
@@ -717,6 +751,7 @@ footer {
   .nav-links { display: none; }
   .nav-toggle { display: block; }
   .proof-bar { gap: 2rem; }
+  .compat-bar-inner { grid-template-columns: 1fr; gap: 1.25rem; }
   .pricing-cell { border-right: none; border-bottom: var(--border-inner); padding: 0.75rem 1rem; }
   .revenue-inner { flex-direction: column; align-items: flex-start; }
   .sample-box { flex-direction: column; }
