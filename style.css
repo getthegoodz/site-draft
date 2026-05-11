@@ -610,9 +610,10 @@ footer {
 .footer-links a:hover { color: var(--white); }
 
 .footer-right { text-align: right; }
-.footer-social { display: flex; gap: 1.25rem; justify-content: flex-end; margin-bottom: 1rem; }
-.footer-social a { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #d0d0d0; transition: color 0.15s; }
+.footer-social { display: flex; gap: 1rem; justify-content: flex-end; margin-bottom: 1rem; }
+.footer-social a { display: inline-flex; align-items: center; justify-content: center; color: #d0d0d0; transition: color 0.15s; }
 .footer-social a:hover { color: var(--amber); }
+.footer-social a svg { display: block; }
 .footer-copy { font-size: 0.68rem; color: #909090; }
 
 /* ── PRICING TABLE ── */
