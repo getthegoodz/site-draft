@@ -465,9 +465,9 @@ img { display: block; width: 100%; }
 
 .cred-logo:hover { opacity: 0.9; }
 
-.cred-logo--sony   { height: 46px; }
-.cred-logo--warner { height: 32px; }
-.cred-logo--craft  { height: 64px; }
+.cred-logo--sony   { height: 55px; }
+.cred-logo--warner { height: 38px; }
+.cred-logo--craft  { height: 77px; }
 
 /* ── CTA BAND ── */
 .cta-band {
@@ -716,9 +716,9 @@ footer {
   .use-cases { grid-template-columns: 1fr; }
   .use-case { border-right: none; border-bottom: var(--border); }
   .cred-logos { gap: 2.5rem; }
-  .cred-logo--sony   { height: 38px; }
-  .cred-logo--warner { height: 26px; }
-  .cred-logo--craft  { height: 52px; }
+  .cred-logo--sony   { height: 46px; }
+  .cred-logo--warner { height: 31px; }
+  .cred-logo--craft  { height: 62px; }
   .revenue-math { gap: 1rem; }
   .hero-text { padding: 2.5rem 1.25rem; }
 }
