@@ -642,10 +642,26 @@ footer {
   border-bottom: var(--border);
 }
 
-.page-hero-inner { max-width: 700px; }
-.page-hero h1 { font-size: clamp(2.25rem, 4.5vw, 4rem); margin-bottom: 1.25rem; }
+.page-hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 4rem;
+  align-items: center;
+}
+.page-hero-text { max-width: 540px; }
+.page-hero h1 { font-size: clamp(2.25rem, 4vw, 3.5rem); margin-bottom: 1.25rem; }
 .page-hero p  { font-size: 1.05rem; color: #999; max-width: 540px; line-height: 1.8; }
 .page-hero .hero-ctas { margin-top: 2.5rem; }
+
+.page-hero-visual img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 560px;
+  margin-left: auto;
+}
 
 /* ── BUTTON GROUP ── */
 .btn-group {
@@ -697,6 +713,8 @@ footer {
   .sample-box { flex-direction: column; }
   .bandcamp-inner { grid-template-columns: 1fr; gap: 3rem; }
   .page-hero { padding: 3.5rem 1.5rem; }
+  .page-hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+  .page-hero-visual img { margin: 0 auto; max-width: 100%; }
   .hero-ctas { flex-direction: column; align-items: stretch; }
   .hero-ctas .btn { text-align: center; }
   .product-detail { grid-template-columns: 1fr; }
