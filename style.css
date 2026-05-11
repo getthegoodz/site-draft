@@ -302,7 +302,7 @@ img { display: block; width: 100%; }
 
 /* ── COMPAT NOTE BAR ── */
 .compat-bar {
-  background: var(--off-white);
+  background: var(--amber);
   padding: 2.25rem 2rem;
   border-top: var(--border);
   border-bottom: var(--border);
@@ -345,7 +345,7 @@ img { display: block; width: 100%; }
 
 .compat-text span {
   font-size: 0.8rem;
-  color: var(--text-light);
+  color: rgba(0, 0, 0, 0.62);
 }
 
 /* ── SPLIT ── */

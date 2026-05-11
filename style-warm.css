@@ -85,7 +85,7 @@ body {
 
 /* ── COMPAT BAR ── */
 .compat-bar {
-  background: var(--off-white);
+  background: var(--amber);
   border-color: #2e2a1e;
 }
 
