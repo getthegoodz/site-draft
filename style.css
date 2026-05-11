@@ -597,7 +597,7 @@ footer {
   letter-spacing: 0.04em;
 }
 
-.footer-tagline { font-size: 0.78rem; color: #444; }
+.footer-tagline { font-size: 0.78rem; color: #b0b0b0; }
 
 .footer-links {
   display: grid;
@@ -606,14 +606,14 @@ footer {
   list-style: none;
 }
 
-.footer-links a { font-size: 0.78rem; color: #666; transition: color 0.15s; }
+.footer-links a { font-size: 0.78rem; color: #d0d0d0; transition: color 0.15s; }
 .footer-links a:hover { color: var(--white); }
 
 .footer-right { text-align: right; }
 .footer-social { display: flex; gap: 1.25rem; justify-content: flex-end; margin-bottom: 1rem; }
-.footer-social a { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #666; transition: color 0.15s; }
+.footer-social a { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #d0d0d0; transition: color 0.15s; }
 .footer-social a:hover { color: var(--amber); }
-.footer-copy { font-size: 0.68rem; color: #3a3a3a; }
+.footer-copy { font-size: 0.68rem; color: #909090; }
 
 /* ── PRICING TABLE ── */
 .pricing-table { border: var(--border); overflow: hidden; margin-top: 1.5rem; }
