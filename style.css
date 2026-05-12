@@ -304,6 +304,12 @@ img { display: block; width: 100%; }
 
 .step:last-child { border-right: none; }
 
+.step-icon {
+  display: block;
+  color: var(--black);
+  margin-bottom: 1.1rem;
+}
+
 .step-num {
   font-family: 'Poppins', sans-serif;
   font-size: 2.75rem;
