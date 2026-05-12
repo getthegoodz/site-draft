@@ -816,6 +816,30 @@ footer {
   .footer-social { justify-content: flex-start; }
   .nav-links { display: none; }
   .nav-toggle { display: block; }
+  .nav-links.is-open {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.25rem;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    background: var(--black);
+    padding: 1rem 1.5rem 1.25rem;
+    border-bottom: 2px solid #222;
+  }
+  .nav-links.is-open li { width: 100%; }
+  .nav-links.is-open a {
+    display: block;
+    padding: 0.75rem 0;
+    font-size: 0.95rem;
+  }
+  .nav-links.is-open .nav-shop {
+    text-align: center;
+    margin-top: 0.5rem;
+    padding: 0.75rem 1.25rem;
+  }
   .proof-bar { gap: 2rem; }
   .proof-item { flex-direction: column; align-items: center; text-align: center; gap: 0.1rem; }
   .compat-bar-inner { grid-template-columns: 1fr; gap: 1.25rem; }
