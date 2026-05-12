@@ -326,10 +326,12 @@ img { display: block; width: 100%; }
 
 .step-icon {
   display: block;
-  width: 84px;
-  height: 84px;
+  width: 96px;
+  height: 96px;
   color: var(--black);
 }
+
+.step-icon-fg { fill: var(--white); }
 
 .step h3 { font-size: 1rem; margin-bottom: 0.6rem; }
 .step p  { font-size: 0.875rem; color: var(--text-light); line-height: 1.7; }
