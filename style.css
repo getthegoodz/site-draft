@@ -303,18 +303,9 @@ img { display: block; width: 100%; }
 }
 
 .step-head {
-  display: flex;
-  align-items: center;
-  gap: 0.85em;
-  margin-bottom: 1.25rem;
-  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.85rem;
   border-bottom: var(--border-inner);
-}
-
-.step-icon {
-  display: block;
-  color: var(--black);
-  flex-shrink: 0;
 }
 
 .step-num {
@@ -323,6 +314,21 @@ img { display: block; width: 100%; }
   font-weight: 800;
   color: var(--amber);
   line-height: 1;
+}
+
+.step-illo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 0 1.75rem;
+  margin-bottom: 1rem;
+}
+
+.step-icon {
+  display: block;
+  width: 84px;
+  height: 84px;
+  color: var(--black);
 }
 
 .step h3 { font-size: 1rem; margin-bottom: 0.6rem; }
