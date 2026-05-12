@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Upload Your Artwork — Goodz</title>
+  <title>Upload Your Artwork - Goodz</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
@@ -95,7 +95,7 @@
     /* The card represents the full artwork bleed (70mm x 70mm).
        Outer corners are minimal so it reads as a bleed rectangle;
        the trim shape (with the actual goodz corner radius) is drawn
-       as an overlay inside. No outer border — the trim/bleed overlay
+       as an overlay inside. No outer border, the trim/bleed overlay
        and the in-card CTA carry the affordance. */
     .card {
       width: 100%;
@@ -365,7 +365,7 @@
     /* Custom back is always present when its overlay shows, so darken the
        bleed dim the same way the front does when art is loaded. */
     .back-overlay .card-overlay-bleed { fill-opacity: 0.42; }
-    /* Card action row — sits below the preview, keeps the artwork pristine */
+    /* Card action row, sits below the preview, keeps the artwork pristine */
     .card-actions {
       display: flex;
       justify-content: center;
@@ -1532,8 +1532,8 @@ function renderSummary() {
       : (state.altURL || 'Missing ✗'),
     missing: !hasMusic(),
   });
-  rows.push({ label: 'Quantity',     value: cfg.quantity ? `${cfg.quantity.toLocaleString()} units` : '—' });
-  rows.push({ label: 'Price per unit', value: cfg.unitPrice ? fmt(effectiveUnitPrice()) : '—' });
+  rows.push({ label: 'Quantity',     value: cfg.quantity ? `${cfg.quantity.toLocaleString()} units` : '-' });
+  rows.push({ label: 'Price per unit', value: cfg.unitPrice ? fmt(effectiveUnitPrice()) : '-' });
   if (cfg.quantity && cfg.unitPrice) {
     rows.push({ label: 'Order Total', value: fmt(effectiveTotal()), total: true });
   }
