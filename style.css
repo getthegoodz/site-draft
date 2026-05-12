@@ -304,23 +304,32 @@ img { display: block; width: 100%; }
 
 .step:last-child { border-right: none; }
 
+.step-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-inner);
+  color: var(--amber);
+}
+
 .step-icon {
   display: block;
-  color: var(--black);
-  margin-bottom: 1.1rem;
+  color: var(--amber);
+  flex-shrink: 0;
 }
 
 .step-num {
   font-family: 'Poppins', sans-serif;
-  font-size: 2.75rem;
+  font-size: 1.75rem;
   font-weight: 800;
   color: var(--amber);
-  display: block;
-  margin-bottom: 1rem;
   line-height: 1;
 }
 
-.step h3 { font-size: 0.92rem; margin-bottom: 0.6rem; }
+.step h3 { font-size: 1rem; margin-bottom: 0.6rem; }
 .step p  { font-size: 0.875rem; color: var(--text-light); line-height: 1.7; }
 .step-note { margin-top: 0.6rem; font-size: 0.75rem; color: #aaa; }
 
