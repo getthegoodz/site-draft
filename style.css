@@ -746,6 +746,9 @@ footer {
   gap: 4rem;
   align-items: center;
 }
+.page-hero-inner:not(:has(.page-hero-visual)) {
+  grid-template-columns: 1fr;
+}
 .page-hero-text { max-width: 540px; }
 .page-hero h1 { font-size: clamp(2.25rem, 4vw, 3.5rem); margin-bottom: 1.25rem; }
 .page-hero p  { font-size: 1.05rem; color: #999; max-width: 540px; line-height: 1.8; }
