@@ -76,10 +76,6 @@ body {
 }
 .step {
   border-radius: 14px;
-  border: 1px solid var(--border-inner) !important;
-  border-right: 1px solid var(--border-inner) !important;
-  border-bottom: 1px solid var(--border-inner) !important;
-  background: var(--white);
   box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
