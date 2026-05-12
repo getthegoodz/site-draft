@@ -332,7 +332,7 @@ img { display: block; width: 100%; }
   color: var(--black);
 }
 
-.step-icon-fg { fill: var(--white); }
+.step-icon-fg { fill: var(--step-bg, var(--amber)); }
 
 .step-rule {
   border: none;
