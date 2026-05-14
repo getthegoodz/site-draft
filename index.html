@@ -38,6 +38,37 @@
     }
     .two-audience h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); margin-bottom: 1.25rem; }
     .two-audience p { font-size: 1rem; color: var(--text-light); line-height: 1.85; max-width: 640px; margin: 0 auto; }
+
+    .video-section {
+      background: var(--white);
+      border-bottom: var(--border);
+      padding: 5rem 2rem;
+    }
+    .video-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .video-text h2 { font-size: clamp(1.6rem, 3vw, 2.25rem); margin-bottom: 1rem; }
+    .video-text p { color: var(--text-light); line-height: 1.85; max-width: 480px; }
+    .video-frame { display: flex; justify-content: center; }
+    .video-frame video {
+      width: 100%;
+      max-width: 360px;
+      aspect-ratio: 4/5;
+      background: #000;
+      border: var(--border);
+      border-radius: 4px;
+      object-fit: cover;
+    }
+    @media (max-width: 900px) {
+      .video-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .video-text { text-align: center; }
+      .video-text p { margin: 0 auto; }
+    }
   </style>
 </head>
 <body>
@@ -77,6 +108,19 @@
     <p>Made from beautiful, eco-friendly basswood, Goodz contain a hidden chip that lets you instantly access streaming music: Bandcamp, Spotify, YouTube, anywhere you listen. We make them for two kinds of people: the ones who want to hold the music they love, and the artists who want to give their fans something to collect.</p>
   </div>
 </div>
+
+<!-- VIDEO EXPLAINER -->
+<section class="video-section">
+  <div class="video-inner">
+    <div class="video-text">
+      <h2>Tap. That's the whole thing</h2>
+      <p>Hold any modern phone near a Goodz card. The music you put on it opens in their browser. No app, no account, no friction. Twenty seconds, start to play.</p>
+    </div>
+    <div class="video-frame">
+      <video src="photos/explainer.mp4" poster="photos/explainer-poster.webp" autoplay muted loop playsinline controls preload="metadata" aria-label="A 20-second explainer video showing a Goodz card being tapped with a phone, which opens a Miles Davis album on Spotify."></video>
+    </div>
+  </div>
+</section>
 
 <!-- PRODUCT CARDS -->
 <div class="product-grid">

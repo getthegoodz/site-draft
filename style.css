@@ -662,6 +662,27 @@ img { display: block; width: 100%; }
   background: var(--white);
   border: var(--border);
 }
+
+.video-callout {
+  margin: 1.5rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 220px;
+}
+.video-callout video {
+  width: 100%;
+  aspect-ratio: 4/5;
+  background: #000;
+  border: var(--border);
+  border-radius: 4px;
+  display: block;
+}
+.video-callout-label {
+  font-size: 0.78rem;
+  color: var(--text-light);
+  font-weight: 600;
+}
 .bandcamp-img img {
   position: absolute;
   top: 50%;
