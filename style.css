@@ -655,6 +655,23 @@ img { display: block; width: 100%; }
 .bandcamp-text h2 { font-size: 2rem; margin-bottom: 1rem; }
 .bandcamp-text p  { color: #888; line-height: 1.8; margin-bottom: 1.25rem; }
 
+.bandcamp-img {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--white);
+  border: var(--border);
+}
+.bandcamp-img img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 140%;
+  height: 140%;
+  object-fit: cover;
+  transform: translate(-50%, -50%) rotate(-17deg);
+}
+
 .bandcamp-features { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
 .bandcamp-features li {
   display: flex;
