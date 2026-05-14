@@ -302,14 +302,14 @@ img { display: block; width: 100%; }
   margin-top: 2.5rem;
 }
 
-.step {
+.steps .step {
   --step-bg: var(--amber);
   padding: 2.5rem;
   border: 2px solid var(--black);
   background: var(--step-bg);
   color: var(--black);
 }
-.step p { color: inherit; }
+.steps .step p { color: inherit; }
 
 .step-illo {
   position: relative;
@@ -346,9 +346,9 @@ img { display: block; width: 100%; }
   margin: 1rem 0;
 }
 
-.step h3 { font-size: 1rem; margin-bottom: 0.6rem; }
-.step p  { font-size: 0.875rem; color: var(--text-light); line-height: 1.7; }
-.step-note { margin-top: 0.6rem; font-size: 0.75rem; color: #aaa; }
+.steps .step h3 { font-size: 1rem; margin-bottom: 0.6rem; }
+.steps .step p  { font-size: 0.875rem; color: var(--text-light); line-height: 1.7; }
+.steps .step .step-note { margin-top: 0.6rem; font-size: 0.75rem; color: #aaa; }
 
 /* ── COMPAT NOTE BAR ── */
 .compat-bar {
