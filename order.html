@@ -795,31 +795,29 @@
         </div>
       </div>
 
-      <!-- Option 1: Packaging -->
+      <!-- Option: Back Design -->
       <div class="option-section">
-        <div class="option-section-label">Packaging</div>
-        <div class="option-cards" data-option="sleeve">
-          <div class="option-card selected" data-value="no-sleeve">
+        <div class="option-section-label">Back design</div>
+        <div class="option-cards" data-option="back">
+          <div class="option-card selected" data-value="standard">
+            <div class="option-card-thumb">
+              <img src="templates/Goodz_Standard_back.png" alt="Standard Goodz back">
+            </div>
+            <div class="option-card-title">Standard Goodz Back</div>
+          </div>
+          <div class="option-card" data-value="custom">
             <div class="option-card-icon">
               <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="2" y="2" width="22" height="22" rx="4" stroke="currentColor" stroke-width="2"/>
+                <path d="M13 8v10M8 13h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
               </svg>
             </div>
-            <div class="option-card-title">No Sleeve</div>
-          </div>
-          <div class="option-card" data-value="sleeve">
-            <div class="option-card-icon">
-              <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="1" y="1" width="24" height="24" rx="3" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4,2"/>
-                <rect x="4" y="4" width="18" height="18" rx="3" stroke="currentColor" stroke-width="2"/>
-              </svg>
-            </div>
-            <div class="option-card-title">With Sleeve <span class="option-upcharge">+$0.20/unit</span></div>
+            <div class="option-card-title">Upload My Own Back <span class="option-upcharge">+$0.10/unit</span></div>
           </div>
         </div>
       </div>
 
-      <!-- Option 2: Keychain Hole -->
+      <!-- Option: Keychain Hole -->
       <div class="option-section">
         <div class="option-section-label">Keychain</div>
         <div class="option-cards" data-option="keychain">
@@ -852,24 +850,26 @@
         </div>
       </div>
 
-      <!-- Option 3: Back Design -->
-      <div class="option-section">
-        <div class="option-section-label">Back design</div>
-        <div class="option-cards" data-option="back">
-          <div class="option-card selected" data-value="standard">
-            <div class="option-card-thumb">
-              <img src="templates/Goodz_Standard_back.png" alt="Standard Goodz back">
-            </div>
-            <div class="option-card-title">Standard Goodz Back</div>
-          </div>
-          <div class="option-card" data-value="custom">
+      <!-- Option: Packaging (hidden for now, waiting to offer) -->
+      <div class="option-section" style="display:none">
+        <div class="option-section-label">Packaging</div>
+        <div class="option-cards" data-option="sleeve">
+          <div class="option-card selected" data-value="no-sleeve">
             <div class="option-card-icon">
               <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="2" y="2" width="22" height="22" rx="4" stroke="currentColor" stroke-width="2"/>
-                <path d="M13 8v10M8 13h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
               </svg>
             </div>
-            <div class="option-card-title">Upload My Own Back <span class="option-upcharge">+$0.10/unit</span></div>
+            <div class="option-card-title">No Sleeve</div>
+          </div>
+          <div class="option-card" data-value="sleeve">
+            <div class="option-card-icon">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="1" y="1" width="24" height="24" rx="3" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4,2"/>
+                <rect x="4" y="4" width="18" height="18" rx="3" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </div>
+            <div class="option-card-title">With Sleeve <span class="option-upcharge">+$0.20/unit</span></div>
           </div>
         </div>
       </div>
@@ -901,7 +901,7 @@
         <div class="summary-list">
           <div class="summary-row"><span>Quantity</span><span id="summary-qty"></span></div>
           <div class="summary-row"><span>Music</span><span id="summary-music"></span></div>
-          <div class="summary-row"><span>Packaging</span><span id="summary-sleeve"></span></div>
+          <div class="summary-row" style="display:none"><span>Packaging</span><span id="summary-sleeve"></span></div>
           <div class="summary-row"><span>Keychain</span><span id="summary-keychain"></span></div>
           <div class="summary-row"><span>Back design</span><span id="summary-back"></span></div>
           <div class="summary-row summary-row-total"><span>Price</span><span id="summary-price"></span></div>
