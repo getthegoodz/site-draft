@@ -437,8 +437,12 @@
     }
     .summary-section .summary-row-total {
       border-top: 2px solid var(--black);
+      border-bottom: none;
       padding-top: 1rem;
       margin-top: 0.25rem;
+    }
+    .summary-section .summary-row:has(+ .summary-row-total) {
+      border-bottom: none;
     }
     .summary-section .summary-row-total > span:first-child,
     .summary-section .summary-row-total > span:last-child {
@@ -783,7 +787,7 @@
 
       <!-- CTA -->
       <div class="cta-block">
-        <button class="btn-upload" onclick="continueToUpload()">Upload Your Artwork &rarr;</button>
+        <button class="btn-upload" onclick="continueToUpload()">Continue to Music &rarr;</button>
       </div>
 
     </div><!-- /config-col -->

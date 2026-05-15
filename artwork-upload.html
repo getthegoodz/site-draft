@@ -645,16 +645,30 @@
     .template-shortcut a:hover { text-decoration: underline; }
 
     /* Music step */
-    .mode-toggle {
-      display: flex; gap: 0.6rem; margin-bottom: 1rem;
+    .music-source-row {
+      display: flex; align-items: center; gap: 0.75rem;
+      margin-bottom: 1.25rem; flex-wrap: wrap;
     }
-    .mode-btn {
-      flex: 1; padding: 0.85rem 0.9rem; background: #fff; border: 1.5px solid var(--border);
-      border-radius: 12px; font-size: 0.85rem; font-weight: 600; color: var(--muted); cursor: pointer;
-      transition: all 0.12s; font-family: 'DM Sans', sans-serif; text-align: center;
+    .music-source-label {
+      font-size: 0.85rem; font-weight: 700; color: var(--text);
     }
-    .mode-btn:hover { border-color: var(--black); }
-    .mode-btn.active { background: var(--yellow); border-color: var(--black); color: var(--black); }
+    .music-select-wrap { position: relative; flex: 1; min-width: 0; max-width: 260px; }
+    .music-select {
+      width: 100%; appearance: none; -webkit-appearance: none; -moz-appearance: none;
+      padding: 0.75rem 2.4rem 0.75rem 0.9rem;
+      border: 1.5px solid var(--border); border-radius: 12px; background: #fff;
+      font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 700;
+      color: var(--black); cursor: pointer; line-height: 1.2;
+      transition: border-color 0.12s;
+    }
+    .music-select:hover, .music-select:focus { border-color: var(--black); outline: none; }
+    .music-select-wrap::after {
+      content: ''; position: absolute; right: 1.1rem; top: 50%;
+      width: 0.5rem; height: 0.5rem;
+      border-right: 2px solid var(--black); border-bottom: 2px solid var(--black);
+      transform: translateY(-75%) rotate(45deg);
+      pointer-events: none;
+    }
 
     .music-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; margin-bottom: 0.75rem; }
     .music-desc a { color: var(--black); font-weight: 700; text-decoration: underline; }
@@ -789,8 +803,8 @@
       <div class="step-seg"        data-step="2" onclick="handleStepClick(2)"></div>
     </div>
     <div class="step-labels">
-      <span data-label="0" class="active">Artwork</span>
-      <span data-label="1">Music</span>
+      <span data-label="0" class="active">Music</span>
+      <span data-label="1">Artwork</span>
       <span data-label="2">Review</span>
     </div>
   </div>
@@ -799,9 +813,80 @@
 
 <main class="layout">
 
-  <!-- STEP 0: Upload artwork -->
+  <!-- STEP 0: Music -->
   <div class="step active" id="step-0">
-    <h1 class="page-title">Upload your artwork</h1>
+    <h2>Link Your Music</h2>
+    <p class="step-sub">Choose how fans will hear your music when they tap their Goodz.</p>
+
+    <div class="music-source-row">
+      <label class="music-source-label" for="music-source-select">Music Source</label>
+      <div class="music-select-wrap">
+        <select id="music-source-select" class="music-select" onchange="handleMusicSourceChange()">
+          <option value="bandcamp">Bandcamp codes</option>
+          <option value="spotify">Spotify</option>
+          <option value="apple">Apple Music</option>
+          <option value="amazon">Amazon</option>
+          <option value="youtube">YouTube</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Bandcamp codes mode -->
+    <div id="csv-area">
+      <p class="music-desc">Upload the CSV of download codes from Bandcamp. Each Goodz gets one unique redemption link. Need one code per unit ordered. <a href="https://get.bandcamp.help/hc/en-us/articles/23020666567191-Track-album-code-tutorial" target="_blank" rel="noreferrer">How to get codes &rarr;</a></p>
+
+      <div id="csv-upload-zone">
+        <div class="csv-zone" id="csv-zone" onclick="document.getElementById('input-csv').click()">
+          <div id="csv-zone-inner">
+            <div class="csv-icon">&#128203;</div>
+            <div class="csv-title">Upload Bandcamp CSV</div>
+            <div class="csv-sub">Drop file or <span>click to browse</span></div>
+          </div>
+          <input type="file" id="input-csv" class="file-input" accept=".csv">
+        </div>
+        <div id="csv-error" class="csv-error" style="display:none"></div>
+      </div>
+
+      <div id="csv-filled-area" style="display:none">
+        <div class="csv-filled-zone">
+          <span style="font-size:1.4rem">&#10003;</span>
+          <div class="csv-filled-text">
+            <strong id="csv-filled-count"></strong>
+            <span>Bandcamp codes loaded</span>
+          </div>
+        </div>
+        <div class="csv-reset" onclick="resetCSV()">&#8635; Upload a different file</div>
+      </div>
+
+      <div id="csv-success-detail" class="csv-success" style="display:none">
+        <div class="csv-success-title" id="csv-success-title"></div>
+        <div class="csv-success-sub">Each Goodz gets one unique download link.</div>
+        <details class="csv-preview"><summary>Preview first 5 URLs</summary><ul id="csv-url-list"></ul></details>
+      </div>
+      <div id="csv-warning" class="csv-warning" style="display:none"></div>
+    </div>
+
+    <!-- URL mode (everything else) -->
+    <div id="url-area" style="display:none">
+      <p class="music-desc">All Goodz will link to this URL. Works with Bandcamp albums, Spotify, YouTube, SoundCloud, or any link.</p>
+      <input type="url" id="url-input" class="url-input" placeholder="https://yourband.bandcamp.com/album/..." oninput="handleURLInput()">
+      <div class="url-hint">Bandcamp, Spotify, YouTube, or any streaming URL.</div>
+      <div id="url-success" class="csv-success" style="display:none;margin-top:0.75rem">
+        <div class="csv-success-title">&#10003; URL saved</div>
+        <div class="csv-success-sub">All Goodz will link to this URL.</div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <div></div>
+      <button class="btn btn-primary" id="btn-step0" onclick="goToStep(1)" disabled>Next: Upload Artwork &rarr;</button>
+    </div>
+  </div>
+
+  <!-- STEP 1: Upload artwork -->
+  <div class="step" id="step-1">
+    <h2>Upload Your Artwork</h2>
 
     <div class="upload-area">
       <div class="card-wrap" id="card-wrap">
@@ -949,8 +1034,8 @@
     </div>
 
     <div class="btn-row">
-      <div></div>
-      <button class="btn btn-primary" id="btn-step0" onclick="goToStep(1)" disabled>Next: Link Music &rarr;</button>
+      <button class="btn btn-back" onclick="goToStep(0)">&larr; Back to Music</button>
+      <button class="btn btn-primary" id="btn-step1" onclick="goToStep(2)" disabled>Next: Review &rarr;</button>
     </div>
 
     <!-- Print specs reference -->
@@ -974,70 +1059,6 @@
       </div>
     </section>
   </div>
-
-    <!-- STEP 1: Music -->
-    <div class="step" id="step-1">
-      <h2>Link Your Music</h2>
-      <p class="step-sub">Choose how fans will hear your music when they tap their Goodz.</p>
-
-      <p class="step-sub" style="margin-bottom:0.85rem">Two ways to do this: every Goodz can have its own Bandcamp download code (best for selling at shows), or every Goodz can link to the same album or playlist (best for streaming-first releases).</p>
-
-      <div class="mode-toggle">
-        <button class="mode-btn active" id="mode-csv-btn" onclick="setMode('csv')">Bandcamp download codes (CSV)</button>
-        <button class="mode-btn"        id="mode-url-btn" onclick="setMode('url')">Link to album or song</button>
-      </div>
-
-      <!-- CSV mode -->
-      <div id="csv-area">
-        <p class="music-desc">Upload the CSV of download codes from Bandcamp. Each Goodz gets one unique redemption link. Need one code per unit ordered. <a href="https://get.bandcamp.help/hc/en-us/articles/23020666567191-Track-album-code-tutorial" target="_blank" rel="noreferrer">How to get codes &rarr;</a></p>
-
-        <div id="csv-upload-zone">
-          <div class="csv-zone" id="csv-zone" onclick="document.getElementById('input-csv').click()">
-            <div id="csv-zone-inner">
-              <div class="csv-icon">&#128203;</div>
-              <div class="csv-title">Upload Bandcamp CSV</div>
-              <div class="csv-sub">Drop file or <span>click to browse</span></div>
-            </div>
-            <input type="file" id="input-csv" class="file-input" accept=".csv">
-          </div>
-          <div id="csv-error" class="csv-error" style="display:none"></div>
-        </div>
-
-        <div id="csv-filled-area" style="display:none">
-          <div class="csv-filled-zone">
-            <span style="font-size:1.4rem">&#10003;</span>
-            <div class="csv-filled-text">
-              <strong id="csv-filled-count"></strong>
-              <span>Bandcamp codes loaded</span>
-            </div>
-          </div>
-          <div class="csv-reset" onclick="resetCSV()">&#8635; Upload a different file</div>
-        </div>
-
-        <div id="csv-success-detail" class="csv-success" style="display:none">
-          <div class="csv-success-title" id="csv-success-title"></div>
-          <div class="csv-success-sub">Each Goodz gets one unique download link.</div>
-          <details class="csv-preview"><summary>Preview first 5 URLs</summary><ul id="csv-url-list"></ul></details>
-        </div>
-        <div id="csv-warning" class="csv-warning" style="display:none"></div>
-      </div>
-
-      <!-- URL mode -->
-      <div id="url-area" style="display:none">
-        <p class="music-desc">All Goodz will link to this URL. Works with Bandcamp albums, Spotify, YouTube, SoundCloud, or any link.</p>
-        <input type="url" id="url-input" class="url-input" placeholder="https://yourband.bandcamp.com/album/..." oninput="handleURLInput()">
-        <div class="url-hint">Bandcamp, Spotify, YouTube, or any streaming URL.</div>
-        <div id="url-success" class="csv-success" style="display:none;margin-top:0.75rem">
-          <div class="csv-success-title">&#10003; URL saved</div>
-          <div class="csv-success-sub">All Goodz will link to this URL.</div>
-        </div>
-      </div>
-
-      <div class="btn-row">
-        <button class="btn btn-back" onclick="goToStep(0)">&larr; Back</button>
-        <button class="btn btn-primary" id="btn-step1" onclick="goToStep(2)" disabled>Next: Review &rarr;</button>
-      </div>
-    </div>
 
     <!-- STEP 2: Review -->
     <div class="step" id="step-2">
@@ -1451,11 +1472,29 @@ function handleURLInput() {
 
 function setMode(mode) {
   state.musicMode = mode;
-  document.getElementById('mode-csv-btn').classList.toggle('active', mode === 'csv');
-  document.getElementById('mode-url-btn').classList.toggle('active', mode === 'url');
   document.getElementById('csv-area').style.display = mode === 'csv' ? 'block' : 'none';
   document.getElementById('url-area').style.display = mode === 'url' ? 'block' : 'none';
   updateStepButtons();
+}
+
+const URL_PLACEHOLDERS = {
+  spotify: 'https://open.spotify.com/album/...',
+  apple:   'https://music.apple.com/album/...',
+  amazon:  'https://music.amazon.com/albums/...',
+  youtube: 'https://www.youtube.com/playlist?list=...',
+  other:   'https://...',
+};
+
+function handleMusicSourceChange() {
+  const sel = document.getElementById('music-source-select');
+  if (!sel) return;
+  const value = sel.value;
+  state.musicSource = value;
+  const urlInput = document.getElementById('url-input');
+  if (urlInput) {
+    urlInput.placeholder = URL_PLACEHOLDERS[value] || 'https://yourband.bandcamp.com/album/...';
+  }
+  setMode(value === 'bandcamp' ? 'csv' : 'url');
 }
 
 // ---- Step navigation ----
@@ -1491,8 +1530,8 @@ function updateStepButtons() {
   const frontReady = !!state.frontArt && !state.uploadingFront;
   const backReady = !needsBack() || (!!state.backArt && !state.uploadingBack);
 
-  document.getElementById('btn-step0').disabled = !(frontReady && backReady);
-  document.getElementById('btn-step1').disabled = !hasMusic() || state.uploadingCSV;
+  document.getElementById('btn-step0').disabled = !hasMusic() || state.uploadingCSV;
+  document.getElementById('btn-step1').disabled = !(frontReady && backReady);
 
   const orderReady = frontReady && backReady && hasMusic() && !state.uploadingCSV;
   const orderBtn = document.getElementById('btn-order');
@@ -1652,6 +1691,15 @@ document.getElementById('card').addEventListener('click', () => {
 renderCardActions();
 setupFileInput('input-front', handleFrontFile);
 setupFileInput('input-back',  handleBackFile);
+
+// Pre-select music source from the order config
+(function initMusicSource() {
+  const sel = document.getElementById('music-source-select');
+  if (!sel) return;
+  const fromOrder = orderConfig && orderConfig.music ? orderConfig.music : 'bandcamp';
+  if ([...sel.options].some(o => o.value === fromOrder)) sel.value = fromOrder;
+  handleMusicSourceChange();
+})();
 
 const csvZone = document.getElementById('csv-zone');
 if (csvZone) {
