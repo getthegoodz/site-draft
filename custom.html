@@ -41,6 +41,163 @@
       .audience-grid { grid-template-columns: 1fr; }
       .audience-card { border-right: none; border-bottom: var(--border-inner); }
     }
+
+    /* Artwork guidelines (mirrored from Start Your Order page) */
+    .faq-item-guidelines .faq-a { max-width: none; }
+    .guidelines-section { margin: 0; }
+    .option-section-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-light);
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .guidelines-inner {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1.75rem;
+      align-items: start;
+      margin-top: 0.75rem;
+    }
+    .guidelines-diagram { flex-shrink: 0; }
+    .diagram-legend {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+    .legend-toggle-wrap {
+      display: flex;
+      justify-content: flex-start;
+    }
+    .legend-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.7rem;
+      font-size: 0.8rem;
+      color: var(--text);
+      line-height: 1.45;
+    }
+    .legend-mark {
+      width: 26px;
+      flex-shrink: 0;
+      display: inline-block;
+      margin-top: 0.3rem;
+    }
+    .legend-text { flex: 1; min-width: 0; }
+    .legend-title-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.5rem;
+      margin-bottom: 0.1rem;
+    }
+    .legend-title { font-weight: 700; color: var(--text); }
+    .legend-dim { font-size: 0.78rem; font-weight: 500; color: var(--text-light); }
+    .legend-desc { font-size: 0.74rem; color: var(--text-light); }
+    .legend-mark-bleed {
+      height: 14px;
+      background: rgba(0, 0, 0, 0.32);
+      border-radius: 2px;
+    }
+
+    /* Segmented in/mm toggle */
+    .unit-toggle-group {
+      display: inline-flex;
+      border: 1px solid #cdc8b2;
+      border-radius: 6px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .unit-toggle-btn {
+      padding: 0.32rem 0.95rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      font-family: 'DM Sans', sans-serif;
+      background: transparent;
+      border: none;
+      color: var(--text-light);
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      transition: background 0.15s, color 0.15s;
+    }
+    .unit-toggle-btn + .unit-toggle-btn { border-left: 1px solid #cdc8b2; }
+    .unit-toggle-btn.active { background: var(--black); color: var(--white); }
+    .unit-toggle-btn:hover:not(.active) { background: var(--off-white); color: var(--black); }
+
+    .guidelines-downloads {}
+    .dl-heading {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 0.6rem;
+    }
+    .template-tiles {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+    .template-tile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.75rem 0.6rem;
+      border: 1.5px solid #cdc8b2;
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--text);
+      transition: border-color 0.12s, box-shadow 0.12s;
+      min-width: 68px;
+      text-align: center;
+      background: #fff;
+    }
+    .template-tile:hover { border-color: var(--black); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .tile-ext {
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 0.25rem 0.45rem;
+      border-radius: 4px;
+      letter-spacing: 0.04em;
+    }
+    .tile-ext.ai { background: #E46F2A; color: #fff; }
+    .tile-ext.pdf { background: #DC2626; color: #fff; }
+    .tile-label { font-size: 0.68rem; color: var(--text-light); font-weight: 600; }
+    .tile-dl { font-size: 0.75rem; color: #bbb; }
+
+    .spec-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .spec-item {
+      position: relative;
+      padding-left: 0.9rem;
+      font-size: 0.78rem;
+      color: var(--text-light);
+      line-height: 1.5;
+    }
+    .spec-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.5rem;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--text-light);
+    }
+    .spec-item strong { color: var(--text); font-weight: 700; }
+
+    @media (max-width: 860px) {
+      .guidelines-inner { grid-template-columns: 1fr; }
+      .guidelines-diagram { display: flex; flex-direction: column; align-items: center; }
+    }
   </style>
 </head>
 <body>
@@ -335,9 +492,102 @@
     <div class="faq-a">50 units for a custom printed run. Want to try one first? Order a single card for $5, your artwork, your link, before committing.</div>
   </div>
 
-  <div class="faq-item">
+  <div class="faq-item faq-item-guidelines">
     <button class="faq-q" onclick="toggleFaq(this)">What file do I need for artwork? <span class="icon">+</span></button>
-    <div class="faq-a">PNG or TIFF, 300 DPI, RGB, at least 1000×1000px. Our builder shows a live preview with bleed guides before you submit.</div>
+    <div class="faq-a">
+      <div class="guidelines-section" id="artwork-guidelines">
+        <div class="option-section-label">Artwork Guidelines</div>
+
+        <div class="guidelines-inner">
+          <div class="guidelines-diagram">
+            <svg viewBox="0 0 70 70" xmlns="http://www.w3.org/2000/svg" style="width:200px;height:200px;display:block;border-radius:4px;overflow:hidden">
+              <defs>
+                <mask id="bleed-mask-faq" maskUnits="userSpaceOnUse">
+                  <rect width="70" height="70" fill="white"/>
+                  <rect x="2.5" y="2.5" width="65" height="65" rx="6" ry="6" fill="black"/>
+                </mask>
+              </defs>
+              <rect width="70" height="70" fill="#fff"/>
+              <rect width="70" height="70" fill="#000" fill-opacity="0.32" mask="url(#bleed-mask-faq)"/>
+              <rect x="2.5" y="2.5" width="65" height="65" rx="6" ry="6"
+                    fill="none" stroke="rgba(0,0,0,0.82)" stroke-width="0.45"/>
+              <rect x="4" y="4" width="62" height="62" rx="4.5" ry="4.5"
+                    fill="none" stroke="rgba(0,0,0,0.65)" stroke-width="0.3" stroke-dasharray="0.9 0.7"/>
+              <text x="35" y="38" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="3.6" font-weight="600" fill="rgba(0,0,0,0.55)">Your artwork</text>
+            </svg>
+          </div>
+
+          <div class="guidelines-downloads">
+            <div class="diagram-legend">
+              <div class="legend-toggle-wrap">
+                <div class="unit-toggle-group" id="unit-toggle">
+                  <button type="button" class="unit-toggle-btn active" data-unit="in">in</button>
+                  <button type="button" class="unit-toggle-btn" data-unit="mm">mm</button>
+                </div>
+              </div>
+
+              <div class="legend-item">
+                <span class="legend-mark legend-mark-bleed"></span>
+                <div class="legend-text">
+                  <div class="legend-title-row">
+                    <span class="legend-title">Canvas (with bleed)</span>
+                    <span class="legend-dim"><span data-mm-value data-mm="70">2.76"</span> &times; <span data-mm-value data-mm="70">2.76"</span></span>
+                  </div>
+                  <div class="legend-desc">Full artwork file. The outer <span data-mm-value data-mm="2.5">0.10"</span> is bleed and gets cut off when the tile is trimmed.</div>
+                </div>
+              </div>
+
+              <div class="legend-item">
+                <svg class="legend-mark" width="26" height="6" viewBox="0 0 26 6" aria-hidden="true">
+                  <line x1="0" y1="3" x2="26" y2="3" stroke="rgba(0,0,0,0.82)" stroke-width="1.5"/>
+                </svg>
+                <div class="legend-text">
+                  <div class="legend-title-row">
+                    <span class="legend-title">Trim</span>
+                    <span class="legend-dim"><span data-mm-value data-mm="65">2.56"</span> &times; <span data-mm-value data-mm="65">2.56"</span>, <span data-mm-value data-mm="6">0.24"</span> corners</span>
+                  </div>
+                  <div class="legend-desc">Cut edge of the goodz.</div>
+                </div>
+              </div>
+
+              <div class="legend-item">
+                <svg class="legend-mark" width="26" height="6" viewBox="0 0 26 6" aria-hidden="true">
+                  <line x1="0" y1="3" x2="26" y2="3" stroke="rgba(0,0,0,0.65)" stroke-width="1.2" stroke-dasharray="3,2"/>
+                </svg>
+                <div class="legend-text">
+                  <div class="legend-title-row">
+                    <span class="legend-title">Safe-area line</span>
+                    <span class="legend-dim"><span data-mm-value data-mm="1.5">0.06"</span> inside trim</span>
+                  </div>
+                  <div class="legend-desc">Keep important elements inside this line.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="spec-list" style="margin-top:1.5rem">
+              <div class="spec-item"><strong>PNG or TIFF</strong> file format (lossless)</div>
+              <div class="spec-item"><strong>300 DPI</strong> minimum resolution. We recommend at least 827&times;827px.</div>
+              <div class="spec-item"><strong><span data-mm-value data-mm="70">2.76"</span> &times; <span data-mm-value data-mm="70">2.76"</span> canvas</strong> with <strong><span data-mm-value data-mm="2.5">0.10"</span> bleed</strong> on all sides. Keep important elements <strong><span data-mm-value data-mm="1.5">0.06"</span> inside</strong> the trim edge.</div>
+              <div class="spec-item"><strong>RGB</strong> color mode</div>
+            </div>
+
+            <div class="dl-heading" style="margin-top:1.5rem">Download Artwork Template</div>
+            <div class="template-tiles">
+              <a href="templates/Goodz_Template_Front.ai" class="template-tile" download title="Download Illustrator template">
+                <span class="tile-ext ai">ai</span>
+                <span class="tile-label">Illustrator</span>
+                <span class="tile-dl">&#8595;</span>
+              </a>
+              <a href="templates/GoodzArtTemplate.pdf" class="template-tile" download title="Download PDF template">
+                <span class="tile-ext pdf">pdf</span>
+                <span class="tile-label">PDF</span>
+                <span class="tile-dl">&#8595;</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="faq-item">
@@ -389,6 +639,26 @@
 
 <script>
 function toggleFaq(btn) { btn.parentElement.classList.toggle('open'); }
+
+// In/mm toggle for the artwork guidelines legend
+function fmtIn(mm) { return (mm / 25.4).toFixed(2) + '"'; }
+function fmtMm(mm) { return (Math.round(mm * 10) / 10) + ' mm'; }
+function applyUnits(unit) {
+  document.querySelectorAll('[data-mm-value]').forEach(el => {
+    const mm = parseFloat(el.dataset.mm);
+    el.textContent = unit === 'in' ? fmtIn(mm) : fmtMm(mm);
+  });
+}
+document.querySelectorAll('.unit-toggle-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const unit = btn.dataset.unit;
+    document.querySelectorAll('.unit-toggle-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.unit === unit)
+    );
+    applyUnits(unit);
+  });
+});
+applyUnits('in');
 </script>
 </body>
 </html>
