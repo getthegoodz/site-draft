@@ -26,6 +26,7 @@
       --warn-bg: #fffbeb;  --warn-border: #fde68a;  --warn-text: #92400e;
     }
 
+    html, body { overflow-x: hidden; }
     body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); }
 
     /* Page header (sticky) */
@@ -692,7 +693,9 @@
     .csv-preview ul { margin: 0.4rem 0 0 1.25rem; font-size: 0.68rem; color: var(--muted); word-break: break-all; }
 
     .url-input {
-      width: 100%; padding: 0.75rem 1rem; border-radius: 8px;
+      display: block;
+      width: 100%; min-width: 0; max-width: 100%;
+      padding: 0.75rem 1rem; border-radius: 8px;
       border: 1.5px solid var(--border); font-size: 0.9rem; font-family: 'DM Sans', sans-serif;
       transition: border-color 0.15s; background: #fff;
     }
@@ -1562,7 +1565,6 @@ function renderSummary() {
   } else {
     rows.push({ label: 'Back design', value: 'Standard Goodz Back' });
   }
-  rows.push({ label: 'Packaging',     value: cfg.sleeve      ? 'With Sleeve (+$0.20/unit)' : 'No Sleeve' });
   rows.push({ label: 'Keychain hole', value: cfg.keychainHole === 'none' || !cfg.keychainHole ? 'None' : `${cfg.keychainHole === 'top-left' ? 'Top Left' : 'Top Right'} (+$0.15/unit)` });
   rows.push({ label: 'Music',
     value: state.musicMode === 'csv'
