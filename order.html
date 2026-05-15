@@ -278,6 +278,43 @@
     }
     .option-card.selected .option-upcharge { color: rgba(14,12,10,0.6); }
 
+    /* Music dropdown */
+    .music-select-wrap {
+      position: relative;
+      max-width: 320px;
+    }
+    .music-select {
+      width: 100%;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      padding: 0.85rem 2.4rem 0.85rem 0.9rem;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      background: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--black);
+      cursor: pointer;
+      line-height: 1.2;
+      transition: border-color 0.12s;
+    }
+    .music-select:hover,
+    .music-select:focus { border-color: var(--black); outline: none; }
+    .music-select-wrap::after {
+      content: '';
+      position: absolute;
+      right: 1.1rem;
+      top: 50%;
+      width: 0.5rem;
+      height: 0.5rem;
+      border-right: 2px solid var(--black);
+      border-bottom: 2px solid var(--black);
+      transform: translateY(-75%) rotate(45deg);
+      pointer-events: none;
+    }
+
     /* Pricing grid */
     .qty-section { margin-bottom: 0; }
     .pricing-grid {
@@ -722,6 +759,21 @@
 
       <hr class="option-divider">
 
+      <!-- Option 0: Music platform -->
+      <div class="option-section">
+        <div class="option-section-label">Music</div>
+        <div class="music-select-wrap">
+          <select class="music-select" id="music-select">
+            <option value="bandcamp">Bandcamp</option>
+            <option value="spotify">Spotify</option>
+            <option value="apple">Apple Music</option>
+            <option value="amazon">Amazon</option>
+            <option value="youtube">YouTube</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+      </div>
+
       <!-- Option 1: Packaging -->
       <div class="option-section">
         <div class="option-section-label">Packaging</div>
@@ -827,6 +879,7 @@
         <div class="option-section-label">Summary</div>
         <div class="summary-list">
           <div class="summary-row"><span>Quantity</span><span id="summary-qty"></span></div>
+          <div class="summary-row"><span>Music</span><span id="summary-music"></span></div>
           <div class="summary-row"><span>Packaging</span><span id="summary-sleeve"></span></div>
           <div class="summary-row"><span>Keychain</span><span id="summary-keychain"></span></div>
           <div class="summary-row"><span>Back design</span><span id="summary-back"></span></div>
@@ -953,10 +1006,20 @@ const TIERS = [
 const UPCHARGES = { sleeve: 0.20, keychain: 0.15, customBack: 0.10 };
 
 let state = {
+  music:    'bandcamp',
   sleeve:   'no-sleeve',
   keychain: 'none',
   back:     'standard',
   tierIdx:  0,
+};
+
+const MUSIC_LABELS = {
+  bandcamp: 'Bandcamp',
+  spotify:  'Spotify',
+  apple:    'Apple Music',
+  amazon:   'Amazon',
+  youtube:  'YouTube',
+  other:    'Other',
 };
 
 function totalUpcharge() {
@@ -1061,6 +1124,7 @@ function updateSummary() {
 
   document.getElementById('summary-qty').textContent =
     `${tier.qty.toLocaleString()}${tier.max ? '' : '+'} Goodz`;
+  document.getElementById('summary-music').textContent = MUSIC_LABELS[state.music] || 'Other';
   document.getElementById('summary-sleeve').textContent =
     state.sleeve === 'sleeve' ? 'With sleeve' : 'No sleeve';
   document.getElementById('summary-keychain').textContent =
@@ -1077,6 +1141,8 @@ function continueToUpload() {
   sessionStorage.setItem('goodzOrderConfig', JSON.stringify({
     quantity:         tier.qty,
     tierMax:          tier.max,
+    music:            state.music,
+    musicLabel:       MUSIC_LABELS[state.music] || 'Other',
     sleeve:           state.sleeve === 'sleeve',
     keychainHole:     state.keychain,
     backDesign:       state.back,
@@ -1154,6 +1220,16 @@ document.querySelectorAll('.option-cards').forEach(group => {
     card.addEventListener('click', () => selectOption(opt, card.dataset.value));
   });
 });
+
+// Music dropdown
+const musicSelect = document.getElementById('music-select');
+if (musicSelect) {
+  musicSelect.value = state.music;
+  musicSelect.addEventListener('change', () => {
+    state.music = musicSelect.value;
+    updateSummary();
+  });
+}
 
 renderTable();
 updateSummary();
