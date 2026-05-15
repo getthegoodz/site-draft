@@ -422,6 +422,28 @@
       font-weight: 700;
       color: var(--black);
     }
+
+    /* Summary card */
+    .summary-section {
+      background: var(--off-white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.1rem 1.25rem 1rem;
+      margin-top: 1.75rem;
+    }
+    .summary-section .summary-list {
+      margin: 0;
+      border-top: none;
+    }
+    .summary-section .summary-row-total {
+      border-top: 2px solid var(--black);
+      padding-top: 1rem;
+      margin-top: 0.25rem;
+    }
+    .summary-section .summary-row-total > span:first-child,
+    .summary-section .summary-row-total > span:last-child {
+      font-size: 1.2rem;
+    }
     .btn-upload {
       display: block;
       width: 100%;
@@ -644,6 +666,8 @@
         </div>
       </div>
 
+      <hr class="option-divider">
+
       <!-- Option: Back Design -->
       <div class="option-section">
         <div class="option-section-label">Back design</div>
@@ -665,6 +689,8 @@
           </div>
         </div>
       </div>
+
+      <hr class="option-divider">
 
       <!-- Option: Keychain Hole -->
       <div class="option-section">
@@ -741,8 +767,6 @@
         <p class="pricing-contact">Need 3,000+? <a href="mailto:hello@getthegoodz.com">Contact us for bulk pricing &rarr;</a></p>
         <p class="pricing-note" id="pricing-upcharge-note" style="display:none"></p>
       </div>
-
-      <hr class="option-divider">
 
       <!-- Summary -->
       <div class="summary-section">
