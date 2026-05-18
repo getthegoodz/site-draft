@@ -286,7 +286,7 @@
 <!-- PROOF BAR -->
 <div class="proof-bar">
   <div class="proof-item">
-    <strong class="proof-value">2–3 weeks</strong>
+    <strong class="proof-value">4–5 weeks</strong>
     <span class="proof-text">avg. turnaround</span>
   </div>
   <div class="proof-item">
@@ -320,7 +320,7 @@
         </div>
         <hr class="step-rule">
         <h3>Upload Your Artwork</h3>
-        <p>PNG or TIFF, 300 DPI, RGB. Our builder shows a live print preview before you submit.</p>
+        <p>Our builder shows a live print preview before you submit. See <a href="#faq-artwork-specs" style="text-decoration:underline">full artwork specs here</a>.</p>
       </div>
       <div class="step">
         <div class="step-illo">
@@ -351,7 +351,7 @@
         </div>
         <hr class="step-rule">
         <h3>We Print &amp; Ship</h3>
-        <p>UV-printed on basswood, chip encoded, ships in 2–3 weeks from artwork approval.</p>
+        <p>UV-printed on basswood, chip encoded, ships in 4–5 weeks from artwork approval.</p>
       </div>
     </div>
   </div>
@@ -476,7 +476,7 @@
 <!-- CTA -->
 <div class="cta-band">
   <h2>Ready to Make Custom Goodz?</h2>
-  <p>Upload your artwork and link your music. Ships in 2–3 weeks.</p>
+  <p>Upload your artwork and link your music. Ships in 4–5 weeks.</p>
   <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
     <a href="order.html" class="btn btn-amber">Start Your Order →</a>
     <a href="https://www.getthegoodz.com/contact" class="btn btn-ghost">Get in touch</a>
@@ -492,7 +492,7 @@
     <div class="faq-a">50 units for a custom printed run. Want to try one first? Order a single card for $5, your artwork, your link, before committing.</div>
   </div>
 
-  <div class="faq-item faq-item-guidelines">
+  <div class="faq-item faq-item-guidelines" id="faq-artwork-specs">
     <button class="faq-q" onclick="toggleFaq(this)">What are the artwork specs? <span class="icon">+</span></button>
     <div class="faq-a">
       <div class="guidelines-section" id="artwork-guidelines">
@@ -602,7 +602,7 @@
 
   <div class="faq-item">
     <button class="faq-q" onclick="toggleFaq(this)">How long does it take? <span class="icon">+</span></button>
-    <div class="faq-a">About 2–3 weeks from artwork approval to delivery. Rush options may be available, contact us if you have a hard deadline.</div>
+    <div class="faq-a">About 4–5 weeks from artwork approval to delivery. Rush options may be available, contact us if you have a hard deadline.</div>
   </div>
 
   <div class="faq-item">
@@ -659,6 +659,22 @@ document.querySelectorAll('.unit-toggle-btn').forEach(btn => {
   });
 });
 applyUnits('in');
+
+// Open a FAQ item when linked to by id (e.g. href="#faq-artwork-specs")
+function openFaqFromHash() {
+  const id = location.hash.replace('#', '');
+  if (!id) return;
+  const item = document.getElementById(id);
+  if (item && item.classList.contains('faq-item')) item.classList.add('open');
+}
+window.addEventListener('hashchange', openFaqFromHash);
+openFaqFromHash();
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('a[href^="#faq-"]');
+  if (!a) return;
+  const item = document.getElementById(a.getAttribute('href').slice(1));
+  if (item) item.classList.add('open');
+});
 </script>
 </body>
 </html>

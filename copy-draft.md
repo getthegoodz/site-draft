@@ -38,7 +38,7 @@
 - Tag: `For Artists & Events`
 - **H2:** Custom Goodz
 - Bullet 1: Your artwork UV-printed on basswood
-- Bullet 2: 50-unit minimum · $3.44/unit · 2–3 week turnaround
+- Bullet 2: 50-unit minimum · $3.44/unit · 4–5 week turnaround
 - Bullet 3: Links to your music, Bandcamp, or any URL
 - Price: `From $3.44 / unit · Min. 50`
 - Button 1 (amber): `Start your order`
@@ -70,7 +70,7 @@ Works with: Spotify · Apple Music · YouTube · SoundCloud · Bandcamp · Any U
 - Section label: `Custom Goodz`
 - **H2:** Merch Fans Actually Keep
 - Body: Your artwork on basswood. Your music in the chip. Fans tap it — your album opens. Used by indie artists, labels, and festivals.
-- Bullet 1: 50-unit minimum · ships in 2–3 weeks
+- Bullet 1: 50-unit minimum · ships in 4–5 weeks
 - Bullet 2: Bandcamp CSV pre-load available
 - Bullet 3: Tap analytics included
 - Button: `Start your order →`
@@ -104,7 +104,7 @@ Works with: Spotify · Apple Music · YouTube · SoundCloud · Bandcamp · Any U
 **A:** Yes — if the link points to a playlist you control (Spotify, Apple Music, etc.), updating that playlist updates what anyone tapping the card hears. The card never needs to change.
 
 **Q:** How long does shipping take?
-**A:** Mixtape Goodz ship in 1–3 business days. Custom Goodz take approximately 2–3 weeks from artwork approval to delivery.
+**A:** Mixtape Goodz ship in 1–3 business days. Custom Goodz take approximately 4–5 weeks from artwork approval to delivery.
 
 ---
 
@@ -225,7 +225,7 @@ Works with: Spotify · Apple Music · YouTube · SoundCloud · Bandcamp · Any U
   Paste a Bandcamp URL, upload download codes (one per card), or link to any URL.
 
 - **Step 03 — We Print & Ship**
-  UV-printed on basswood, chip encoded, ships in 2–3 weeks from artwork approval.
+  UV-printed on basswood, chip encoded, ships in 4–5 weeks from artwork approval.
 
 ### Compat Bar
 What fans need to tap: iPhone 7+ or any modern Android · No app · Opens in their browser in seconds
@@ -270,7 +270,7 @@ What fans need to tap: iPhone 7+ or any modern Android · No app · Opens in the
 
 ### CTA Band
 - **H2:** Ready to Make Custom Goodz?
-- Body: Upload your artwork and link your music. Ships in 2–3 weeks.
+- Body: Upload your artwork and link your music. Ships in 4–5 weeks.
 - Button 1 (amber): `Start Your Order →`
 - Button 2 (ghost): `Get in touch`
 
@@ -288,7 +288,7 @@ What fans need to tap: iPhone 7+ or any modern Android · No app · Opens in the
 **A:** Yes — any Bandcamp album URL, or upload a CSV of download codes (one unique code per card). The builder walks you through both options.
 
 **Q:** How long does it take?
-**A:** About 2–3 weeks from artwork approval to delivery. Rush options may be available — contact us if you have a hard deadline.
+**A:** About 4–5 weeks from artwork approval to delivery. Rush options may be available — contact us if you have a hard deadline.
 
 **Q:** I'm not a musician — can I still order?
 **A:** Absolutely. Custom Goodz are used for weddings, brand activations, hotels, conferences, and more. If you have artwork and a URL, we can make it a Goodz.
