@@ -587,8 +587,7 @@
       <div class="product-heading" id="product-heading">
         <h1 class="product-title">Custom Goodz</h1>
         <div class="product-price-line">
-          <span class="product-price-from">from <strong id="from-price">$2.52/unit</strong></span>
-          <span class="product-min">min. 50 units</span>
+          <span class="product-price-from"><strong>50 goodz from $172</strong> ($3.44/unit)</span>
         </div>
         <p class="product-subtitle">A run of wooden cards, printed with your art, pre-loaded with your music. Fans tap it and your album opens. The physical album is back, this time it streams.</p>
         <ul class="gallery-bullets">
@@ -889,8 +888,10 @@ function selectOption(group, value) {
 }
 
 function updateFromPrice() {
+  const el = document.getElementById('from-price');
+  if (!el) return;
   const cheapest = TIERS[TIERS.length - 1];
-  document.getElementById('from-price').textContent = fmt(unitPrice(cheapest)) + '/unit';
+  el.textContent = fmt(unitPrice(cheapest)) + '/unit';
 }
 
 function updateUpchargeNote() {
