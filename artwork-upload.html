@@ -1356,8 +1356,25 @@ function setView(mode) {
   document.getElementById('thumb-back').classList.toggle('thumb-active', mode === 'back');
   document.getElementById('card-content-front').style.display = mode === 'front' ? '' : 'none';
   document.getElementById('card-content-back').style.display  = mode === 'back'  ? '' : 'none';
+  updateKeychainDot();
   updateCardState();
   renderCardActions();
+}
+
+// Mirror the keychain dot horizontally when viewing the back: a hole on the
+// front-left corner is on the back-right corner, and vice versa.
+function updateKeychainDot() {
+  const dot = document.getElementById('keychain-dot');
+  if (!dot) return;
+  const configured = orderConfig && orderConfig.keychainHole;
+  if (configured !== 'top-left' && configured !== 'top-right') {
+    dot.className = 'keychain-dot';
+    return;
+  }
+  const side = state.viewMode === 'back'
+    ? (configured === 'top-left' ? 'top-right' : 'top-left')
+    : configured;
+  dot.className = 'keychain-dot ' + side;
 }
 
 function addCustomBack() {
