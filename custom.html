@@ -202,6 +202,12 @@
     /* Product-detail variant that hosts the mini gallery */
     .product-detail.with-gallery { grid-template-columns: 4fr 5fr; }
     .product-detail.with-gallery .product-detail-text { padding: 2.5rem 3rem; }
+    @media (max-width: 900px) {
+      .product-detail.with-gallery { grid-template-columns: 1fr; }
+      .product-detail.with-gallery .product-detail-img { max-height: none; min-height: 0 !important; }
+      .product-detail.with-gallery .product-detail-text { padding: 2rem 1.5rem; }
+      .product-detail.with-gallery .gallery-mini { padding: 1rem 1rem 0; max-width: 360px; }
+    }
 
     /* Mini gallery used inside .product-detail */
     .gallery-mini {
