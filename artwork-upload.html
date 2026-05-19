@@ -575,6 +575,7 @@
     .step-seg { flex: 1; height: 3px; border-radius: 2px; background: #e0ddd4; transition: background 0.2s; }
     .step-seg.done   { background: var(--yellow); cursor: pointer; }
     .step-seg.active { background: var(--black); }
+    a.step-seg-static { text-decoration: none; }
     .step-labels { display: flex; }
     .step-labels span {
       flex: 1; text-align: center; font-size: 0.62rem; font-weight: 700;
@@ -801,11 +802,13 @@
   <a href="order.html" class="back-link">&larr; Edit options</a>
   <div class="step-bar-wrapper" id="step-bar-wrapper">
     <div class="step-bar">
+      <a href="order.html" class="step-seg step-seg-static done" title="Edit options" aria-label="Step 1: Options (edit)"></a>
       <div class="step-seg active" data-step="0" onclick="handleStepClick(0)"></div>
       <div class="step-seg"        data-step="1" onclick="handleStepClick(1)"></div>
       <div class="step-seg"        data-step="2" onclick="handleStepClick(2)"></div>
     </div>
     <div class="step-labels">
+      <a href="order.html" class="step-label-static done">Options</a>
       <span data-label="0" class="active">Music</span>
       <span data-label="1">Artwork</span>
       <span data-label="2">Review</span>
@@ -1546,7 +1549,7 @@ function handleMusicSourceChange() {
 function goToStep(n) {
   state.currentStep = n;
   document.querySelectorAll('.step').forEach((el, i) => el.classList.toggle('active', i === n));
-  document.querySelectorAll('.step-seg').forEach((el, i) => {
+  document.querySelectorAll('.step-seg:not(.step-seg-static)').forEach((el, i) => {
     el.classList.toggle('active', i === n);
     el.classList.toggle('done', i < n);
   });

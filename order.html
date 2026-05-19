@@ -43,151 +43,66 @@
     .breadcrumb-inner a:hover { text-decoration: underline; }
     .breadcrumb-inner span { color: var(--text); font-weight: 600; }
 
-    /* Two-column product layout */
-    .product-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: start;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    /* Gallery column */
-    .gallery-col {
-      position: sticky;
-      top: 60px;
-      align-self: start;
-      padding: 2.5rem 2rem 5rem 2rem;
-      border-right: 1px solid var(--border);
-    }
-
-    .gallery-hero {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 1;
-      border-radius: 16px;
-      overflow: hidden;
+    /* Order-flow stepper (mirrors artwork-upload page) */
+    .order-stepper {
       background: var(--off-white);
-      margin-bottom: 0.75rem;
-      border: 1px solid var(--border);
-      touch-action: pan-y;
+      border-bottom: 1px solid var(--border);
+      padding: 0.85rem 2rem;
     }
-    .gallery-nav {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      border: none;
-      background: rgba(255, 255, 255, 0.88);
-      color: var(--black);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
-      z-index: 2;
-      padding: 0;
-    }
-    .gallery-nav:hover { background: #fff; }
-    .gallery-nav.hidden { display: none; }
-    .gallery-nav-prev { left: 10px; }
-    .gallery-nav-next { right: 10px; }
-    .gallery-hero img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .gallery-thumbs {
-      display: flex;
-      gap: 0.5rem;
-      margin-bottom: 1.5rem;
-    }
-    .gallery-thumb {
-      width: 64px;
-      height: 64px;
-      border-radius: 8px;
-      overflow: hidden;
-      border: 2px solid var(--border);
-      cursor: pointer;
-      background: var(--off-white);
-      flex-shrink: 0;
-      transition: border-color 0.15s;
-    }
-    .gallery-thumb.active, .gallery-thumb:hover { border-color: var(--black); }
-    .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .gallery-thumb-placeholder {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.55rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+    .order-stepper .step-bar-wrapper { width: 320px; margin: 0 auto; }
+    .step-bar { display: flex; gap: 0.25rem; margin-bottom: 0.4rem; }
+    .step-seg { flex: 1; height: 3px; border-radius: 2px; background: #e0ddd4; transition: background 0.2s; }
+    .step-seg.done   { background: var(--amber); }
+    .step-seg.active { background: var(--black); }
+    .step-labels { display: flex; }
+    .step-labels span {
+      flex: 1;
+      font-size: 0.7rem;
       color: var(--muted);
       text-align: center;
-      padding: 0.25rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .step-labels span.active { color: var(--black); font-weight: 700; }
+
+    /* Intro header */
+    .order-intro { margin-bottom: 1.75rem; }
+    .order-intro-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.65rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: var(--black);
+      margin: 0 0 0.45rem;
+    }
+    .order-intro-sub {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.55;
+      margin: 0 0 0.85rem;
+      max-width: 560px;
+    }
+    .order-product-chip {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: var(--text);
+      padding: 0.4rem 0.75rem;
+      background: var(--off-white);
+      border: 1px solid var(--border);
+      border-radius: 999px;
     }
 
-    .gallery-bullets {
-      list-style: disc;
-      padding-left: 1.1rem;
-      margin-top: 1.25rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-    .gallery-bullets li {
-      font-size: 0.82rem;
-      color: var(--muted);
-      line-height: 1.45;
-      padding-left: 0.15rem;
+    /* Single-column product layout (gallery removed; lives on custom.html) */
+    .product-layout {
+      max-width: 800px;
+      margin: 0 auto;
     }
 
     /* Config column */
     .config-col {
       padding: 2.5rem 2.5rem 6rem 2.5rem;
-    }
-
-    .product-heading { margin-bottom: 1.5rem; }
-    .product-title {
-      font-family: 'Poppins', sans-serif;
-      font-size: 1.9rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      line-height: 1.1;
-      color: var(--black);
-      margin-bottom: 0.4rem;
-      text-transform: uppercase;
-    }
-    .product-subtitle {
-      font-size: 0.95rem;
-      color: var(--muted);
-      line-height: 1.6;
-      margin-bottom: 0.75rem;
-    }
-    .product-price-line {
-      display: flex;
-      align-items: baseline;
-      gap: 0.75rem;
-      margin-bottom: 0.5rem;
-    }
-    .product-price-from { font-size: 1rem; color: var(--text); }
-    .product-price-from strong { font-size: 1.25rem; font-weight: 700; }
-    .product-min { font-size: 0.82rem; color: var(--muted); }
-    .product-proof {
-      font-size: 0.8rem;
-      color: var(--muted);
-      padding: 0.5rem 0.75rem;
-      background: var(--off-white);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      display: inline-block;
     }
 
     .option-divider {
@@ -487,33 +402,10 @@
 
     /* Responsive */
     @media (max-width: 860px) {
-      .product-layout { grid-template-columns: 1fr; }
-      .gallery-col {
-        position: relative;
-        top: 0;
-        border-right: none;
-        border-bottom: 1px solid var(--border);
-        padding: 1.5rem;
-      }
-      .gallery-hero { max-width: 320px; margin: 0 auto 0.75rem; }
+      .order-stepper { padding: 0.7rem 1rem; }
+      .order-stepper .step-bar-wrapper { width: 100%; max-width: 320px; }
       .config-col { padding: 1.5rem 1.5rem 6rem; min-width: 0; }
-      .product-title { font-size: 1.5rem; }
-
-      /* Carousel dots in place of thumbnails on mobile */
-      .gallery-thumbs { justify-content: center; gap: 0.5rem; margin-bottom: 0; }
-      .gallery-thumb {
-        width: 8px;
-        height: 8px;
-        border: none;
-        background: var(--border);
-        border-radius: 50%;
-        position: relative;
-        transition: background 0.15s;
-      }
-      .gallery-thumb::before { content: ''; position: absolute; inset: -10px; }
-      .gallery-thumb img,
-      .gallery-thumb-placeholder { display: none; }
-      .gallery-thumb.active { background: var(--black); }
+      .order-intro-title { font-size: 1.4rem; }
 
       /* Prevent pricing grid from overflowing narrow viewports */
       .pricing-grid-row { grid-template-columns: minmax(0, 1fr) 96px 96px; }
@@ -553,58 +445,34 @@
   </div>
 </div>
 
+<!-- Order flow stepper: Step 1 of 4 -->
+<div class="order-stepper">
+  <div class="step-bar-wrapper">
+    <div class="step-bar">
+      <div class="step-seg active"></div>
+      <div class="step-seg"></div>
+      <div class="step-seg"></div>
+      <div class="step-seg"></div>
+    </div>
+    <div class="step-labels">
+      <span class="active">Options</span>
+      <span>Music</span>
+      <span>Artwork</span>
+      <span>Review</span>
+    </div>
+  </div>
+</div>
+
 <main>
   <div class="product-layout">
-
-    <!-- Left: Gallery -->
-    <div class="gallery-col">
-      <div class="gallery-hero">
-        <img id="gallery-hero-img" src="photos/TMBG_crate_grass.jpg" alt="Custom Goodz tile">
-        <button class="gallery-nav gallery-nav-prev" type="button" aria-label="Previous image">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-        <button class="gallery-nav gallery-nav-next" type="button" aria-label="Next image">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M5 2l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
-
-      <div class="gallery-thumbs">
-        <div class="gallery-thumb active" data-img="photos/TMBG_crate_grass.jpg" title="Goodz in the wild">
-          <img src="photos/TMBG_crate_grass.jpg" alt="Goodz in the wild">
-        </div>
-        <div class="gallery-thumb" data-img="photos/BritneySpearsGoodzMockup2.png" title="Custom mockup">
-          <img src="photos/BritneySpearsGoodzMockup2.png" alt="Custom Goodz mockup">
-        </div>
-        <div class="gallery-thumb" data-img="photos/bourbon_1_1.jpeg" title="Goodz lifestyle">
-          <img src="photos/bourbon_1_1.jpeg" alt="Goodz lifestyle">
-        </div>
-        <div class="gallery-thumb" data-img="photos/PXL_20251003_220145577.MP.jpg" title="Goodz close-up">
-          <img src="photos/PXL_20251003_220145577.MP.jpg" alt="Goodz close-up">
-        </div>
-        <div class="gallery-thumb" data-img="photos/PXL_20250205_213837796.png" title="Goodz detail">
-          <img src="photos/PXL_20250205_213837796.png" alt="Goodz detail">
-        </div>
-      </div>
-    </div>
 
     <!-- Right: Config -->
     <div class="config-col">
 
-      <div class="product-heading" id="product-heading">
-        <h1 class="product-title">Custom Goodz</h1>
-        <div class="product-price-line">
-          <span class="product-price-from"><strong>50 goodz from $172</strong> ($3.44/unit)</span>
-        </div>
-        <p class="product-subtitle">A run of wooden cards, printed with your art, pre-loaded with your music. Fans tap it and your album opens.</p>
-        <ul class="gallery-bullets">
-          <li>Your artwork UV-printed on basswood</li>
-          <li>Pre-loaded with your Bandcamp album, Spotify, or any URL</li>
-          <li>50-unit minimum, ships in 4–5 weeks</li>
-        </ul>
+      <div class="order-intro">
+        <h1 class="order-intro-title">Configure your order</h1>
+        <p class="order-intro-sub">Choose your music source, options, and quantity. Next you'll upload artwork and review.</p>
+        <div class="order-product-chip">Custom Goodz &middot; 50 from $172 &middot; $3.44/unit</div>
       </div>
 
       <!-- Testimonial -->
@@ -882,16 +750,6 @@ function selectOption(group, value) {
     c.classList.toggle('selected', c.dataset.value === value);
   });
 
-  if (group === 'back') {
-    const hero = document.getElementById('gallery-hero-img');
-    if (value === 'standard') {
-      hero.src = 'templates/Goodz_Standard_back.png';
-    } else {
-      const activeThumb = document.querySelector('.gallery-thumb.active');
-      if (activeThumb && activeThumb.dataset.img) hero.src = activeThumb.dataset.img;
-    }
-  }
-
   renderTable();
   updateSummary();
   updateFromPrice();
@@ -970,63 +828,6 @@ function continueToUpload() {
   window.location.href = 'artwork-upload.html';
 }
 
-// Gallery thumbnail click
-function initGallery() {
-  document.querySelectorAll('.gallery-thumb').forEach(thumb => {
-    thumb.addEventListener('click', () => {
-      document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
-      thumb.classList.add('active');
-      const src = thumb.dataset.img;
-      if (src) document.getElementById('gallery-hero-img').src = src;
-      updateGalleryNavVisibility();
-    });
-  });
-}
-
-// Carousel: chevron buttons + swipe gesture (no wrap at edges)
-function updateGalleryNavVisibility() {
-  const thumbs = Array.from(document.querySelectorAll('.gallery-thumb'));
-  if (!thumbs.length) return;
-  const activeIdx = Math.max(0, thumbs.findIndex(t => t.classList.contains('active')));
-  const prev = document.querySelector('.gallery-nav-prev');
-  const next = document.querySelector('.gallery-nav-next');
-  if (prev) prev.classList.toggle('hidden', activeIdx === 0);
-  if (next) next.classList.toggle('hidden', activeIdx === thumbs.length - 1);
-}
-
-function navigateGallery(dir) {
-  const thumbs = Array.from(document.querySelectorAll('.gallery-thumb'));
-  if (!thumbs.length) return;
-  const activeIdx = Math.max(0, thumbs.findIndex(t => t.classList.contains('active')));
-  const nextIdx = activeIdx + dir;
-  if (nextIdx < 0 || nextIdx >= thumbs.length) return;
-  thumbs[nextIdx].click();
-}
-
-function initGalleryNav() {
-  const prev = document.querySelector('.gallery-nav-prev');
-  const next = document.querySelector('.gallery-nav-next');
-  if (prev) prev.addEventListener('click', () => navigateGallery(-1));
-  if (next) next.addEventListener('click', () => navigateGallery(1));
-
-  const hero = document.querySelector('.gallery-hero');
-  if (!hero) return;
-  let startX = null, startY = null;
-  hero.addEventListener('touchstart', (e) => {
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-  }, { passive: true });
-  hero.addEventListener('touchend', (e) => {
-    if (startX === null) return;
-    const dx = e.changedTouches[0].clientX - startX;
-    const dy = e.changedTouches[0].clientY - startY;
-    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
-      navigateGallery(dx < 0 ? 1 : -1);
-    }
-    startX = startY = null;
-  }, { passive: true });
-}
-
 // Wire option card clicks
 document.querySelectorAll('.option-cards').forEach(group => {
   const opt = group.dataset.option;
@@ -1038,9 +839,6 @@ document.querySelectorAll('.option-cards').forEach(group => {
 renderTable();
 updateSummary();
 updateFromPrice();
-initGallery();
-initGalleryNav();
-updateGalleryNavVisibility();
 
 // Restore previous selections when returning here via "Edit options"
 (function restoreFromOrderConfig() {
