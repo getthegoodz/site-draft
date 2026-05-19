@@ -399,7 +399,10 @@
     }
     .card-action-primary:hover { background: #e6b044; border-color: #e6b044; color: var(--black); }
 
-    /* Keychain hole overlay (centered on the safe-area corner; safe corner = 4/70 ≈ 5.7%) */
+    /* Keychain hole overlay
+       Card has rounded corners (trim rx=6, safe-area rx=4.5, sharing arc center
+       at 8.5/70 ≈ 12.1% in from each edge). Placing the dot at that arc-center
+       point keeps it inside both the card material and the safe area. */
     .keychain-dot {
       position: absolute;
       width: 14px; height: 14px;
@@ -409,8 +412,8 @@
       z-index: 20;
       display: none;
     }
-    .keychain-dot.top-left  { top: calc(5.7% - 7px); left:  calc(5.7% - 7px); display: block; }
-    .keychain-dot.top-right { top: calc(5.7% - 7px); right: calc(5.7% - 7px); display: block; }
+    .keychain-dot.top-left  { top: calc(12.1% - 7px); left:  calc(12.1% - 7px); display: block; }
+    .keychain-dot.top-right { top: calc(12.1% - 7px); right: calc(12.1% - 7px); display: block; }
 
     /* Segmented unit toggle */
     .unit-toggle-group {
