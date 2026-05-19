@@ -69,6 +69,45 @@
       .video-text { text-align: center; }
       .video-text p { margin: 0 auto; }
     }
+
+    /* Home "Works with" logo strip */
+    .works-with-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .works-with-label { font-size: 0.95rem; font-weight: 700; color: var(--black); }
+    .works-with-icons {
+      display: flex;
+      gap: 1.85rem;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+    }
+    .works-with-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--black);
+      min-width: 56px;
+    }
+    .works-with-item svg { display: block; }
+    .works-with-item span {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: rgba(0, 0, 0, 0.72);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    @media (max-width: 700px) {
+      .works-with-inner { gap: 1rem; }
+      .works-with-icons { gap: 1.25rem; }
+    }
   </style>
 </head>
 <body>
@@ -150,9 +189,9 @@
     <ul class="usp-list">
       <li>Your artwork, UV-printed on basswood</li>
       <li>Links to Bandcamp, a single-release site, or anywhere else</li>
-      <li>From $3.44/unit · 4–5 week turnaround</li>
+      <li>50-unit minimum · 4–5 week turnaround</li>
     </ul>
-    <div class="product-price">From $3.44 <span>/ unit · Min. 50</span></div>
+    <div class="product-price">50 goodz from $172 <span>($3.44/unit)</span></div>
     <div class="btn-group">
       <a href="order.html" class="btn btn-amber">Start your order</a>
       <a href="custom.html#examples" class="btn btn-outline">See examples</a>
@@ -160,46 +199,57 @@
   </div>
 </div>
 
-<!-- HOW THE TAP WORKS -->
-<div class="tap-section" id="how-it-works">
-  <div class="tap-inner">
-    <h2 style="font-size:2rem;margin-bottom:0.75rem;">How it Works</h2>
-    <p style="color:var(--text-light);max-width:580px;line-height:1.8;font-size:0.92rem;">The chips inside Goodz use the same technology your phone uses to buy a coffee: NFC. Except instead of charging a card, it launches your favorite music. No app to download. No account to make. Your phone already knows how.</p>
-    <div class="steps">
-      <div class="step">
-        <span class="step-num">01</span>
-        <h3>Get Your Goodz</h3>
-        <p>Order one ready-made from the shop, or configure a custom run for your band. We encode your link into the chip before it ships.</p>
+<!-- COMPAT BAR -->
+<div class="compat-bar">
+  <div class="works-with-inner">
+    <strong class="works-with-label">Works with</strong>
+    <div class="works-with-icons">
+      <div class="works-with-item" title="Bandcamp">
+        <svg width="32" height="32" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+          <path d="M7 7 L23 7 L19 19 L3 19 Z" fill="currentColor"/>
+        </svg>
+        <span>Bandcamp</span>
       </div>
-      <div class="step">
-        <span class="step-num">02</span>
-        <h3>Tap It with Your Phone</h3>
-        <p>iPhone: top of the phone. Android: back of the phone. A notification pops up. Tap it.</p>
-        <p class="step-note">iPhone 7+ · All modern Android phones</p>
+      <div class="works-with-item" title="Spotify">
+        <svg width="32" height="32" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+          <circle cx="13" cy="13" r="10" stroke="currentColor" stroke-width="2"/>
+          <path d="M7.5 10 C 10 9 16 9 18.5 10.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+          <path d="M8 13 C 10.5 12 15.5 12 18 13.2" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <path d="M9 16 C 11 15.2 15 15.2 17 16" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+        </svg>
+        <span>Spotify</span>
       </div>
-      <div class="step">
-        <span class="step-num">03</span>
-        <h3>Music Plays</h3>
-        <p>Your playlist, your album, whatever link you chose. No friction. Just music.</p>
+      <div class="works-with-item" title="Apple Music">
+        <svg width="32" height="32" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+          <path d="M11 18 C11 19.66 9.66 21 8 21 C6.34 21 5 19.66 5 18 C5 16.34 6.34 15 8 15 C8.7 15 9.36 15.24 9.9 15.63 V8 L20 6 V16 C20 17.66 18.66 19 17 19 C15.34 19 14 17.66 14 16 C14 14.34 15.34 13 17 13 C17.7 13 18.36 13.24 18.9 13.63" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+        </svg>
+        <span>Apple Music</span>
+      </div>
+      <div class="works-with-item" title="YouTube">
+        <svg width="32" height="32" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+          <rect x="2" y="6" width="22" height="14" rx="3.5" stroke="currentColor" stroke-width="2"/>
+          <path d="M11 9.5 L17 13 L11 16.5 Z" fill="currentColor"/>
+        </svg>
+        <span>YouTube</span>
+      </div>
+      <div class="works-with-item" title="SoundCloud">
+        <svg width="32" height="32" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+          <path d="M4 16 V20 M6.5 14 V20 M9 13 V20 M11.5 12 V20" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M14 10 C 18 9 22 12 22 15 C 23 15 24 16.3 24 17.8 C 24 19.45 22.66 20 21 20 L 14 20 Z" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linejoin="round"/>
+        </svg>
+        <span>SoundCloud</span>
+      </div>
+      <div class="works-with-item" title="Any URL">
+        <svg width="32" height="32" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+          <path d="M11 8 H8 a5 5 0 0 0 0 10 H11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+          <path d="M15 8 H18 a5 5 0 0 1 0 10 H15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+          <path d="M8 13 H18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        <span>Any URL</span>
       </div>
     </div>
   </div>
 </div>
-
-<!-- COMPAT BAR -->
-<div class="compat-bar">
-  <strong>Works with:</strong> Spotify · Apple Music · YouTube · SoundCloud · Bandcamp · Any URL &nbsp;·&nbsp; <strong>Compatible with:</strong> iPhone 7+ · All modern Android
-</div>
-
-<!-- CREDIBILITY -->
-<section class="cred-bar">
-  <p class="cred-subhead">Artists and labels we've worked with</p>
-  <div class="cred-logos">
-    <img class="cred-logo cred-logo--sony" src="logos/sony-music.svg" alt="Sony Music" loading="lazy">
-    <img class="cred-logo cred-logo--warner" src="logos/warner-music.svg" alt="Warner Music Group" loading="lazy">
-    <img class="cred-logo cred-logo--craft" src="logos/craft-recordings.svg" alt="Craft Recordings" loading="lazy">
-  </div>
-</section>
 
 <!-- SPLIT: CUSTOM -->
 <div class="split">
@@ -213,7 +263,6 @@
     <ul class="usp-list" style="margin-top:0.5rem;">
       <li>50-unit minimum · ships in 4–5 weeks</li>
       <li>Bandcamp integration: link albums or pre-load download codes</li>
-      <li>Tap analytics, so you know where your fans are</li>
     </ul>
     <a href="custom.html" class="btn btn-black" style="align-self:flex-start;margin-top:0.5rem;">Start your order →</a>
   </div>
