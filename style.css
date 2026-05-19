@@ -607,6 +607,7 @@ img { display: block; width: 100%; }
 .cred-logo--britney { height: 42px; }
 .cred-logo--outkast { height: 46px; }
 .cred-logo--tmbg    { height: 38px; }
+.cred-logo--motorola { height: 42px; }
 
 /* Dark cred-bar variant: black background, tan reversed-out logos */
 .cred-bar.dark { background: var(--black); }
@@ -958,6 +959,7 @@ footer {
   .cred-logo--britney { height: 34px; }
   .cred-logo--outkast { height: 36px; }
   .cred-logo--tmbg    { height: 30px; }
+  .cred-logo--motorola { height: 34px; }
   .revenue-math { gap: 1rem; }
   .hero-text { padding: 2.5rem 1.25rem; }
 }

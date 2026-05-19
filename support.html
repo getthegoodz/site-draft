@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Support - Goodz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .support-body { max-width: 800px; margin: 0 auto; padding: 4rem 2rem 5rem; }
+    .support-section { margin-top: 3rem; }
+    .support-section:first-child { margin-top: 1rem; }
+    .support-section > h2 {
+      font-size: clamp(1.35rem, 2.5vw, 1.65rem);
+      margin-bottom: 1.25rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .support-section .faq-item:first-of-type { border-top: 2px solid #e4e2da; }
+    .support-section .faq-a ol,
+    .support-section .faq-a ul { margin: 0.4rem 0 0.4rem 1.25rem; }
+    .support-section .faq-a li { margin-bottom: 0.25rem; line-height: 1.7; }
+    .support-section .faq-a a { color: inherit; text-decoration: underline; }
+    .support-platform-links { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.5rem; }
+    .support-contact {
+      margin: 4rem auto 0;
+      padding: 2rem;
+      max-width: 640px;
+      border: var(--border);
+      background: var(--off-white);
+      text-align: center;
+    }
+    .support-contact h3 { font-size: 1.25rem; margin-bottom: 0.5rem; }
+    .support-contact p { font-size: 0.95rem; color: var(--text-light); margin-bottom: 1.25rem; line-height: 1.6; }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">((GOODZ))</a>
+  <ul class="nav-links">
+    <li><a href="mixtape.html">Mixtape Goodz</a></li>
+    <li><a href="custom.html">Custom Goodz</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="support.html" class="is-current">Support</a></li>
+    <li><a href="https://shop.getthegoodz.com" class="nav-shop">Shop</a></li>
+  </ul>
+  <button class="nav-toggle" aria-label="Menu" onclick="document.querySelector(&apos;.nav-links&apos;).classList.toggle(&apos;is-open&apos;)">☰</button>
+</nav>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-hero-text">
+      <p class="section-label on-dark">Support</p>
+      <h1>How can we help?</h1>
+    </div>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="support-body">
+
+  <!-- TAPPING -->
+  <section class="support-section" id="tapping">
+    <h2>Tapping Your Goodz</h2>
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">iPhones: where is my NFC reader? <span class="icon">+</span></button>
+        <div class="faq-a">The NFC sensor on an iPhone is located on the back of the device, along its top edge, to the right of the camera.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">iPhone 11 &amp; newer: how do I tap my Goodz? <span class="icon">+</span></button>
+        <div class="faq-a">
+          <ol>
+            <li>Grab your Goodz.</li>
+            <li>Wake your phone, and hold the top edge of your iPhone directly against your Goodz for several seconds.</li>
+            <li>Open the notification that appears to be taken to your content.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">iPhones 7, 8, and X: how do I tap my Goodz? <span class="icon">+</span></button>
+        <div class="faq-a">
+          <ol>
+            <li>Wake and unlock your iPhone.</li>
+            <li>Swipe up to open the Control Center.</li>
+            <li>Click on the NFC icon to enable NFC scan mode.</li>
+            <li>Hold the top edge of your iPhone directly against your Goodz for several seconds.</li>
+            <li>Open the notification that appears to be taken to your content.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Android: where is my NFC reader? <span class="icon">+</span></button>
+        <div class="faq-a">On Android phones, the NFC reader is usually located in the middle or upper back of the phone.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Android: how do I tap my Goodz? <span class="icon">+</span></button>
+        <div class="faq-a">
+          <ol>
+            <li>Ensure that NFC is enabled in settings.</li>
+            <li>Grab your Goodz. Wake and unlock your Android.</li>
+            <li>Hold your Goodz against the middle back of your phone for several seconds.</li>
+            <li>Open the notification that appears, or follow the instructions on the webpage that loads to access your content.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">My phone is having trouble detecting my Goodz. What should I do? <span class="icon">+</span></button>
+        <div class="faq-a">
+          <ol>
+            <li>Hold the phone against the Goodz for longer.</li>
+            <li>Close the camera app if it's open: it can interfere with NFC.</li>
+            <li>Make sure your phone has adequate charge.</li>
+            <li>Verify your phone's operating system is up to date.</li>
+            <li>Restart the phone and try again.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MIXTAPE -->
+  <section class="support-section" id="mixtape">
+    <h2>The Mixtape: finding and loading your playlist link</h2>
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How do I load my playlist link onto my Goodz? <span class="icon">+</span></button>
+        <div class="faq-a">
+          <ol>
+            <li>Find your playlist link on your favorite streaming platform using the guides below.</li>
+            <li>Copy your playlist link.</li>
+            <li>Paste your playlist link into the field shown on your Mixtape Goodz setup page.</li>
+            <li>Click Submit.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How do I find my playlist link? <span class="icon">+</span></button>
+        <div class="faq-a">
+          Each streaming platform has its own way of sharing a playlist link. Use the official guide for the service you use:
+          <div class="support-platform-links">
+            <a href="https://support.spotify.com/us/article/share-from-spotify/" target="_blank" rel="noreferrer">Spotify &rarr;</a>
+            <a href="https://support.apple.com/guide/music-web/share-music-apdm0783785d/web" target="_blank" rel="noreferrer">Apple Music &rarr;</a>
+            <a href="https://www.amazon.com/gp/help/customer/display.html?nodeId=GW9ETPCJD99DLDVC" target="_blank" rel="noreferrer">Amazon Music &rarr;</a>
+            <a href="https://help.soundcloud.com/hc/en-us/articles/360054146474" target="_blank" rel="noreferrer">SoundCloud &rarr;</a>
+            <a href="https://support.google.com/youtube/answer/57793" target="_blank" rel="noreferrer">YouTube &rarr;</a>
+            <a href="https://support.google.com/youtubemusic/answer/9198182" target="_blank" rel="noreferrer">YouTube Music &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CUSTOM GOODZ (placeholder content ported from custom.html FAQ) -->
+  <section class="support-section" id="custom-goodz">
+    <h2>Custom Goodz</h2>
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">What's the minimum order? <span class="icon">+</span></button>
+        <div class="faq-a">50 units for a custom printed run. Want to try one first? Order a single card for $5, your artwork, your link, before committing.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">What are the artwork specs? <span class="icon">+</span></button>
+        <div class="faq-a">
+          <ul>
+            <li><strong>300 DPI</strong> minimum resolution</li>
+            <li><strong>20 MB</strong> max file size</li>
+            <li><strong>PNG, JPEG, TIFF, PDF</strong> file format</li>
+            <li><strong>2.76" &times; 2.76" canvas</strong> with <strong>0.10" bleed</strong> on all sides. Keep important elements <strong>0.06" inside</strong> the trim edge.</li>
+          </ul>
+          <p style="margin-top:0.6rem;">For the full artwork diagram and downloadable templates, see <a href="custom.html#faq-artwork-specs">artwork specs on the Custom Goodz page</a>.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How does the tap work for my fans? <span class="icon">+</span></button>
+        <div class="faq-a">Fans hold their phone near the card: top for iPhone, back for Android. The link opens in their browser in seconds. No app, no account. Works on iPhone 7+ and virtually all modern Android phones.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Can I link to Bandcamp? <span class="icon">+</span></button>
+        <div class="faq-a">Yes, any Bandcamp album URL, or upload a CSV of download codes (one unique code per card). The builder walks you through both options.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How long does it take? <span class="icon">+</span></button>
+        <div class="faq-a">About 4&ndash;5 weeks from artwork approval to delivery. Rush options may be available, contact us if you have a hard deadline.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">I'm not a musician, can I still order? <span class="icon">+</span></button>
+        <div class="faq-a">Absolutely. Custom Goodz are used for weddings, brand activations, hotels, conferences, and more. If you have artwork and a URL, we can make it a Goodz.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT CTA -->
+  <div class="support-contact">
+    <h3>Have additional questions?</h3>
+    <p>If you're still stuck, we'd love to hear from you.</p>
+    <a href="https://www.getthegoodz.com/contact" class="btn btn-amber">Get in touch</a>
+  </div>
+
+</div>
+
+<footer>
+  <div>
+    <div class="footer-logo">((GOODZ))</div>
+    <div class="footer-tagline">Music you can hold</div>
+  </div>
+  <ul class="footer-links">
+    <li><a href="mixtape.html">Mixtape Goodz</a></li>
+    <li><a href="custom.html">Custom Goodz</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="https://shop.getthegoodz.com">Shop</a></li>
+    <li><a href="support.html">Support</a></li>
+    <li><a href="https://www.getthegoodz.com/contact">Contact</a></li>
+  </ul>
+  <div class="footer-right">
+    <div class="footer-social">
+      <a href="https://www.instagram.com/getthegoodz" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.9" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a href="https://www.facebook.com/getthegoodz" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-7.5h2.5l.4-3h-2.9V8.6c0-.9.25-1.5 1.55-1.5h1.65V4.4c-.3-.04-1.3-.12-2.45-.12-2.4 0-4.05 1.46-4.05 4.15v2.07H7.7v3h2.5V21h3.3z"/></svg>
+      </a>
+    </div>
+    <div class="footer-copy">© 2026 Goodz. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+function toggleFaq(btn) { btn.parentElement.classList.toggle('open'); }
+</script>
+</body>
+</html>
