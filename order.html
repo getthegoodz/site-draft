@@ -1042,6 +1042,25 @@ initGallery();
 initGalleryNav();
 updateGalleryNavVisibility();
 
+// Restore previous selections when returning here via "Edit options"
+(function restoreFromOrderConfig() {
+  let raw;
+  try { raw = sessionStorage.getItem('goodzOrderConfig'); } catch (e) { return; }
+  if (!raw) return;
+  let cfg;
+  try { cfg = JSON.parse(raw); } catch (e) { return; }
+  if (!cfg) return;
+
+  if (cfg.music && MUSIC_LABELS[cfg.music]) selectOption('music', cfg.music);
+  if (cfg.backDesign === 'standard' || cfg.backDesign === 'custom') selectOption('back', cfg.backDesign);
+  if (cfg.keychainHole) selectOption('keychain', cfg.keychainHole);
+  if (typeof cfg.sleeve === 'boolean') selectOption('sleeve', cfg.sleeve ? 'sleeve' : 'no-sleeve');
+  if (typeof cfg.quantity === 'number') {
+    const idx = TIERS.findIndex(t => t.qty === cfg.quantity);
+    if (idx >= 0) selectTier(idx);
+  }
+})();
+
 </script>
 </body>
 </html>
