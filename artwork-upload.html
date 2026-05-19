@@ -769,15 +769,6 @@
     .order-success p { color: var(--muted); margin-bottom: 1.5rem; line-height: 1.6; }
     .order-success-detail { display: inline-block; padding: 0.75rem 1.5rem; background: var(--off-white); border: 1px solid var(--border); border-radius: 8px; font-size: 0.88rem; color: var(--muted); margin-bottom: 1.5rem; }
 
-    /* Revenue math note on review step */
-    .revenue-math-note {
-      font-size: 0.78rem;
-      color: var(--muted);
-      font-style: italic;
-      margin-bottom: 1rem;
-      line-height: 1.5;
-    }
-
     /* Responsive */
     @media (max-width: 768px) {
       .layout { padding: 1.25rem 1rem 3rem; }
@@ -1075,7 +1066,6 @@
       <p class="step-sub">Double-check everything before heading to checkout.</p>
 
       <div class="summary-rows" id="summary-rows"></div>
-      <p class="revenue-math-note" id="revenue-math-note" style="display:none"></p>
       <div id="summary-warning" class="summary-warning" style="display:none"></div>
 
       <button class="btn btn-primary btn-order" id="btn-order" onclick="placeOrder()" disabled>
@@ -1617,16 +1607,6 @@ function renderSummary() {
       <span class="summary-row-label">${r.label}</span>
       <span class="summary-row-value">${r.value}</span>
     </div>`).join('');
-
-  const mathEl = document.getElementById('revenue-math-note');
-  const total = effectiveTotal();
-  if (total && cfg.quantity) {
-    const breakEven = Math.ceil(total / 10);
-    mathEl.textContent = `At $10 each at the merch table, you break even after selling ${breakEven} of ${cfg.quantity}. The rest is yours.`;
-    mathEl.style.display = 'block';
-  } else {
-    mathEl.style.display = 'none';
-  }
 
   const warnEl = document.getElementById('summary-warning');
   const issues = [];
