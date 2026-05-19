@@ -716,6 +716,11 @@
       border: 1px solid var(--warn-border); border-radius: 8px;
       font-size: 0.82rem; color: var(--warn-text);
     }
+    .csv-warning.is-match { background: var(--green-bg); border-color: var(--green-border); color: var(--green-text); }
+    .csv-warning.is-short { background: var(--red-bg);   border-color: var(--red-border);   color: var(--red-text); }
+    .csv-warning a { color: inherit; text-decoration: underline; }
+    .csv-target { margin-top: 0.4rem; font-size: 0.78rem; color: var(--muted); }
+    .csv-target strong { color: var(--black); font-weight: 700; }
 
     /* Review step */
     .summary-rows {
@@ -845,6 +850,7 @@
             <div class="csv-icon">&#128203;</div>
             <div class="csv-title">Upload Bandcamp CSV</div>
             <div class="csv-sub">Drop file or <span>click to browse</span></div>
+            <div class="csv-target" id="csv-target"></div>
           </div>
           <input type="file" id="input-csv" class="file-input" accept=".csv">
         </div>
@@ -1122,6 +1128,7 @@ let state = {
   uploadingFront: false,
   uploadingBack:  false,
   csvUrls:       [],
+  csvDuplicates: 0,
   csvCloudUrl:   null,
   uploadingCSV:  false,
   altURL:        '',
@@ -1389,10 +1396,11 @@ function handleCSVFile(file) {
   if (!file.name.endsWith('.csv')) { showCSVError('Please upload a .csv file from Bandcamp.'); return; }
   const reader = new FileReader();
   reader.onload = e => {
-    const urls = parseCSVUrls(e.target.result);
+    const { urls, duplicates } = parseCSVUrls(e.target.result);
     if (!urls.length) { showCSVError('No URLs found. Make sure the CSV has http/https links.'); return; }
     hideCSVError();
     state.csvUrls = urls;
+    state.csvDuplicates = duplicates;
     showCSVFilled(urls);
     updateStepButtons();
     updateStatusBadges();
@@ -1412,13 +1420,19 @@ function handleCSVFile(file) {
 
 function parseCSVUrls(text) {
   const urls = [];
+  const seen = new Set();
+  let duplicates = 0;
   for (const line of text.trim().split('\n')) {
     for (const cell of line.split(',')) {
       const t = cell.trim().replace(/^["']|["']$/g, '');
-      if (t.startsWith('http://') || t.startsWith('https://')) urls.push(t);
+      if (t.startsWith('http://') || t.startsWith('https://')) {
+        if (seen.has(t)) { duplicates++; continue; }
+        seen.add(t);
+        urls.push(t);
+      }
     }
   }
-  return urls;
+  return { urls, duplicates };
 }
 
 function showCSVFilled(urls) {
@@ -1433,11 +1447,13 @@ function showCSVFilled(urls) {
 }
 
 function resetCSV() {
-  state.csvUrls = []; state.csvCloudUrl = null;
+  state.csvUrls = []; state.csvCloudUrl = null; state.csvDuplicates = 0;
   document.getElementById('csv-upload-zone').style.display = 'block';
   document.getElementById('csv-filled-area').style.display = 'none';
   document.getElementById('csv-success-detail').style.display = 'none';
-  document.getElementById('csv-warning').style.display = 'none';
+  const warnEl = document.getElementById('csv-warning');
+  warnEl.classList.remove('is-match', 'is-short', 'is-over');
+  warnEl.style.display = 'none';
   document.getElementById('input-csv').value = '';
   updateStepButtons(); updateStatusBadges();
 }
@@ -1453,14 +1469,29 @@ function hideCSVError() {
 }
 
 function updateCSVWarning() {
-  const qty = orderConfig ? orderConfig.quantity : 50;
   const warnEl = document.getElementById('csv-warning');
-  if (state.csvUrls.length > 0 && state.csvUrls.length < qty) {
-    warnEl.innerHTML = `&#9888; You have <strong>${state.csvUrls.length}</strong> codes for <strong>${qty}</strong> units. You need at least ${qty} codes.`;
-    warnEl.style.display = 'block';
+  if (!warnEl) return;
+  warnEl.classList.remove('is-match', 'is-short', 'is-over');
+  const count = state.csvUrls.length;
+  if (count === 0) { warnEl.style.display = 'none'; return; }
+  const qty = orderConfig ? orderConfig.quantity : 0;
+  const dupNote = state.csvDuplicates
+    ? ` (${state.csvDuplicates} duplicate URL${state.csvDuplicates === 1 ? '' : 's'} skipped.)`
+    : '';
+  if (qty && count === qty) {
+    warnEl.innerHTML = `&#10003; <strong>${count}</strong> codes match your <strong>${qty}</strong> unit order.${dupNote}`;
+    warnEl.classList.add('is-match');
+  } else if (qty && count < qty) {
+    warnEl.innerHTML = `&#9888; You have <strong>${count}</strong> codes but ordered <strong>${qty}</strong> units. Upload a CSV with exactly ${qty} codes, or <a href="order.html">go back</a> and reduce quantity.${dupNote}`;
+    warnEl.classList.add('is-short');
+  } else if (qty && count > qty) {
+    warnEl.innerHTML = `&#9888; You have <strong>${count}</strong> codes but ordered <strong>${qty}</strong> units. Use a CSV with exactly ${qty} codes, or <a href="order.html">go back</a> and increase quantity.${dupNote}`;
+    warnEl.classList.add('is-over');
   } else {
     warnEl.style.display = 'none';
+    return;
   }
+  warnEl.style.display = 'block';
 }
 
 // ---- URL mode ----
@@ -1525,7 +1556,10 @@ function handleStepClick(n) {
 function needsBack() { return state.customBackChosen; }
 
 function hasMusic() {
-  if (state.musicMode === 'csv') return state.csvUrls.length > 0;
+  if (state.musicMode === 'csv') {
+    const qty = orderConfig ? orderConfig.quantity : 0;
+    return qty > 0 && state.csvUrls.length === qty;
+  }
   return state.altURL.startsWith('http://') || state.altURL.startsWith('https://');
 }
 
@@ -1598,9 +1632,18 @@ function renderSummary() {
   const issues = [];
   if (!state.frontArt) issues.push('front artwork');
   if (needsBack() && !state.backArt) issues.push('back artwork');
-  if (!hasMusic()) issues.push('music link');
-  if (state.musicMode === 'csv' && state.csvUrls.length > 0 && cfg.quantity && state.csvUrls.length < cfg.quantity) {
-    issues.push(`${cfg.quantity - state.csvUrls.length} more Bandcamp codes`);
+  if (!hasMusic()) {
+    if (state.musicMode === 'csv' && state.csvUrls.length > 0 && cfg.quantity) {
+      if (state.csvUrls.length < cfg.quantity) {
+        issues.push(`${cfg.quantity - state.csvUrls.length} more Bandcamp codes`);
+      } else if (state.csvUrls.length > cfg.quantity) {
+        issues.push(`a CSV with exactly ${cfg.quantity} codes (you have ${state.csvUrls.length})`);
+      } else {
+        issues.push('music link');
+      }
+    } else {
+      issues.push('music link');
+    }
   }
   if (issues.length) {
     warnEl.style.display = 'block';
@@ -1703,6 +1746,16 @@ setupFileInput('input-back',  handleBackFile);
   handleMusicSourceChange();
 })();
 
+// Show the qty target in the empty CSV drop zone
+(function initCsvTarget() {
+  const tgt = document.getElementById('csv-target');
+  if (!tgt) return;
+  const qty = orderConfig ? orderConfig.quantity : 0;
+  tgt.innerHTML = qty
+    ? `Need <strong>${qty}</strong> unique codes for <strong>${qty}</strong> units.`
+    : '';
+})();
+
 const csvZone = document.getElementById('csv-zone');
 if (csvZone) {
   csvZone.addEventListener('dragover', e => { e.preventDefault(); csvZone.classList.add('drag-over'); });
@@ -1711,6 +1764,7 @@ if (csvZone) {
 }
 setupFileInput('input-csv', handleCSVFile);
 
+updateCSVWarning();
 updateStepButtons();
 </script>
 </body>
