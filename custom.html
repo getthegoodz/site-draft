@@ -265,6 +265,19 @@
     .gallery-mini-thumb img {
       width: 100%; height: 100%; object-fit: cover; display: block;
     }
+
+    /* Compact "Tap with your phone to play" section (mirrors the home page) */
+    .video-section { background: var(--amber); border-bottom: var(--border); padding: 3rem 2rem; }
+    .video-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: center; }
+    .video-text h2 { font-size: clamp(1.4rem, 2.4vw, 1.85rem); margin-bottom: 0.75rem; color: var(--black); }
+    .video-text p { color: var(--black); line-height: 1.7; max-width: 460px; font-size: 0.95rem; }
+    .video-frame { display: flex; justify-content: center; }
+    .video-frame video { width: 100%; max-width: 280px; aspect-ratio: 4/5; background: #000; border: var(--border); border-radius: 4px; object-fit: cover; }
+    @media (max-width: 900px) {
+      .video-inner { grid-template-columns: 1fr; gap: 1.75rem; }
+      .video-text { text-align: center; }
+      .video-text p { margin: 0 auto; }
+    }
   </style>
 </head>
 <body>
@@ -336,6 +349,19 @@
     <a href="order.html" class="btn btn-amber" style="align-self:flex-start;margin-top:0.5rem;">Order Now &rarr;</a>
   </div>
 </div>
+
+<!-- TAP WITH YOUR PHONE -->
+<section class="video-section">
+  <div class="video-inner">
+    <div class="video-text">
+      <h2>Tap with Your Phone to Play. That's It</h2>
+      <p>Hold any modern phone near a Goodz card. The music you put on it opens in their browser. No app, no account, no friction.</p>
+    </div>
+    <div class="video-frame">
+      <video src="photos/explainer.mp4" poster="photos/explainer-poster.webp" autoplay muted loop playsinline controls preload="metadata" aria-label="Explainer video showing a Goodz card being tapped with a phone, which opens a Miles Davis album on Spotify."></video>
+    </div>
+  </div>
+</section>
 
 <!-- COMPAT BAR -->
 <div class="compat-bar">
@@ -410,10 +436,6 @@
   <div class="tap-inner">
     <h2 style="font-size:2rem;margin-bottom:0.4rem;">From Idea to Fans' Hands</h2>
     <p style="color:var(--text-light);max-width:520px;line-height:1.7;font-size:0.92rem;">You upload, we print and encode. Fans hold their phone to the card and your music opens instantly, no app, no friction.</p>
-    <div class="video-callout">
-      <video src="photos/explainer.mp4" poster="photos/explainer-poster.webp" controls preload="none" playsinline aria-label="Watch a short explainer of a Goodz card being tapped to open music."></video>
-      <span class="video-callout-label">See it in action</span>
-    </div>
     <div class="steps">
       <div class="step">
         <div class="step-illo">
