@@ -198,6 +198,43 @@
       .guidelines-inner { grid-template-columns: 1fr; }
       .guidelines-diagram { display: flex; flex-direction: column; align-items: center; }
     }
+
+    /* Mini gallery used inside .product-detail */
+    .gallery-mini {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      height: 100%;
+      box-sizing: border-box;
+    }
+    .gallery-mini-hero {
+      aspect-ratio: 1;
+      background: var(--off-white);
+      overflow: hidden;
+      border-radius: 6px;
+    }
+    .gallery-mini-hero img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .gallery-mini-thumbs {
+      display: flex;
+      gap: 0.45rem;
+    }
+    .gallery-mini-thumb {
+      flex: 1;
+      aspect-ratio: 1;
+      background: var(--off-white);
+      border: 2px solid transparent;
+      cursor: pointer;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .gallery-mini-thumb.active,
+    .gallery-mini-thumb:hover { border-color: var(--black); }
+    .gallery-mini-thumb img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
   </style>
 </head>
 <body>
@@ -222,12 +259,41 @@
       <p>Custom-printed wooden cards with your artwork and a link to your music. 50-unit minimum. Merch fans keep.</p>
       <div class="hero-ctas">
         <a href="order.html" class="btn btn-amber">Start Your Order →</a>
-        <a href="#examples" class="btn btn-ghost">See Examples</a>
+        <a href="#try-one" class="btn btn-ghost">Order Sample</a>
       </div>
     </div>
     <div class="page-hero-visual">
       <img src="photos/custom-hero.webp" alt="A hand holding a 'Self-Taught' Custom Goodz card alongside a phone displaying the same Fish Hunt album on Spotify, atop a flat-lay of dozens of other Custom Goodz designs." loading="eager">
     </div>
+  </div>
+</div>
+
+<!-- PRODUCT DETAIL -->
+<div class="product-detail">
+  <div class="product-detail-img">
+    <div class="gallery-mini">
+      <div class="gallery-mini-hero">
+        <img id="cd-hero" src="photos/TMBG_crate_grass.jpg" alt="A wooden Custom Goodz card resting on grass near a crate of They Might Be Giants vinyl.">
+      </div>
+      <div class="gallery-mini-thumbs" id="cd-thumbs">
+        <div class="gallery-mini-thumb active" data-img="photos/TMBG_crate_grass.jpg"><img src="photos/TMBG_crate_grass.jpg" alt="Custom Goodz in the wild" loading="lazy"></div>
+        <div class="gallery-mini-thumb" data-img="photos/BritneySpearsGoodzMockup2.png"><img src="photos/BritneySpearsGoodzMockup2.png" alt="Britney Spears Custom Goodz mockup" loading="lazy"></div>
+        <div class="gallery-mini-thumb" data-img="photos/bourbon_1_1.jpeg"><img src="photos/bourbon_1_1.jpeg" alt="Custom Goodz lifestyle shot" loading="lazy"></div>
+        <div class="gallery-mini-thumb" data-img="photos/PXL_20251003_220145577.MP.jpg"><img src="photos/PXL_20251003_220145577.MP.jpg" alt="Custom Goodz close-up" loading="lazy"></div>
+        <div class="gallery-mini-thumb" data-img="photos/PXL_20250205_213837796.png"><img src="photos/PXL_20250205_213837796.png" alt="Custom Goodz detail" loading="lazy"></div>
+      </div>
+    </div>
+  </div>
+  <div class="product-detail-text">
+    <h2 style="font-size:2rem;margin-bottom:0.5rem;">Custom Goodz</h2>
+    <div class="product-price" style="font-size:1.5rem;margin-bottom:1.25rem;">50 goodz from $172 <span>($3.44/unit)</span></div>
+    <p style="color:var(--text-light);line-height:1.6;font-size:0.95rem;margin-bottom:1.5rem;">A run of wooden cards, printed with your art, pre-loaded with your music. Fans tap it and your album opens.</p>
+    <ul class="usp-list">
+      <li>Your artwork UV-printed on basswood</li>
+      <li>Pre-loaded with your Bandcamp album, Spotify, or any URL</li>
+      <li>50-unit minimum, ships in 4&ndash;5 weeks</li>
+    </ul>
+    <a href="order.html" class="btn btn-amber" style="align-self:flex-start;margin-top:0.5rem;">Order Now &rarr;</a>
   </div>
 </div>
 
@@ -358,20 +424,23 @@
 </div>
 
 <!-- TRY ONE FIRST -->
-<section class="section-sm" id="try-one">
-  <h2 style="font-size:2rem;margin-bottom:0.4rem;">Try One First</h2>
-  <p style="color:var(--text-light);max-width:560px;line-height:1.7;font-size:0.95rem;">Order a single Custom Goodz with your artwork and your link. See it on real card stock, tap it with your phone, sit with it. Then commit to a full run.</p>
-  <div class="sample-box" style="margin-top:2rem;">
-    <div class="sample-box-text">
-      <h3>One Custom Goodz</h3>
-      <p>Same wooden card. Same UV printing. Same NFC chip. Ships in 1–3 days.</p>
-    </div>
-    <div style="text-align:center;">
-      <div class="sample-price">$5</div>
-      <a href="https://shop.getthegoodz.com" class="btn btn-amber" style="margin-top:0.75rem;display:block;">Order a Sample</a>
-    </div>
+<div class="product-detail" id="try-one">
+  <div class="product-detail-img">
+    <img src="photos/home-custom-card.webp" alt="A single Custom Goodz sample card with custom artwork." loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">
   </div>
-</section>
+  <div class="product-detail-text">
+    <div class="product-tag">Ready to Ship &middot; 1&ndash;3 Days</div>
+    <h2 style="font-size:2rem;margin-bottom:0.5rem;">One Custom Goodz</h2>
+    <div class="product-price" style="font-size:2rem;margin-bottom:1.25rem;">$5 <span>/ sample card</span></div>
+    <p style="color:var(--text-light);line-height:1.65;font-size:0.95rem;margin-bottom:1.5rem;">Order a single Custom Goodz with your artwork and your link. See it on real card stock, tap it with your phone, sit with it. Then commit to a full run.</p>
+    <ul class="usp-list">
+      <li>Same wooden card and UV printing as a full run</li>
+      <li>Your artwork, your link</li>
+      <li>Ships in 1&ndash;3 business days</li>
+    </ul>
+    <a href="https://shop.getthegoodz.com" class="btn btn-amber" style="align-self:flex-start;margin-top:0.5rem;">Order a Sample &rarr;</a>
+  </div>
+</div>
 
 <!-- CREDIBILITY -->
 <section class="cred-bar">
@@ -659,6 +728,16 @@ document.addEventListener('click', (e) => {
   if (!a) return;
   const item = document.getElementById(a.getAttribute('href').slice(1));
   if (item) item.classList.add('open');
+});
+
+// Product-card mini gallery: click a thumb to swap the hero
+document.querySelectorAll('#cd-thumbs .gallery-mini-thumb').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('#cd-thumbs .gallery-mini-thumb').forEach(o => o.classList.remove('active'));
+    t.classList.add('active');
+    const hero = document.getElementById('cd-hero');
+    if (hero && t.dataset.img) hero.src = t.dataset.img;
+  });
 });
 </script>
 </body>
