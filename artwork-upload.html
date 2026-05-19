@@ -1407,11 +1407,19 @@ function setupFileInput(inputId, handler) {
 
 // ---- CSV ----
 function handleCSVFile(file) {
-  if (!file.name.endsWith('.csv')) { showCSVError('Please upload a .csv file from Bandcamp.'); return; }
+  if (!file.name.endsWith('.csv')) {
+    showCSVError('Please upload a .csv file from Bandcamp.');
+    trackEvent('csv_upload_result', { result: 'bad_extension', filename: file.name });
+    return;
+  }
   const reader = new FileReader();
   reader.onload = e => {
     const { urls, duplicates } = parseCSVUrls(e.target.result);
-    if (!urls.length) { showCSVError('No URLs found. Make sure the CSV has http/https links.'); return; }
+    if (!urls.length) {
+      showCSVError('No URLs found. Make sure the CSV has http/https links.');
+      trackEvent('csv_upload_result', { result: 'no_urls', received: 0 });
+      return;
+    }
     hideCSVError();
     state.csvUrls = urls;
     state.csvDuplicates = duplicates;
@@ -1419,6 +1427,14 @@ function handleCSVFile(file) {
     updateStepButtons();
     updateStatusBadges();
     updateCSVWarning();
+
+    const expected = orderConfig ? orderConfig.quantity : 0;
+    const received = urls.length;
+    const result = !expected ? 'no_qty'
+                 : received === expected ? 'match'
+                 : received < expected ? 'short'
+                 : 'over';
+    trackEvent('csv_upload_result', { result, expected, received, duplicates });
 
     // Upload CSV to Cloudinary
     state.uploadingCSV = true;
@@ -1546,6 +1562,14 @@ function handleMusicSourceChange() {
 }
 
 // ---- Step navigation ----
+// Map internal step index to URL slug + analytics label
+const STEP_NAMES = ['music', 'artwork', 'review'];
+
+// Tiny GA event helper. No-ops cleanly until gtag is wired up on the page.
+function trackEvent(name, params) {
+  if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
+}
+
 function goToStep(n) {
   state.currentStep = n;
   document.querySelectorAll('.step').forEach((el, i) => el.classList.toggle('active', i === n));
@@ -1559,6 +1583,12 @@ function goToStep(n) {
     el.classList.toggle('done', i < n);
   });
   if (n === 2) renderSummary();
+  const slug = STEP_NAMES[n];
+  if (slug) {
+    const newHash = '#' + slug;
+    if (location.hash !== newHash) history.replaceState(null, '', newHash);
+    trackEvent('step_view', { step: slug });
+  }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -1665,6 +1695,11 @@ function placeOrder() {
   btn.textContent = 'Preparing your order...';
   btn.disabled = true;
   const cfg = orderConfig || {};
+  trackEvent('proceed_to_checkout_clicked', {
+    quantity: cfg.quantity || 0,
+    music_type: state.musicMode,
+    custom_back: !!state.customBackChosen,
+  });
 
   const payload = {
     units:        cfg.quantity || 50,
@@ -1699,6 +1734,7 @@ function placeOrder() {
     const w = document.getElementById('summary-warning');
     w.style.display = 'block';
     w.textContent = 'Could not connect to checkout. Please try again or contact hello@getthegoodz.com.';
+    trackEvent('checkout_error', { context: 'place_order' });
   });
 }
 
@@ -1770,6 +1806,18 @@ setupFileInput('input-csv', handleCSVFile);
 
 updateCSVWarning();
 updateStepButtons();
+
+// Sync step with URL hash on load so reload / shared link / bookmark resumes
+(function syncStepFromHash() {
+  const slug = (location.hash || '').replace(/^#/, '');
+  const idx = STEP_NAMES.indexOf(slug);
+  if (idx > 0) {
+    goToStep(idx); // fires step_view inside goToStep
+  } else {
+    if (!location.hash) history.replaceState(null, '', '#' + STEP_NAMES[0]);
+    trackEvent('step_view', { step: STEP_NAMES[0] });
+  }
+})();
 </script>
 </body>
 </html>

@@ -736,10 +736,19 @@ function renderTable() {
   }).join('');
 }
 
+// Tiny GA event helper. No-ops cleanly until gtag is wired up on the page.
+function trackEvent(name, params) {
+  if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
+}
+let __suppressTracking = false;
+
 function selectTier(i) {
   state.tierIdx = i;
   renderTable();
   updateSummary();
+  if (__suppressTracking) return;
+  const tier = TIERS[i];
+  trackEvent('tier_change', { quantity: tier && tier.qty, tier_index: i });
 }
 
 function selectOption(group, value) {
@@ -752,6 +761,7 @@ function selectOption(group, value) {
   updateSummary();
   updateFromPrice();
   updateUpchargeNote();
+  if (!__suppressTracking) trackEvent('option_change', { group, value });
 }
 
 function updateFromPrice() {
@@ -823,6 +833,11 @@ function continueToUpload() {
     baseTotal:        tier.max ? +(price * tier.qty).toFixed(2) : null,
     summaryText:      summaryText(),
   }));
+  trackEvent('continue_clicked', {
+    from_step: 'customize',
+    quantity: tier.qty,
+    music: state.music,
+  });
   window.location.href = 'artwork-upload.html';
 }
 
@@ -847,6 +862,7 @@ updateFromPrice();
   try { cfg = JSON.parse(raw); } catch (e) { return; }
   if (!cfg) return;
 
+  __suppressTracking = true;
   if (cfg.music && MUSIC_LABELS[cfg.music]) selectOption('music', cfg.music);
   if (cfg.backDesign === 'standard' || cfg.backDesign === 'custom') selectOption('back', cfg.backDesign);
   if (cfg.keychainHole) selectOption('keychain', cfg.keychainHole);
@@ -855,7 +871,10 @@ updateFromPrice();
     const idx = TIERS.findIndex(t => t.qty === cfg.quantity);
     if (idx >= 0) selectTier(idx);
   }
+  __suppressTracking = false;
 })();
+
+trackEvent('step_view', { step: 'customize' });
 
 </script>
 </body>
