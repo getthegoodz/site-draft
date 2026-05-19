@@ -439,27 +439,37 @@ img { display: block; width: 100%; }
 }
 
 .revenue-inner {
-  max-width: 1100px;
+  max-width: 760px;
   margin: 0 auto;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 3.5rem;
-  flex-wrap: wrap;
+  gap: 1.75rem;
 }
 
 .revenue-math {
   display: flex;
-  align-items: center;
-  gap: 1.5rem;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2.25rem;
   flex-wrap: wrap;
 }
 
 .revenue-block { text-align: center; }
 
+.revenue-tagline {
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(0,0,0,0.7);
+  font-weight: 700;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
 .revenue-num {
   font-family: 'Poppins', sans-serif;
-  font-size: 2.25rem;
+  font-size: 2.5rem;
   font-weight: 800;
   display: block;
   line-height: 1;
@@ -475,9 +485,14 @@ img { display: block; width: 100%; }
   display: block;
 }
 
-.revenue-arrow { font-size: 2rem; color: rgba(0,0,0,0.7); font-weight: 700; }
+.revenue-arrow {
+  font-size: 2rem;
+  color: rgba(0,0,0,0.7);
+  font-weight: 700;
+  padding-bottom: 1.5rem;
+}
 
-.revenue-caption { min-width: 220px; max-width: 360px; }
+.revenue-caption { max-width: 560px; text-align: center; }
 .revenue-caption p { font-size: 1rem; font-weight: 600; color: var(--black); line-height: 1.55; }
 
 /* ── SAMPLE BOX ── */
@@ -589,6 +604,18 @@ img { display: block; width: 100%; }
 .cred-logo--sony   { height: 55px; }
 .cred-logo--warner { height: 38px; }
 .cred-logo--craft  { height: 77px; }
+.cred-logo--britney { height: 42px; }
+.cred-logo--outkast { height: 46px; }
+.cred-logo--tmbg    { height: 38px; }
+
+/* Dark cred-bar variant: black background, tan reversed-out logos */
+.cred-bar.dark { background: var(--black); }
+.cred-bar.dark .cred-subhead { color: rgba(255, 240, 210, 0.78); }
+.cred-bar.dark .cred-logo {
+  filter: brightness(0) invert(1) sepia(0.45) saturate(0.55) hue-rotate(-8deg);
+  opacity: 0.92;
+}
+.cred-bar.dark .cred-logo:hover { opacity: 1; }
 
 /* ── CTA BAND ── */
 .cta-band {
@@ -907,7 +934,8 @@ footer {
   .proof-item { flex-direction: column; align-items: center; text-align: center; gap: 0.1rem; }
   .compat-bar-inner { grid-template-columns: 1fr; gap: 1.25rem; }
   .pricing-cell { border-right: none; border-bottom: var(--border-inner); padding: 0.75rem 1rem; }
-  .revenue-inner { flex-direction: column; align-items: flex-start; }
+  .revenue-inner { align-items: center; }
+  .revenue-arrow { transform: rotate(90deg); padding-bottom: 0; }
   .sample-box { flex-direction: column; }
   .bandcamp-inner { grid-template-columns: 1fr; gap: 3rem; }
   .page-hero { padding: 3.5rem 1.5rem; }
@@ -927,6 +955,9 @@ footer {
   .cred-logo--sony   { height: 46px; }
   .cred-logo--warner { height: 31px; }
   .cred-logo--craft  { height: 62px; }
+  .cred-logo--britney { height: 34px; }
+  .cred-logo--outkast { height: 36px; }
+  .cred-logo--tmbg    { height: 30px; }
   .revenue-math { gap: 1rem; }
   .hero-text { padding: 2.5rem 1.25rem; }
 }
