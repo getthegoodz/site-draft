@@ -399,6 +399,12 @@ img { display: block; width: 100%; }
   color: rgba(0, 0, 0, 0.62);
 }
 
+/* Dark variant: amber on black */
+.compat-bar.dark { background: var(--black); }
+.compat-bar.dark .compat-icon { color: var(--amber); }
+.compat-bar.dark .compat-text strong { color: var(--amber); }
+.compat-bar.dark .compat-text span  { color: rgba(255, 245, 220, 0.7); }
+
 /* ── SPLIT ── */
 .split {
   display: grid;
