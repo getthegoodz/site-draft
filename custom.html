@@ -203,6 +203,17 @@
     .product-detail.with-gallery { grid-template-columns: 4fr 5fr; }
     .product-detail.with-gallery .product-detail-text { padding: 2.5rem 3rem; }
 
+    /* Soft text link below the main "Order Now" CTA, points down to sample */
+    .try-one-link {
+      margin-top: 0.85rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-light);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .try-one-link:hover { color: var(--black); }
+
     /* Sample-card variant: contained, bordered, image-on-right.
        Visually distinct from the full-width "start an order" product card. */
     .sample-eyebrow {
@@ -403,6 +414,7 @@
       <li>50-unit minimum, ships in 4&ndash;5 weeks</li>
     </ul>
     <a href="order.html" class="btn btn-amber" style="align-self:flex-start;margin-top:0.5rem;">Order Now &rarr;</a>
+    <a href="#try-one" class="try-one-link" style="align-self:flex-start;">Try one for $5 first &rarr;</a>
   </div>
 </div>
 
