@@ -288,6 +288,18 @@
     }
     .thumb:hover { border-color: var(--black); }
     .thumb.thumb-active { border-color: var(--black); border-width: 2px; }
+    .thumb-status {
+      position: absolute;
+      top: 4px; right: 4px;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.15);
+      z-index: 2;
+      display: none;
+    }
+    .thumb-status.is-pending { display: block; background: var(--yellow); }
+    .thumb-status.is-done    { display: block; background: #22c55e; }
     .thumb img {
       width: 100%;
       height: 100%;
@@ -341,6 +353,41 @@
        flipping between front and back keeps the visible "actual goodz"
        footprint consistent with the trim overlay on the front. */
     #card-content-back { background: #fff; }
+    /* When custom back is required but not yet uploaded, hide the standard-back
+       placeholder image and show an empty upload prompt instead. Mirrors the
+       front pattern. */
+    #card-content-back.needs-custom-back .back-image-frame { display: none; }
+    #card-content-back .back-placeholder { display: none; }
+    #card-content-back.needs-custom-back .back-placeholder { display: flex; }
+    .back-placeholder {
+      position: absolute;
+      inset: 0;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      z-index: 3;
+      background: #fff;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .artwork-substeps {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .artwork-substeps .ss-item { display: inline-flex; align-items: center; gap: 0.4rem; }
+    .artwork-substeps .ss-dot {
+      width: 9px; height: 9px; border-radius: 50%;
+      background: #e0ddd4;
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.15);
+    }
+    .artwork-substeps .ss-dot.is-pending { background: var(--yellow); }
+    .artwork-substeps .ss-dot.is-done    { background: #22c55e; }
+    .artwork-substeps .ss-item.is-active { color: var(--black); font-weight: 700; }
     .back-image-frame {
       position: absolute;
       top: 3.57%;
@@ -895,6 +942,10 @@
   <!-- STEP 1: Upload artwork -->
   <div class="step" id="step-1">
     <h2>Upload Your Artwork</h2>
+    <div class="artwork-substeps" id="artwork-substeps" style="display:none">
+      <span class="ss-item" id="ss-front"><span class="ss-dot"></span>Front</span>
+      <span class="ss-item" id="ss-back"><span class="ss-dot"></span>Back</span>
+    </div>
 
     <div class="upload-area">
       <div class="card-wrap" id="card-wrap">
@@ -928,6 +979,11 @@
             <div class="back-image-frame">
               <img id="back-image" class="card-art card-art-image" src="templates/Goodz_Standard_back.png" alt="Standard Goodz back">
             </div>
+            <div class="back-placeholder" id="back-placeholder">
+              <button type="button" class="upload-btn" onclick="addCustomBack()">Choose file</button>
+              <p class="upload-hint upload-hint-desktop">or drag and drop here</p>
+              <p class="upload-hint upload-hint-mobile">Tap to upload back artwork</p>
+            </div>
             <img id="back-art" class="card-art card-art-image back-custom-art" src="" alt="Your back artwork">
             <svg class="card-overlay-guides back-overlay" viewBox="0 0 70 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <defs>
@@ -949,11 +1005,13 @@
 
       <div class="thumbs">
         <button type="button" class="thumb thumb-active" id="thumb-front" onclick="setView('front')" aria-label="View front">
+          <span class="thumb-status" id="thumb-front-status"></span>
           <div class="thumb-empty-bg" id="thumb-front-empty"></div>
           <img id="thumb-front-img" src="" alt="" style="display:none">
           <span class="thumb-label">Front</span>
         </button>
         <button type="button" class="thumb" id="thumb-back" onclick="setView('back')" aria-label="View back">
+          <span class="thumb-status" id="thumb-back-status"></span>
           <img id="thumb-back-img" src="templates/Goodz_Standard_back.png" alt="">
           <span class="thumb-label">Back</span>
         </button>
@@ -1123,6 +1181,8 @@ if (orderConfig) {
 let state = {
   frontArt:      null,   // Cloudinary URL or data URL
   backArt:       null,
+  frontTooSmall: false,
+  backTooSmall:  false,
   uploadingFront: false,
   uploadingBack:  false,
   csvUrls:       [],
@@ -1150,14 +1210,54 @@ function uploadToCloudinary(blob, filename, resourceType) {
   });
 }
 
-// ---- Image size warning ----
-function checkImageSize(dataUrl, warnElId) {
+// ---- Image size warning (scoped to the currently visible side) ----
+function checkImageSize(dataUrl, side) {
   const img = new Image();
   img.onload = () => {
     const tooSmall = img.naturalWidth < 800 || img.naturalHeight < 800;
-    document.getElementById(warnElId).style.display = tooSmall ? 'block' : 'none';
+    if (side === 'front') state.frontTooSmall = tooSmall;
+    else                   state.backTooSmall  = tooSmall;
+    renderSizeWarnings();
   };
   img.src = dataUrl;
+}
+
+function renderSizeWarnings() {
+  const isFront = state.viewMode === 'front';
+  document.getElementById('front-size-warn').style.display = (isFront && state.frontTooSmall) ? 'block' : 'none';
+  document.getElementById('back-size-warn').style.display  = (!isFront && state.backTooSmall)  ? 'block' : 'none';
+}
+
+// ---- Sub-step cue + back placeholder for the artwork step ----
+function renderArtworkSubsteps() {
+  const required = !!state.customBackChosen;
+  const substeps = document.getElementById('artwork-substeps');
+  substeps.style.display = required ? 'flex' : 'none';
+
+  const frontDot = document.querySelector('#ss-front .ss-dot');
+  const backDot  = document.querySelector('#ss-back .ss-dot');
+  const setDotClass = (el, cls) => { el.className = 'ss-dot' + (cls ? ' ' + cls : ''); };
+  setDotClass(frontDot, state.frontArt ? 'is-done' : 'is-pending');
+  setDotClass(backDot,  state.backArt  ? 'is-done' : 'is-pending');
+  document.getElementById('ss-front').classList.toggle('is-active', state.viewMode === 'front');
+  document.getElementById('ss-back').classList.toggle('is-active', state.viewMode === 'back');
+
+  // Thumb status dots
+  const frontThumbStatus = document.getElementById('thumb-front-status');
+  const backThumbStatus  = document.getElementById('thumb-back-status');
+  frontThumbStatus.className = 'thumb-status' + (state.frontArt ? ' is-done' : ' is-pending');
+  // Back dot is only meaningful when a custom back is required
+  if (required) {
+    backThumbStatus.className = 'thumb-status' + (state.backArt ? ' is-done' : ' is-pending');
+  } else {
+    backThumbStatus.className = 'thumb-status';
+  }
+
+  // Show empty back placeholder when custom back required but not yet uploaded
+  document.getElementById('card-content-back').classList.toggle(
+    'needs-custom-back',
+    required && !state.backArt
+  );
 }
 
 // ---- Front art ----
@@ -1172,7 +1272,8 @@ function handleFrontFile(file) {
     const dataUrl = e.target.result;
     state.frontArt = dataUrl;
     showFrontPreview(dataUrl, file.name);
-    checkImageSize(dataUrl, 'front-size-warn');
+    checkImageSize(dataUrl, 'front');
+    renderArtworkSubsteps();
     updateStepButtons();
     updateStatusBadges();
 
@@ -1208,7 +1309,9 @@ function renderCardActions() {
   const set = (id, on) => { const el = document.getElementById(id); if (el) el.style.display = on ? 'inline-block' : 'none'; };
   set('action-front-replace',   isFront && !!state.frontArt);
   set('action-front-remove',    isFront && !!state.frontArt);
-  set('action-add-custom-back', !isFront && !state.backArt);
+  // When custom back is mandatory + missing, the empty back placeholder handles
+  // the upload prompt, so suppress the redundant action button.
+  set('action-add-custom-back', !isFront && !state.backArt && !state.customBackChosen);
   set('action-back-replace',    !isFront && !!state.backArt);
   set('action-use-standard',    !isFront && !!state.backArt && !isMandatory);
 }
@@ -1275,11 +1378,12 @@ function showFrontPreview(src, name) {
 function clearFront(e) {
   if (e) e.stopPropagation();
   state.frontArt = null;
+  state.frontTooSmall = false;
   document.getElementById('card-art').style.display = 'none';
   document.getElementById('card-art').src = '';
   document.getElementById('card-placeholder').style.display = 'flex';
   document.getElementById('front-filename').textContent = '';
-  document.getElementById('front-size-warn').style.display = 'none';
+  renderSizeWarnings();
   const tImg = document.getElementById('thumb-front-img');
   tImg.style.display = 'none';
   tImg.src = '';
@@ -1289,6 +1393,7 @@ function clearFront(e) {
   document.getElementById('input-front').value = '';
   updateCardState();
   renderCardActions();
+  renderArtworkSubsteps();
   updateStepButtons();
   updateStatusBadges();
 }
@@ -1305,7 +1410,8 @@ function handleBackFile(file) {
     const dataUrl = e.target.result;
     state.backArt = dataUrl;
     showBackPreview(dataUrl, file.name);
-    checkImageSize(dataUrl, 'back-size-warn');
+    checkImageSize(dataUrl, 'back');
+    renderArtworkSubsteps();
     updateStepButtons();
     updateStatusBadges();
 
@@ -1341,14 +1447,16 @@ function showBackPreview(src, name) {
 function clearBack(e) {
   if (e) e.stopPropagation();
   state.backArt = null;
+  state.backTooSmall = false;
   state.customBackChosen = !!(orderConfig && orderConfig.backDesign === 'custom');
   document.getElementById('back-art').src = '';
   document.getElementById('card-content-back').classList.remove('has-custom-back');
   document.getElementById('thumb-back-img').src = 'templates/Goodz_Standard_back.png';
-  document.getElementById('back-size-warn').style.display = 'none';
+  renderSizeWarnings();
   document.getElementById('input-back').value = '';
   updateUpchargeNotice();
   renderCardActions();
+  renderArtworkSubsteps();
   updateStepButtons();
   updateStatusBadges();
 }
@@ -1363,6 +1471,8 @@ function setView(mode) {
   updateKeychainDot();
   updateCardState();
   renderCardActions();
+  renderSizeWarnings();
+  renderArtworkSubsteps();
 }
 
 // Mirror the keychain dot horizontally when viewing the back: a hole on the
@@ -1767,12 +1877,19 @@ applyUnits(currentUnit);
 
 // ---- Init ----
 setupDrop('card', file => {
-  // Drag-drop on the card always feeds the front (the back is loaded via the explicit button)
+  // Drag-drop feeds the visible side: front, or back when a custom back is
+  // needed but not yet uploaded.
   if (state.viewMode === 'front') handleFrontFile(file);
+  else if (state.customBackChosen && !state.backArt) handleBackFile(file);
 });
-document.getElementById('card').addEventListener('click', () => {
-  if (state.viewMode !== 'front') return;
-  document.getElementById('input-front').click();
+document.getElementById('card').addEventListener('click', (e) => {
+  // Don't hijack clicks on action buttons inside the card area
+  if (e.target.closest('button, a, label, input')) return;
+  if (state.viewMode === 'front') {
+    document.getElementById('input-front').click();
+  } else if (state.customBackChosen && !state.backArt) {
+    document.getElementById('input-back').click();
+  }
 });
 renderCardActions();
 setupFileInput('input-front', handleFrontFile);
@@ -1806,6 +1923,8 @@ if (csvZone) {
 setupFileInput('input-csv', handleCSVFile);
 
 updateCSVWarning();
+renderArtworkSubsteps();
+renderSizeWarnings();
 updateStepButtons();
 
 // Sync step with URL hash on load so reload / shared link / bookmark resumes
