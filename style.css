@@ -3,6 +3,7 @@
 :root {
   --amber: #E8A820;
   --amber-dark: #cf941a;
+  --amber-ink: #8a5a00;        /* darker amber for foreground glyphs on light backgrounds */
   --black: #111111;
   --black-border: #000000;
   --white: #ffffff;
