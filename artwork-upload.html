@@ -698,31 +698,6 @@
     .template-shortcut a:hover { text-decoration: underline; }
 
     /* Music step */
-    .music-source-row {
-      display: flex; align-items: center; gap: 0.75rem;
-      margin-bottom: 1.25rem; flex-wrap: wrap;
-    }
-    .music-source-label {
-      font-size: 0.85rem; font-weight: 700; color: var(--text);
-    }
-    .music-select-wrap { position: relative; flex: 1; min-width: 0; max-width: 260px; }
-    .music-select {
-      width: 100%; appearance: none; -webkit-appearance: none; -moz-appearance: none;
-      padding: 0.75rem 2.4rem 0.75rem 0.9rem;
-      border: 1.5px solid var(--border); border-radius: 12px; background: #fff;
-      font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 700;
-      color: var(--black); cursor: pointer; line-height: 1.2;
-      transition: border-color 0.12s;
-    }
-    .music-select:hover, .music-select:focus { border-color: var(--black); outline: none; }
-    .music-select-wrap::after {
-      content: ''; position: absolute; right: 1.1rem; top: 50%;
-      width: 0.5rem; height: 0.5rem;
-      border-right: 2px solid var(--black); border-bottom: 2px solid var(--black);
-      transform: translateY(-75%) rotate(45deg);
-      pointer-events: none;
-    }
-
     .music-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; margin-bottom: 0.75rem; }
     .music-desc a { color: var(--black); font-weight: 700; text-decoration: underline; }
 
@@ -871,20 +846,6 @@
   <div class="step active" id="step-0">
     <h2>Link Your Music</h2>
     <p class="step-sub">Choose how fans will hear your music when they tap their Goodz.</p>
-
-    <div class="music-source-row">
-      <label class="music-source-label" for="music-source-select">Music Source</label>
-      <div class="music-select-wrap">
-        <select id="music-source-select" class="music-select" onchange="handleMusicSourceChange()">
-          <option value="bandcamp">Bandcamp codes</option>
-          <option value="spotify">Spotify</option>
-          <option value="apple">Apple Music</option>
-          <option value="amazon">Amazon</option>
-          <option value="youtube">YouTube</option>
-          <option value="other">Other</option>
-        </select>
-      </div>
-    </div>
 
     <!-- Bandcamp codes mode -->
     <div id="csv-area">
@@ -1652,24 +1613,19 @@ function setMode(mode) {
   updateStepButtons();
 }
 
-const URL_PLACEHOLDERS = {
-  spotify: 'https://open.spotify.com/album/...',
-  apple:   'https://music.apple.com/album/...',
-  amazon:  'https://music.amazon.com/albums/...',
-  youtube: 'https://www.youtube.com/playlist?list=...',
-  other:   'https://...',
-};
-
-function handleMusicSourceChange() {
-  const sel = document.getElementById('music-source-select');
-  if (!sel) return;
-  const value = sel.value;
-  state.musicSource = value;
+// Music source is now picked upstream on order.html as one of:
+//   'bandcamp_codes' → CSV upload mode
+//   'streaming'      → single URL (placeholder hints at a streaming link)
+//   'url'            → single URL (placeholder is generic)
+function applyMusicSource(source) {
+  state.musicSource = source;
   const urlInput = document.getElementById('url-input');
   if (urlInput) {
-    urlInput.placeholder = URL_PLACEHOLDERS[value] || 'https://yourband.bandcamp.com/album/...';
+    urlInput.placeholder = source === 'streaming'
+      ? 'https://open.spotify.com/album/...  ·  any streaming link'
+      : 'https://...';
   }
-  setMode(value === 'bandcamp' ? 'csv' : 'url');
+  setMode(source === 'bandcamp_codes' ? 'csv' : 'url');
 }
 
 // ---- Step navigation ----
@@ -1895,13 +1851,13 @@ renderCardActions();
 setupFileInput('input-front', handleFrontFile);
 setupFileInput('input-back',  handleBackFile);
 
-// Pre-select music source from the order config
+// Apply the music source picked on order.html. Legacy values are normalized
+// so a stale sessionStorage from a previous visit still works.
 (function initMusicSource() {
-  const sel = document.getElementById('music-source-select');
-  if (!sel) return;
-  const fromOrder = orderConfig && orderConfig.music ? orderConfig.music : 'bandcamp';
-  if ([...sel.options].some(o => o.value === fromOrder)) sel.value = fromOrder;
-  handleMusicSourceChange();
+  const LEGACY = { bandcamp: 'bandcamp_codes', spotify: 'streaming', apple: 'streaming', amazon: 'streaming', youtube: 'streaming', other: 'url' };
+  const raw = (orderConfig && orderConfig.music) || 'bandcamp_codes';
+  const source = (raw === 'bandcamp_codes' || raw === 'streaming' || raw === 'url') ? raw : (LEGACY[raw] || 'bandcamp_codes');
+  applyMusicSource(source);
 })();
 
 // Show the qty target in the empty CSV drop zone

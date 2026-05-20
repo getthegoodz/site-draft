@@ -181,9 +181,12 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 0.6rem;
     }
-    @media (max-width: 420px) {
-      .option-cards.music-cards { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: 700px) {
+      .option-cards.music-cards { grid-template-columns: 1fr; }
     }
+    /* Streaming service: tight horizontal row of small platform glyphs */
+    .streaming-logos { display: flex; gap: 0.3rem; align-items: center; flex-wrap: wrap; }
+    .streaming-logos svg { flex-shrink: 0; }
 
     /* Pricing grid */
     .qty-section { margin-bottom: 0; }
@@ -444,61 +447,56 @@
       <div class="option-section">
         <div class="option-section-label">Music Source</div>
         <div class="option-cards music-cards" data-option="music">
-          <div class="option-card selected" data-value="bandcamp">
+          <div class="option-card selected" data-value="bandcamp_codes">
             <div class="option-card-icon">
               <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M7 7 L23 7 L19 19 L3 19 Z" fill="currentColor"/>
               </svg>
             </div>
             <div class="option-card-title">Bandcamp codes</div>
+            <div class="option-card-sub">Each Goodz gets a unique album download code. Free for fans, no login.</div>
           </div>
-          <div class="option-card" data-value="spotify">
-            <div class="option-card-icon">
-              <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <div class="option-card" data-value="streaming">
+            <div class="option-card-icon streaming-logos" aria-label="Bandcamp, SoundCloud, YouTube, Spotify, Apple Music, Amazon">
+              <svg width="16" height="16" viewBox="0 0 26 26" fill="none" aria-hidden="true" title="Bandcamp">
+                <path d="M7 7 L23 7 L19 19 L3 19 Z" fill="currentColor"/>
+              </svg>
+              <svg width="16" height="16" viewBox="0 0 26 26" fill="none" aria-hidden="true" title="SoundCloud">
+                <path d="M4 16 V20 M6.5 14 V20 M9 13 V20 M11.5 12 V20" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                <path d="M14 10 C 18 9 22 12 22 15 C 23 15 24 16.3 24 17.8 C 24 19.45 22.66 20 21 20 L 14 20 Z" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linejoin="round"/>
+              </svg>
+              <svg width="16" height="16" viewBox="0 0 26 26" fill="none" aria-hidden="true" title="YouTube">
+                <rect x="2" y="6" width="22" height="14" rx="3.5" stroke="currentColor" stroke-width="2"/>
+                <path d="M11 9.5 L17 13 L11 16.5 Z" fill="currentColor"/>
+              </svg>
+              <svg width="16" height="16" viewBox="0 0 26 26" fill="none" aria-hidden="true" title="Spotify">
                 <circle cx="13" cy="13" r="10" stroke="currentColor" stroke-width="2"/>
                 <path d="M7.5 10 C 10 9 16 9 18.5 10.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/>
                 <path d="M8 13 C 10.5 12 15.5 12 18 13.2" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/>
                 <path d="M9 16 C 11 15.2 15 15.2 17 16" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/>
               </svg>
-            </div>
-            <div class="option-card-title">Spotify</div>
-          </div>
-          <div class="option-card" data-value="apple">
-            <div class="option-card-icon">
-              <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <svg width="16" height="16" viewBox="0 0 26 26" fill="none" aria-hidden="true" title="Apple Music">
                 <path d="M11 18 C11 19.66 9.66 21 8 21 C6.34 21 5 19.66 5 18 C5 16.34 6.34 15 8 15 C8.7 15 9.36 15.24 9.9 15.63 V8 L20 6 V16 C20 17.66 18.66 19 17 19 C15.34 19 14 17.66 14 16 C14 14.34 15.34 13 17 13 C17.7 13 18.36 13.24 18.9 13.63" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
               </svg>
-            </div>
-            <div class="option-card-title">Apple Music</div>
-          </div>
-          <div class="option-card" data-value="amazon">
-            <div class="option-card-icon">
-              <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <svg width="16" height="16" viewBox="0 0 26 26" fill="none" aria-hidden="true" title="Amazon">
                 <text x="13" y="16" font-family="system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" font-weight="900" font-size="16" text-anchor="middle" fill="currentColor">a</text>
                 <path d="M4 19.5 C 8 22.8 18 22.8 22 19.5" stroke="currentColor" stroke-width="2.1" fill="none" stroke-linecap="round"/>
                 <path d="M19.5 17.7 L22 19.5 L20 21.6" stroke="currentColor" stroke-width="2.1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
-            <div class="option-card-title">Amazon</div>
+            <div class="option-card-title">Streaming service</div>
+            <div class="option-card-sub">Bandcamp, SoundCloud, YouTube, Spotify, Apple Music, Amazon. Some require a fan login.</div>
           </div>
-          <div class="option-card" data-value="youtube">
+          <div class="option-card" data-value="url">
             <div class="option-card-icon">
               <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="2" y="6" width="22" height="14" rx="3.5" stroke="currentColor" stroke-width="2"/>
-                <path d="M11 9.5 L17 13 L11 16.5 Z" fill="currentColor"/>
+                <path d="M11 8 H8 a5 5 0 0 0 0 10 H11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+                <path d="M15 8 H18 a5 5 0 0 1 0 10 H15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+                <path d="M8 13 H18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
               </svg>
             </div>
-            <div class="option-card-title">YouTube</div>
-          </div>
-          <div class="option-card" data-value="other">
-            <div class="option-card-icon">
-              <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="6" cy="13" r="2" fill="currentColor"/>
-                <circle cx="13" cy="13" r="2" fill="currentColor"/>
-                <circle cx="20" cy="13" r="2" fill="currentColor"/>
-              </svg>
-            </div>
-            <div class="option-card-title">Other</div>
+            <div class="option-card-title">Any URL</div>
+            <div class="option-card-sub">Your site, a release page, anywhere on the web.</div>
           </div>
         </div>
       </div>
@@ -647,7 +645,7 @@ const TIERS = [
 const UPCHARGES = { sleeve: 0.20, keychain: 0.15, customBack: 0.10 };
 
 let state = {
-  music:    'bandcamp',
+  music:    'bandcamp_codes',
   sleeve:   'no-sleeve',
   keychain: 'none',
   back:     'standard',
@@ -655,12 +653,19 @@ let state = {
 };
 
 const MUSIC_LABELS = {
-  bandcamp: 'Bandcamp codes',
-  spotify:  'Spotify',
-  apple:    'Apple Music',
-  amazon:   'Amazon',
-  youtube:  'YouTube',
-  other:    'Other',
+  bandcamp_codes: 'Bandcamp codes',
+  streaming:      'Streaming service',
+  url:            'Any URL',
+};
+
+// Map legacy values (sessionStorage from prior visits) to current keys
+const LEGACY_MUSIC_MAP = {
+  bandcamp: 'bandcamp_codes',
+  spotify:  'streaming',
+  apple:    'streaming',
+  amazon:   'streaming',
+  youtube:  'streaming',
+  other:    'url',
 };
 
 function totalUpcharge() {
@@ -826,7 +831,8 @@ updateFromPrice();
   if (!cfg) return;
 
   __suppressTracking = true;
-  if (cfg.music && MUSIC_LABELS[cfg.music]) selectOption('music', cfg.music);
+  const musicKey = cfg.music && (MUSIC_LABELS[cfg.music] ? cfg.music : LEGACY_MUSIC_MAP[cfg.music]);
+  if (musicKey) selectOption('music', musicKey);
   if (cfg.backDesign === 'standard' || cfg.backDesign === 'custom') selectOption('back', cfg.backDesign);
   if (cfg.keychainHole) selectOption('keychain', cfg.keychainHole);
   if (typeof cfg.sleeve === 'boolean') selectOption('sleeve', cfg.sleeve ? 'sleeve' : 'no-sleeve');
