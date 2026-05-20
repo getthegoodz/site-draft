@@ -27,22 +27,6 @@
       color: var(--text);
     }
 
-    /* Breadcrumb */
-    .breadcrumb-bar {
-      background: var(--off-white);
-      border-bottom: 1px solid var(--border);
-      padding: 0.6rem 2rem;
-    }
-    .breadcrumb-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      font-size: 0.78rem;
-      color: var(--muted);
-    }
-    .breadcrumb-inner a { color: var(--muted); text-decoration: none; }
-    .breadcrumb-inner a:hover { text-decoration: underline; }
-    .breadcrumb-inner span { color: var(--text); font-weight: 600; }
-
     /* Order-flow stepper (mirrors artwork-upload page) */
     .order-stepper {
       background: var(--off-white);
@@ -52,18 +36,16 @@
     .order-stepper .step-bar-wrapper { width: 320px; margin: 0 auto; }
     .step-bar { display: flex; gap: 0.25rem; margin-bottom: 0.4rem; }
     .step-seg { flex: 1; height: 3px; border-radius: 2px; background: #e0ddd4; transition: background 0.2s; }
-    .step-seg.done   { background: var(--amber); }
+    .step-seg.done   { background: #ffc852; }
     .step-seg.active { background: var(--black); }
     .step-labels { display: flex; }
-    .step-labels span {
-      flex: 1;
-      font-size: 0.7rem;
-      color: var(--muted);
-      text-align: center;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
+    .step-labels > * {
+      flex: 1; text-align: center; font-size: 0.62rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.08em; color: #b0a898;
+      transition: color 0.2s; text-decoration: none;
     }
-    .step-labels span.active { color: var(--black); font-weight: 700; }
+    .step-labels > .done   { color: #ffc852; cursor: pointer; }
+    .step-labels > .active { color: var(--black); }
 
     /* Intro header */
     .order-intro { margin-bottom: 1.75rem; }
@@ -408,7 +390,6 @@
     @media (max-width: 480px) {
       .option-card { min-width: 80px; }
       .config-col { padding: 1rem 1rem 6rem; }
-      .breadcrumb-bar { padding: 0.5rem 1rem; }
       .pricing-grid-row { grid-template-columns: minmax(0, 1fr) 80px 80px; }
       .pricing-grid-cell { padding: 0.7rem 0.5rem; font-size: 0.8rem; }
     }
@@ -428,13 +409,6 @@
   <button class="nav-toggle" aria-label="Menu" onclick="document.querySelector(&apos;.nav-links&apos;).classList.toggle(&apos;is-open&apos;)">☰</button>
 </nav>
 
-<div class="breadcrumb-bar">
-  <div class="breadcrumb-inner">
-    <a href="index.html">Home</a> &rsaquo;
-    <a href="custom.html">Custom Goodz</a> &rsaquo;
-    <span>Customize</span>
-  </div>
-</div>
 
 <!-- Order flow stepper: Step 1 of 4 -->
 <div class="order-stepper">
