@@ -843,7 +843,7 @@ footer {
 .page-hero {
   background: var(--black);
   color: var(--white);
-  padding: 5rem 2rem;
+  padding: 2.5rem 2rem 4rem;
   border-bottom: var(--border);
 }
 
@@ -949,7 +949,7 @@ footer {
   .revenue-arrow { transform: rotate(90deg); padding-bottom: 0; }
   .sample-box { flex-direction: column; }
   .bandcamp-inner { grid-template-columns: 1fr; gap: 3rem; }
-  .page-hero { padding: 3.5rem 1.5rem; }
+  .page-hero { padding: 2rem 1.5rem 3.5rem; }
   .page-hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
   .page-hero-visual img { margin: 0 auto; max-width: 100%; }
   .hero-ctas { flex-direction: column; align-items: stretch; }

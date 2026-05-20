@@ -1045,8 +1045,8 @@
       </div>
     </div>
 
-    <input type="file" id="input-front" class="file-input" accept=".png,.tiff,.tif">
-    <input type="file" id="input-back"  class="file-input" accept=".png,.tiff,.tif">
+    <input type="file" id="input-front" class="file-input" accept=".png,.jpg,.jpeg,.tiff,.tif,.pdf">
+    <input type="file" id="input-back"  class="file-input" accept=".png,.jpg,.jpeg,.tiff,.tif,.pdf">
 
     <!-- Sleeve preview (hidden unless sleeve selected) -->
     <div id="sleeve-wrap" class="sleeve-wrap" style="display:none">
@@ -1222,10 +1222,15 @@ function renderArtworkSubsteps() {
 }
 
 // ---- Front art ----
+const ARTWORK_EXTS = ['.png', '.jpg', '.jpeg', '.tiff', '.tif', '.pdf'];
+function isArtworkFile(name) {
+  const lower = name.toLowerCase();
+  return ARTWORK_EXTS.some(ext => lower.endsWith(ext));
+}
+
 function handleFrontFile(file) {
-  const ext = file.name.toLowerCase();
-  if (!ext.endsWith('.png') && !ext.endsWith('.tiff') && !ext.endsWith('.tif')) {
-    alert('Please upload a PNG or TIFF file for best print quality.');
+  if (!isArtworkFile(file.name)) {
+    alert('Please upload a PNG, JPEG, TIFF, or PDF file.');
     return;
   }
   const reader = new FileReader();
@@ -1361,9 +1366,8 @@ function clearFront(e) {
 
 // ---- Back art ----
 function handleBackFile(file) {
-  const ext = file.name.toLowerCase();
-  if (!ext.endsWith('.png') && !ext.endsWith('.tiff') && !ext.endsWith('.tif')) {
-    alert('Please upload a PNG or TIFF file for best print quality.');
+  if (!isArtworkFile(file.name)) {
+    alert('Please upload a PNG, JPEG, TIFF, or PDF file.');
     return;
   }
   const reader = new FileReader();
