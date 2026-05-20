@@ -100,9 +100,9 @@ body {
 .section-label::before {
   content: '';
   display: inline-block;
-  width: 0.8em;
-  height: 0.8em;
-  border-radius: 0.12em;
+  width: 1cap;
+  height: 1cap;
+  border-radius: 0.14em;
   background: transparent;
   border: 1.5px solid currentColor;
   box-sizing: border-box;
