@@ -96,7 +96,7 @@ body {
    (matches roughly the cap height of the text it precedes). Outline color
    is deliberately darker than the muted text color so the bullet stays
    visible on beige / cream surfaces. */
-.section-label { display: flex; align-items: center; gap: 0.55em; }
+.section-label { display: flex; align-items: center; gap: 1em; }
 .section-label::before {
   content: '';
   display: inline-block;
