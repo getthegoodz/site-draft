@@ -822,7 +822,7 @@
 
 <!-- Page header -->
 <header class="page-header">
-  <a href="order.html" class="back-link">&larr; Back to Customize</a>
+  <button type="button" id="back-link" class="back-link" onclick="goBackOneStep()">&larr; Back to Customize</button>
   <div class="step-bar-wrapper" id="step-bar-wrapper">
     <div class="step-bar">
       <a href="order.html" class="step-seg step-seg-static done" title="Edit your selections" aria-label="Step 1: Customize (edit)"></a>
@@ -1654,6 +1654,7 @@ function goToStep(n) {
     el.classList.toggle('done', i < n);
   });
   if (n === 2) renderSummary();
+  updateBackLink();
   const slug = STEP_NAMES[n];
   if (slug) {
     const newHash = '#' + slug;
@@ -1661,6 +1662,20 @@ function goToStep(n) {
     trackEvent('step_view', { step: slug });
   }
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Back link: from step 0 → previous page (Customize); from step >0 →
+// previous internal step. Label tracks the destination.
+const STEP_LABELS = ['Music', 'Artwork', 'Review'];
+function updateBackLink() {
+  const el = document.getElementById('back-link');
+  if (!el) return;
+  const prev = state.currentStep === 0 ? 'Customize' : STEP_LABELS[state.currentStep - 1];
+  el.innerHTML = '&larr; Back to ' + prev;
+}
+function goBackOneStep() {
+  if (state.currentStep === 0) window.location.href = 'order.html';
+  else goToStep(state.currentStep - 1);
 }
 
 function handleStepClick(n) {
@@ -1885,6 +1900,7 @@ setupFileInput('input-csv', handleCSVFile);
 updateCSVWarning();
 renderArtworkSubsteps();
 renderSizeWarnings();
+updateBackLink();
 updateStepButtons();
 
 // Sync step with URL hash on load so reload / shared link / bookmark resumes
