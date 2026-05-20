@@ -92,19 +92,19 @@ body {
 }
 
 /* ── SECTION LABELS — small Goodz-shaped square prefix ── */
-.section-label { display: flex; align-items: center; gap: 0.55rem; }
+/* Bullet is sized in em so it scales with the label's font (matches roughly
+   the cap height of the text it precedes). */
+.section-label { display: flex; align-items: center; gap: 0.55em; }
 .section-label::before {
   content: '';
   display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 2px;
+  width: 0.7em;
+  height: 0.7em;
+  border-radius: 0.12em;
   background: currentColor;
   flex-shrink: 0;
 }
 .section-label.on-dark::before { background: var(--amber); }
-/* Centered eyebrow (e.g. above the sample-card section) */
-.sample-eyebrow.section-label { justify-content: center; }
 
 /* ── SPLIT SECTIONS ── */
 .split { border-color: #cdc8b2; }
