@@ -92,8 +92,10 @@ body {
 }
 
 /* ── SECTION LABELS — small Goodz-shaped square prefix ── */
-/* Bullet is sized in em so it scales with the label's font (matches roughly
-   the cap height of the text it precedes). */
+/* Hollow square outline sized in em so it scales with the label's font
+   (matches roughly the cap height of the text it precedes). Outline color
+   is deliberately darker than the muted text color so the bullet stays
+   visible on beige / cream surfaces. */
 .section-label { display: flex; align-items: center; gap: 0.55em; }
 .section-label::before {
   content: '';
@@ -101,10 +103,15 @@ body {
   width: 0.7em;
   height: 0.7em;
   border-radius: 0.12em;
-  background: currentColor;
+  background: transparent;
+  border: 1.5px solid var(--black);
+  box-sizing: border-box;
   flex-shrink: 0;
 }
-.section-label.on-dark::before { background: var(--amber); }
+.section-label.on-dark::before {
+  border-color: var(--amber);
+  background: transparent;
+}
 
 /* ── SPLIT SECTIONS ── */
 .split { border-color: #cdc8b2; }
