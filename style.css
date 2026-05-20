@@ -494,7 +494,7 @@ img { display: block; width: 100%; }
 }
 
 .revenue-caption { max-width: 560px; text-align: center; }
-.revenue-caption p { font-size: 1rem; font-weight: 600; color: var(--black); line-height: 1.55; }
+.revenue-caption p { font-size: 1.05rem; font-weight: 600; color: rgba(0, 0, 0, 0.78); line-height: 1.55; }
 
 /* ── SAMPLE BOX ── */
 .sample-box {
