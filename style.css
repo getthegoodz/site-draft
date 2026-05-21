@@ -329,7 +329,7 @@ img { display: block; width: 100%; }
 }
 
 .steps .step h3 { font-size: 1.1rem; margin-bottom: 0.4rem; }
-.steps .step p  { font-size: 0.92rem; color: var(--text-light); line-height: 1.6; }
+.steps .step p  { font-size: 0.92rem; color: rgba(0, 0, 0, 0.78); line-height: 1.6; }
 
 /* ── COMPAT NOTE BAR ── */
 .compat-bar {
