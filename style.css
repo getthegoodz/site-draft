@@ -11,7 +11,7 @@
   --text: #1a1a1a;
   --text-light: #666666;
   --text-lighter: #999999;
-  --border: 1px solid #111111;
+  --border: 2px solid #111111;
   --border-inner: 1px solid #d8d5cc;
 }
 
@@ -987,7 +987,7 @@ footer {
   .compat-bar-inner { grid-template-columns: 1fr; gap: 1.25rem; }
   .pricing-cell { border-right: none; border-bottom: var(--border-inner); padding: 0.75rem 1rem; }
   .revenue-inner { align-items: center; }
-  .revenue-arrow { transform: rotate(90deg); padding-bottom: 0; }
+  .revenue-arrow { padding-bottom: 1.5rem; }
   .sample-box { flex-direction: column; }
   .bandcamp-inner { grid-template-columns: 1fr; gap: 3rem; }
   .page-hero { padding: 2rem 1.5rem 3.5rem; }
