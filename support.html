@@ -22,6 +22,14 @@
     .support-section .faq-a ul { margin: 0.4rem 0 0.4rem 1.25rem; }
     .support-section .faq-a li { margin-bottom: 0.25rem; line-height: 1.7; }
     .support-section .faq-a a { color: inherit; text-decoration: underline; }
+    .support-section .faq-device {
+      font-size: 0.92rem;
+      font-weight: 700;
+      margin: 1.25rem 0 0.4rem;
+      color: var(--black);
+      text-transform: none;
+    }
+    .support-section .faq-device:first-child { margin-top: 0; }
     .support-platform-links { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.5rem; }
     .support-contact {
       margin: 4rem auto 0;
@@ -67,24 +75,25 @@
     <h2>Tapping Your Goodz</h2>
     <div class="faq">
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">iPhones: where is my NFC reader? <span class="icon">+</span></button>
-        <div class="faq-a">The NFC sensor on an iPhone is located on the back of the device, along its top edge, to the right of the camera.</div>
+        <button class="faq-q" onclick="toggleFaq(this)">Where is my NFC reader? <span class="icon">+</span></button>
+        <div class="faq-a">
+          <h4 class="faq-device">iPhone</h4>
+          <p>The NFC sensor on an iPhone is on the back of the device, along its top edge, to the right of the camera.</p>
+          <h4 class="faq-device">Android</h4>
+          <p>On Android phones, the NFC reader is usually located in the middle or upper back of the phone.</p>
+        </div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">iPhone 11 &amp; newer: how do I tap my Goodz? <span class="icon">+</span></button>
+        <button class="faq-q" onclick="toggleFaq(this)">How do I tap my Goodz? <span class="icon">+</span></button>
         <div class="faq-a">
+          <h4 class="faq-device">iPhone 11 &amp; newer</h4>
           <ol>
             <li>Grab your Goodz.</li>
             <li>Wake your phone, and hold the top edge of your iPhone directly against your Goodz for several seconds.</li>
             <li>Open the notification that appears to be taken to your content.</li>
           </ol>
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">iPhones 7, 8, and X: how do I tap my Goodz? <span class="icon">+</span></button>
-        <div class="faq-a">
+          <h4 class="faq-device">iPhone 7, 8, and X</h4>
           <ol>
             <li>Wake and unlock your iPhone.</li>
             <li>Swipe up to open the Control Center.</li>
@@ -92,17 +101,7 @@
             <li>Hold the top edge of your iPhone directly against your Goodz for several seconds.</li>
             <li>Open the notification that appears to be taken to your content.</li>
           </ol>
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Android: where is my NFC reader? <span class="icon">+</span></button>
-        <div class="faq-a">On Android phones, the NFC reader is usually located in the middle or upper back of the phone.</div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Android: how do I tap my Goodz? <span class="icon">+</span></button>
-        <div class="faq-a">
+          <h4 class="faq-device">Android</h4>
           <ol>
             <li>Ensure that NFC is enabled in settings.</li>
             <li>Grab your Goodz. Wake and unlock your Android.</li>
