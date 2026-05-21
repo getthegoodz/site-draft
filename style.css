@@ -312,44 +312,24 @@ img { display: block; width: 100%; }
 }
 .steps .step p { color: inherit; }
 
-.step-illo {
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  min-height: 116px;
-  margin-bottom: 0.5rem;
-}
-
 .step-num {
-  position: absolute;
-  top: 0;
-  left: 0;
+  display: block;
   font-family: 'Poppins', sans-serif;
-  font-size: 1.75rem;
+  font-size: 3.75rem;
   font-weight: 800;
   color: var(--black);
-  line-height: 1;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
 }
-
-.step-icon {
-  display: block;
-  width: 96px;
-  height: 96px;
-  color: var(--black);
-}
-
-.step-icon-fg { fill: var(--step-bg, var(--amber)); }
 
 .step-rule {
   border: none;
   border-top: var(--border-inner);
-  margin: 1rem 0;
+  margin: 1.25rem 0 1rem;
 }
 
-.steps .step h3 { font-size: 1rem; margin-bottom: 0.6rem; }
-.steps .step p  { font-size: 0.875rem; color: var(--text-light); line-height: 1.7; }
-.steps .step .step-note { margin-top: 0.6rem; font-size: 0.75rem; color: #aaa; }
+.steps .step h3 { font-size: 1.1rem; margin-bottom: 0.4rem; }
+.steps .step p  { font-size: 0.92rem; color: var(--text-light); line-height: 1.6; }
 
 /* ── COMPAT NOTE BAR ── */
 .compat-bar {
