@@ -385,6 +385,61 @@ img { display: block; width: 100%; }
 .compat-bar.dark .compat-text strong { color: var(--amber); }
 .compat-bar.dark .compat-text span  { color: rgba(255, 245, 220, 0.7); }
 
+/* "Works with" logo strip — DSP glyph row inside a .compat-bar */
+.works-with-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+.works-with-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--black);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+.works-with-icons {
+  display: flex;
+  gap: 3.25rem;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+.works-with-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--black);
+  min-width: 56px;
+}
+.works-with-item svg { display: block; }
+.works-with-item span {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.72);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.works-with-tagline {
+  font-size: 0.78rem;
+  color: rgba(0, 0, 0, 0.62);
+  letter-spacing: 0.04em;
+  text-align: center;
+  margin: 0;
+}
+.compat-bar.dark .works-with-label { color: var(--amber); }
+.compat-bar.dark .works-with-item { color: rgba(255, 245, 220, 0.88); }
+.compat-bar.dark .works-with-item span { color: rgba(255, 245, 220, 0.62); }
+.compat-bar.dark .works-with-tagline { color: rgba(255, 245, 220, 0.6); }
+@media (max-width: 700px) {
+  .works-with-inner { gap: 0.85rem; }
+  .works-with-icons { gap: 1.5rem; }
+}
+
 /* ── SPLIT ── */
 .split {
   display: grid;
