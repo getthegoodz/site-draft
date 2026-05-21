@@ -324,7 +324,7 @@ img { display: block; width: 100%; }
 
 .step-rule {
   border: none;
-  border-top: var(--border-inner);
+  border-top: 2px solid var(--black);
   margin: 1.25rem 0 1rem;
 }
 
