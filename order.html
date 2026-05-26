@@ -38,7 +38,7 @@
     .order-stepper .step-bar-wrapper { width: 320px; margin: 0 auto; }
     .step-bar { display: flex; gap: 0.25rem; margin-bottom: 0.4rem; }
     .step-seg { flex: 1; height: 3px; border-radius: 2px; background: #e0ddd4; transition: background 0.2s; }
-    .step-seg.done   { background: #ffc852; }
+    .step-seg.done   { background: var(--amber-ink); }
     .step-seg.active { background: var(--black); }
     .step-labels { display: flex; }
     .step-labels > * {
@@ -46,8 +46,23 @@
       text-transform: uppercase; letter-spacing: 0.08em; color: #b0a898;
       transition: color 0.2s; text-decoration: none;
     }
-    .step-labels > .done   { color: #ffc852; cursor: pointer; }
+    .step-labels > .done   { color: var(--amber-ink); cursor: pointer; }
     .step-labels > .active { color: var(--black); }
+    .step-status { display: none; }
+    @media (max-width: 700px) {
+      .step-labels { display: none; }
+      .step-status {
+        display: block;
+        text-align: center;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--black);
+        margin-top: 0.3rem;
+      }
+      .step-status .step-count { color: var(--muted); margin-right: 0.5em; }
+    }
 
     /* Intro header */
     .order-intro { margin-bottom: 1.75rem; }
@@ -426,6 +441,7 @@
       <span>Artwork</span>
       <span>Review</span>
     </div>
+    <div class="step-status"><span class="step-count">Step 1 of 4</span>Customize</div>
   </div>
 </div>
 

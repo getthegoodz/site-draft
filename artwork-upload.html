@@ -622,7 +622,7 @@
     .step-bar-wrapper { margin: 0; }
     .step-bar { display: flex; gap: 0.25rem; margin-bottom: 0.4rem; }
     .step-seg { flex: 1; height: 3px; border-radius: 2px; background: #e0ddd4; transition: background 0.2s; }
-    .step-seg.done   { background: var(--yellow); cursor: pointer; }
+    .step-seg.done   { background: var(--amber-ink); cursor: pointer; }
     .step-seg.active { background: var(--black); }
     a.step-seg-static { text-decoration: none; }
     .step-labels { display: flex; }
@@ -631,9 +631,27 @@
       text-transform: uppercase; letter-spacing: 0.08em; color: #b0a898;
       transition: color 0.2s; text-decoration: none;
     }
-    .step-labels > .done    { color: var(--yellow); cursor: pointer; }
+    .step-labels > .done    { color: var(--amber-ink); cursor: pointer; }
     .step-labels > .done:hover { text-decoration: underline; }
     .step-labels > .active  { color: var(--black); }
+    .step-status { display: none; }
+    @media (max-width: 700px) {
+      .step-labels { display: none; }
+      .step-status {
+        display: block;
+        text-align: center;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--black);
+        margin-top: 0.3rem;
+      }
+      .step-status .step-count { color: var(--muted); margin-right: 0.5em; }
+      .back-link { display: none; }
+      .page-header { grid-template-columns: 1fr; }
+      .page-header .step-bar-wrapper { width: 100%; max-width: 320px; justify-self: center; }
+    }
 
     /* Step headings */
     .step h2 {
@@ -838,6 +856,7 @@
       <span data-label="1">Artwork</span>
       <span data-label="2">Review</span>
     </div>
+    <div class="step-status" id="step-status"><span class="step-count">Step 2 of 4</span>Music</div>
   </div>
   <div></div>
 </header>
@@ -1657,6 +1676,7 @@ function goToStep(n) {
   });
   if (n === 2) renderSummary();
   updateBackLink();
+  updateStepStatus();
   const slug = STEP_NAMES[n];
   if (slug) {
     const newHash = '#' + slug;
@@ -1674,6 +1694,15 @@ function updateBackLink() {
   if (!el) return;
   const prev = state.currentStep === 0 ? 'Customize' : STEP_LABELS[state.currentStep - 1];
   el.innerHTML = '&larr; Back to ' + prev;
+}
+
+// Mobile step-status text — "Step N of 4 · NAME". Updates on every step change.
+function updateStepStatus() {
+  const el = document.getElementById('step-status');
+  if (!el) return;
+  const idx = state.currentStep;          // 0 = Music, 1 = Artwork, 2 = Review
+  const number = idx + 2;                  // Customize = 1, Music = 2, etc.
+  el.innerHTML = '<span class="step-count">Step ' + number + ' of 4</span>' + STEP_LABELS[idx];
 }
 function goBackOneStep() {
   if (state.currentStep === 0) window.location.href = 'order.html';
@@ -1903,6 +1932,7 @@ updateCSVWarning();
 renderArtworkSubsteps();
 renderSizeWarnings();
 updateBackLink();
+updateStepStatus();
 updateStepButtons();
 
 // Sync step with URL hash on load so reload / shared link / bookmark resumes
