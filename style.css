@@ -990,9 +990,9 @@ footer {
   .revenue-arrow { padding-bottom: 1.5rem; }
   .sample-box { flex-direction: column; }
   .bandcamp-inner { grid-template-columns: 1fr; gap: 3rem; }
-  .page-hero { padding: 2rem 1.5rem 3.5rem; }
+  .page-hero { padding: 2rem 1.5rem 2.5rem; }
   .page-hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
-  .page-hero-visual img { margin: 0 auto; max-width: 100%; }
+  .page-hero-visual { display: none; }
   .hero-ctas { flex-direction: column; align-items: stretch; }
   .hero-ctas .btn { text-align: center; }
   .product-detail { grid-template-columns: 1fr; }
