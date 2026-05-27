@@ -246,15 +246,12 @@
     .pricing-grid-row .pricing-profit { color: var(--amber-ink); font-weight: 400; }
     .pricing-grid-row.data.selected .pricing-profit { font-weight: 700; }
 
-    /* Inline editable retail price inside the "Est. profit" column header. */
+    /* Inline editable retail price inside the estimate hint sentence. */
     .retail-inline-wrap {
-      display: block;
-      margin-top: 0.15rem;
-      text-transform: none;
-      letter-spacing: 0;
+      display: inline;
       font-weight: 600;
-      font-size: 0.78rem;
       color: var(--amber-ink);
+      font-style: normal;
     }
     #retail-input {
       width: 2.2ch;
@@ -266,18 +263,17 @@
       background: transparent;
       font-family: inherit;
       font-size: 16px; /* prevent iOS auto-zoom */
-      font-weight: 700;
+      font-weight: 600;
       color: var(--amber-ink);
       text-align: left;
-      text-transform: none;
-      letter-spacing: 0;
+      font-style: normal;
     }
     #retail-input:focus { border-bottom-style: solid; }
     .pricing-estimate-hint {
       color: var(--muted);
-      font-size: 0.78rem;
+      font-size: 0.82rem;
       font-style: italic;
-      margin-top: 0.35rem;
+      margin-top: 0.5rem;
     }
     .pricing-grid-row:last-child { border-bottom: none; }
     .pricing-grid-row.hdr { background: var(--off-white); }
@@ -701,11 +697,11 @@
             <div class="pricing-grid-hdr">Quantity</div>
             <div class="pricing-grid-hdr r">Price</div>
             <div class="pricing-grid-hdr r">Order Total</div>
-            <div class="pricing-grid-hdr r">Est. profit<span class="retail-inline-wrap">at $<input type="text" id="retail-input" value="12" maxlength="3" inputmode="numeric" pattern="[0-9]*" aria-label="Retail price per Goodz" oninput="handleRetailChange()" onclick="this.select()"></span></div>
+            <div class="pricing-grid-hdr r">Est. profit</div>
           </div>
           <!-- Rows populated by JS -->
         </div>
-        <p class="pricing-estimate-hint">Estimate only. Won&rsquo;t affect your order.</p>
+        <p class="pricing-estimate-hint">Assumes you sell at <span class="retail-inline-wrap">$<input type="text" id="retail-input" value="12" maxlength="3" inputmode="numeric" pattern="[0-9]*" aria-label="Retail price per Goodz" oninput="handleRetailChange()" onclick="this.select()"></span> retail. Estimate only, won&rsquo;t affect your order.</p>
         <p class="pricing-contact" style="margin-top:0.5rem">Not ready for 50? <a href="custom.html#try-one">Try a sample first &rarr;</a></p>
         <p class="pricing-contact">Need 3,000+? <a href="mailto:hello@getthegoodz.com">Contact us for bulk pricing &rarr;</a></p>
         <p class="pricing-note" id="pricing-upcharge-note" style="display:none"></p>
