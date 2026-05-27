@@ -290,9 +290,10 @@
     .profit-calc-hint { color: var(--muted); font-size: 0.82rem; }
     .pricing-grid-row:last-child { border-bottom: none; }
     .pricing-grid-row.hdr { background: var(--off-white); }
-    .pricing-grid-row.data { cursor: pointer; transition: background 0.1s; }
-    .pricing-grid-row.data:hover { background: #fafaf7; }
-    .pricing-grid-row.data.selected { background: rgba(255,200,82,0.18); }
+    .pricing-grid-row.data { cursor: pointer; transition: background 0.1s, box-shadow 0.1s; position: relative; }
+    .pricing-grid-row.data:hover { background: #f3efe4; }
+    .pricing-grid-row.data:hover .pricing-selected-dot { border-color: var(--black); }
+    .pricing-grid-row.data.selected { background: rgba(255,200,82,0.22); box-shadow: inset 3px 0 0 var(--black); }
     .pricing-grid-row.data.selected .pricing-grid-cell { font-weight: 600; }
     .pricing-grid-hdr {
       padding: 0.7rem 1rem;
@@ -321,14 +322,29 @@
       border-radius: 3px;
     }
     .pricing-selected-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid #b8ad97;
+      background: transparent;
+      flex-shrink: 0;
+      box-sizing: border-box;
+      position: relative;
+      transition: border-color 0.1s;
+    }
+    .pricing-grid-row.selected .pricing-selected-dot {
+      border-color: var(--black);
+    }
+    .pricing-grid-row.selected .pricing-selected-dot::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
       width: 8px;
       height: 8px;
       border-radius: 50%;
       background: var(--black);
-      flex-shrink: 0;
-      visibility: hidden;
     }
-    .pricing-grid-row.selected .pricing-selected-dot { visibility: visible; }
     .pricing-contact {
       font-size: 0.88rem;
       color: var(--muted);
@@ -687,7 +703,7 @@
       <!-- Pricing table -->
       <div class="qty-section">
         <div class="option-section-label">Quantity</div>
-        <p class="pricing-revenue-note">Pick a run size. The Est. profit column updates with your retail price.</p>
+        <p class="pricing-revenue-note">Choose your run size. Adjust retail price to estimate your profit.</p>
         <div class="profit-calc">
           <span class="profit-calc-label">Retail per Goodz</span>
           <span class="profit-calc-input-wrap">
