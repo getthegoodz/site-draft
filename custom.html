@@ -893,6 +893,38 @@ document.addEventListener('click', (e) => {
 
   updateNavVisibility();
 })();
+
+// iOS Safari often ignores scroll-margin-top with smooth scroll +
+// dynamic URL bar. Do the math ourselves for #try-one.
+(function () {
+  const ANCHOR_ID = 'try-one';
+  function offsetForViewport() {
+    return window.innerWidth <= 900 ? 96 : 80;
+  }
+  function jumpTo(el, smooth) {
+    const top = el.getBoundingClientRect().top + window.scrollY - offsetForViewport();
+    window.scrollTo({ top, behavior: smooth ? 'smooth' : 'auto' });
+  }
+  document.querySelectorAll('a[href$="#' + ANCHOR_ID + '"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const href = a.getAttribute('href');
+      const samePage = href.startsWith('#') || href.startsWith(location.pathname);
+      if (!samePage) return;
+      const el = document.getElementById(ANCHOR_ID);
+      if (!el) return;
+      e.preventDefault();
+      history.replaceState(null, '', '#' + ANCHOR_ID);
+      jumpTo(el, true);
+    });
+  });
+  if (location.hash === '#' + ANCHOR_ID) {
+    const el = document.getElementById(ANCHOR_ID);
+    if (el) {
+      // Wait one frame for layout to settle (iOS URL bar collapse).
+      requestAnimationFrame(() => jumpTo(el, false));
+    }
+  }
+})();
 </script>
 </body>
 </html>
