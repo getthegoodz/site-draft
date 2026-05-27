@@ -243,7 +243,8 @@
       grid-template-columns: 1fr 96px 100px 100px;
       border-bottom: 1px solid var(--border);
     }
-    .pricing-grid-row .pricing-profit { color: var(--amber-ink); font-weight: 700; }
+    .pricing-grid-row .pricing-profit { color: var(--amber-ink); font-weight: 400; }
+    .pricing-grid-row.data.selected .pricing-profit { font-weight: 700; }
 
     /* Retail-price input ("Retail per Goodz: $12") above the pricing chart */
     .profit-calc {
@@ -254,7 +255,7 @@
       font-size: 0.92rem;
     }
     .profit-calc-label {
-      color: var(--text);
+      color: var(--amber-ink);
       font-weight: 600;
     }
     .profit-calc-input-wrap {
