@@ -559,16 +559,14 @@
       list-style: none;
       padding: 0;
       margin: 0.5rem 0 0;
-      display: flex;
-      flex-direction: column;
-      gap: 0.2rem;
-    }
-    .upcharge-rows li {
-      display: flex;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: auto auto;
+      justify-content: start;
+      column-gap: 0.6rem;
+      row-gap: 0.15rem;
       align-items: baseline;
-      gap: 0.75rem;
     }
+    .upcharge-rows li { display: contents; }
     .upcharge-row-label { color: var(--warn-text); opacity: 0.85; }
     .upcharge-row-value { font-weight: 700; font-variant-numeric: tabular-nums; }
     .upcharge-notice-reassure {
