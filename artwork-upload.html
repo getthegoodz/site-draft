@@ -1023,6 +1023,7 @@
 
     <div class="card-meta">
       <div class="file-name" id="front-filename"></div>
+      <div class="file-name" id="back-filename" style="display:none"></div>
       <div class="file-name back-default-caption" id="back-default-caption" style="display:none">Standard back &middot; <span class="back-default-included">included</span></div>
       <div class="size-warning" id="front-size-warn">
         &#9888; Image may be too small for 300 DPI print quality. We recommend at least 827&times;827px (<span data-mm-value data-mm="70">2.76"</span>).
@@ -1363,12 +1364,14 @@ function renderCardActions() {
   set('action-add-custom-back', !isFront && !state.backArt && !state.customBackChosen);
   set('action-back-replace',    !isFront && !!state.backArt);
   set('action-use-standard',    !isFront && !!state.backArt && !isMandatory);
-  // Meta line: "Standard back · included" shows when viewing the back side and
-  // no custom upload exists, so the no-charge default is explicit.
-  const back = document.getElementById('back-default-caption');
+  // Meta line: front filename, back filename, or "Standard back · included"
+  // — only one is visible at a time, matched to view + state.
   const front = document.getElementById('front-filename');
-  if (back) back.style.display = (!isFront && !state.backArt && !state.customBackChosen) ? 'block' : 'none';
-  if (front) front.style.display = isFront ? 'block' : 'none';
+  const backName = document.getElementById('back-filename');
+  const backDefault = document.getElementById('back-default-caption');
+  if (front)       front.style.display       = isFront ? 'block' : 'none';
+  if (backName)    backName.style.display    = (!isFront && !!state.backArt) ? 'block' : 'none';
+  if (backDefault) backDefault.style.display = (!isFront && !state.backArt && !state.customBackChosen) ? 'block' : 'none';
 }
 
 // ---- Pricing helpers (dynamic custom-back upcharge) ----
@@ -1496,6 +1499,7 @@ function showBackPreview(src, name) {
   document.getElementById('back-art').src = src;
   document.getElementById('card-content-back').classList.add('has-custom-back');
   document.getElementById('thumb-back-img').src = src;
+  document.getElementById('back-filename').textContent = name || '';
   state.customBackChosen = true;
   updateUpchargeNotice();
   renderCardActions();
@@ -1511,6 +1515,7 @@ function clearBack(e) {
   document.getElementById('back-art').src = '';
   document.getElementById('card-content-back').classList.remove('has-custom-back');
   document.getElementById('thumb-back-img').src = 'templates/Goodz_Standard_back.png';
+  document.getElementById('back-filename').textContent = '';
   renderSizeWarnings();
   document.getElementById('input-back').value = '';
   updateUpchargeNotice();
