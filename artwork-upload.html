@@ -290,18 +290,6 @@
     }
     .thumb:hover { border-color: var(--black); }
     .thumb.thumb-active { border-color: var(--black); border-width: 2px; }
-    .thumb-status {
-      position: absolute;
-      top: 4px; right: 4px;
-      width: 12px; height: 12px;
-      border-radius: 50%;
-      border: 2px solid #fff;
-      box-shadow: 0 0 0 1px rgba(0,0,0,0.15);
-      z-index: 2;
-      display: none;
-    }
-    .thumb-status.is-pending { display: block; background: var(--yellow); }
-    .thumb-status.is-done    { display: block; background: #22c55e; }
     .thumb img {
       width: 100%;
       height: 100%;
@@ -1017,13 +1005,11 @@
 
       <div class="thumbs">
         <button type="button" class="thumb thumb-active" id="thumb-front" onclick="setView('front')" aria-label="View front">
-          <span class="thumb-status" id="thumb-front-status"></span>
           <div class="thumb-empty-bg" id="thumb-front-empty"></div>
           <img id="thumb-front-img" src="" alt="" style="display:none">
           <span class="thumb-label">Front</span>
         </button>
         <button type="button" class="thumb" id="thumb-back" onclick="setView('back')" aria-label="View back">
-          <span class="thumb-status" id="thumb-back-status"></span>
           <img id="thumb-back-img" src="templates/Goodz_Standard_back.png" alt="">
           <span class="thumb-label">Back</span>
         </button>
@@ -1253,17 +1239,6 @@ function renderArtworkSubsteps() {
   setDotClass(backDot,  state.backArt  ? 'is-done' : 'is-pending');
   document.getElementById('ss-front').classList.toggle('is-active', state.viewMode === 'front');
   document.getElementById('ss-back').classList.toggle('is-active', state.viewMode === 'back');
-
-  // Thumb status dots
-  const frontThumbStatus = document.getElementById('thumb-front-status');
-  const backThumbStatus  = document.getElementById('thumb-back-status');
-  frontThumbStatus.className = 'thumb-status' + (state.frontArt ? ' is-done' : ' is-pending');
-  // Back dot is only meaningful when a custom back is required
-  if (required) {
-    backThumbStatus.className = 'thumb-status' + (state.backArt ? ' is-done' : ' is-pending');
-  } else {
-    backThumbStatus.className = 'thumb-status';
-  }
 
   // Show empty back placeholder when custom back required but not yet uploaded
   document.getElementById('card-content-back').classList.toggle(
