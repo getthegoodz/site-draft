@@ -652,6 +652,9 @@
     .step-cell.done .step-cell-label { color: var(--black); }
     a.step-cell { cursor: pointer; }
     a.step-cell:hover .step-square { transform: translateY(-1px); }
+    /* Spans become clickable once user has reached that step */
+    .step-cell.done { cursor: pointer; }
+    .step-cell.done:hover .step-square { transform: translateY(-1px); }
     @media (max-width: 700px) {
       .back-link { display: none; }
       .page-header { grid-template-columns: 1fr; }
@@ -1191,6 +1194,50 @@ let state = {
   customBackChosen: !!(orderConfig && orderConfig.backDesign === 'custom'),
 };
 
+// ---- Persistence: artwork-upload state survives navigation back to
+// Customize so the user resumes with their work intact.
+function saveArtworkState() {
+  try {
+    sessionStorage.setItem('goodzArtworkState', JSON.stringify({
+      altURL: state.altURL,
+      musicMode: state.musicMode,
+      // Only persist already-uploaded URLs, never data URLs (too big).
+      frontArt: (state.frontArt && /^https?:/.test(state.frontArt)) ? state.frontArt : null,
+      backArt:  (state.backArt  && /^https?:/.test(state.backArt))  ? state.backArt  : null,
+      csvUrls: state.csvUrls,
+      csvCloudUrl: state.csvCloudUrl,
+      csvDuplicates: state.csvDuplicates,
+      customBackChosen: state.customBackChosen,
+    }));
+  } catch (e) {}
+}
+(function loadArtworkState() {
+  try {
+    const raw = sessionStorage.getItem('goodzArtworkState');
+    if (!raw) return;
+    const s = JSON.parse(raw);
+    if (typeof s.altURL === 'string')     state.altURL = s.altURL;
+    if (typeof s.musicMode === 'string')  state.musicMode = s.musicMode;
+    if (typeof s.frontArt === 'string')   state.frontArt = s.frontArt;
+    if (typeof s.backArt === 'string')    state.backArt  = s.backArt;
+    if (Array.isArray(s.csvUrls))         state.csvUrls = s.csvUrls;
+    if (typeof s.csvCloudUrl === 'string') state.csvCloudUrl = s.csvCloudUrl;
+    if (typeof s.csvDuplicates === 'number') state.csvDuplicates = s.csvDuplicates;
+    if (typeof s.customBackChosen === 'boolean' && s.customBackChosen) state.customBackChosen = true;
+  } catch (e) {}
+})();
+
+// ---- Furthest reached step (global numbering): 0=Customize, 1=Music, 2=Artwork, 3=Review
+function getFurthestStep() {
+  return parseInt(sessionStorage.getItem('goodzFurthestStep') || '0', 10);
+}
+function bumpFurthestStep(global) {
+  if (global > getFurthestStep()) sessionStorage.setItem('goodzFurthestStep', String(global));
+}
+function furthestInternal() {
+  return Math.max(0, getFurthestStep() - 1);
+}
+
 // ---- Cloudinary upload ----
 function uploadToCloudinary(blob, filename, resourceType) {
   const fd = new FormData();
@@ -1277,7 +1324,7 @@ function handleFrontFile(file) {
       canvas.toBlob(blob => {
         if (!blob) { state.uploadingFront = false; return; }
         uploadToCloudinary(blob, `front_${Date.now()}.png`, 'image')
-          .then(url => { state.frontArt = url; })
+          .then(url => { state.frontArt = url; saveArtworkState(); })
           .catch(() => {})
           .finally(() => { state.uploadingFront = false; updateStepButtons(); });
       }, 'image/png');
@@ -1368,6 +1415,7 @@ function clearFront(e) {
   if (e) e.stopPropagation();
   state.frontArt = null;
   state.frontTooSmall = false;
+  saveArtworkState();
   document.getElementById('card-art').style.display = 'none';
   document.getElementById('card-art').src = '';
   document.getElementById('card-placeholder').style.display = 'flex';
@@ -1413,7 +1461,7 @@ function handleBackFile(file) {
       canvas.toBlob(blob => {
         if (!blob) { state.uploadingBack = false; return; }
         uploadToCloudinary(blob, `back_${Date.now()}.png`, 'image')
-          .then(url => { state.backArt = url; })
+          .then(url => { state.backArt = url; saveArtworkState(); })
           .catch(() => {})
           .finally(() => { state.uploadingBack = false; updateStepButtons(); });
       }, 'image/png');
@@ -1437,6 +1485,7 @@ function clearBack(e) {
   state.backArt = null;
   state.backTooSmall = false;
   state.customBackChosen = !!(orderConfig && orderConfig.backDesign === 'custom');
+  saveArtworkState();
   document.getElementById('back-art').src = '';
   document.getElementById('card-content-back').classList.remove('has-custom-back');
   document.getElementById('thumb-back-img').src = 'templates/Goodz_Standard_back.png';
@@ -1522,6 +1571,7 @@ function handleCSVFile(file) {
     hideCSVError();
     state.csvUrls = urls;
     state.csvDuplicates = duplicates;
+    saveArtworkState();
     showCSVFilled(urls);
     updateStepButtons();
     updateStatusBadges();
@@ -1540,7 +1590,7 @@ function handleCSVFile(file) {
     updateStepButtons();
     const blob = new Blob([e.target.result], { type: 'text/csv' });
     uploadToCloudinary(blob, file.name, 'raw')
-      .then(url => { state.csvCloudUrl = url; })
+      .then(url => { state.csvCloudUrl = url; saveArtworkState(); })
       .catch(() => {})
       .finally(() => { state.uploadingCSV = false; updateStepButtons(); });
   };
@@ -1577,6 +1627,7 @@ function showCSVFilled(urls) {
 
 function resetCSV() {
   state.csvUrls = []; state.csvCloudUrl = null; state.csvDuplicates = 0;
+  saveArtworkState();
   document.getElementById('csv-upload-zone').style.display = 'block';
   document.getElementById('csv-filled-area').style.display = 'none';
   document.getElementById('csv-success-detail').style.display = 'none';
@@ -1629,6 +1680,7 @@ function handleURLInput() {
   state.altURL = val;
   const ok = val.startsWith('http://') || val.startsWith('https://');
   document.getElementById('url-success').style.display = ok ? 'block' : 'none';
+  saveArtworkState();
   updateStepButtons();
   updateStatusBadges();
 }
@@ -1637,6 +1689,7 @@ function setMode(mode) {
   state.musicMode = mode;
   document.getElementById('csv-area').style.display = mode === 'csv' ? 'block' : 'none';
   document.getElementById('url-area').style.display = mode === 'url' ? 'block' : 'none';
+  saveArtworkState();
   updateStepButtons();
 }
 
@@ -1666,12 +1719,15 @@ function trackEvent(name, params) {
 
 function goToStep(n) {
   state.currentStep = n;
+  bumpFurthestStep(n + 1); // global step: 1=Music, 2=Artwork, 3=Review
   document.querySelectorAll('.step').forEach((el, i) => el.classList.toggle('active', i === n));
-  // Stepper cells: only the ones with data-step participate (the static Customize cell at the start is always .done)
+  // Stepper cells: mark active for current, done for any previously-reached
+  // step that isn't current. Lets users see what they've already done.
+  const fi = furthestInternal();
   document.querySelectorAll('.step-cell[data-step]').forEach(el => {
     const i = +el.dataset.step;
     el.classList.toggle('active', i === n);
-    el.classList.toggle('done', i < n);
+    el.classList.toggle('done', i !== n && i <= fi);
   });
   if (n === 2) renderSummary();
   updateBackLink();
@@ -1700,7 +1756,8 @@ function goBackOneStep() {
 }
 
 function handleStepClick(n) {
-  if (n < state.currentStep) goToStep(n);
+  // Allow jumping to any step the user has reached at least once — back or forward.
+  if (n <= furthestInternal()) goToStep(n);
 }
 
 // ---- Button state ----
@@ -1918,21 +1975,50 @@ if (csvZone) {
 }
 setupFileInput('input-csv', handleCSVFile);
 
+// Restore visible UI from persisted state (set up before any render calls).
+(function restoreArtworkUI() {
+  // URL input
+  const urlInput = document.getElementById('url-input');
+  if (urlInput && state.altURL) {
+    urlInput.value = state.altURL;
+    const ok = /^https?:\/\//.test(state.altURL);
+    document.getElementById('url-success').style.display = ok ? 'block' : 'none';
+  }
+  // Mode toggle (csv vs url)
+  if (state.musicMode) {
+    document.getElementById('csv-area').style.display = state.musicMode === 'csv' ? 'block' : 'none';
+    document.getElementById('url-area').style.display = state.musicMode === 'url' ? 'block' : 'none';
+  }
+  // CSV filled-state
+  if (state.csvUrls && state.csvUrls.length) {
+    showCSVFilled(state.csvUrls);
+  }
+  // Front artwork
+  if (state.frontArt) {
+    showFrontPreview(state.frontArt, 'previously uploaded');
+  }
+  // Back artwork
+  if (state.backArt) {
+    showBackPreview(state.backArt, 'previously uploaded');
+  }
+})();
+
 updateCSVWarning();
 renderArtworkSubsteps();
 renderSizeWarnings();
 updateBackLink();
 updateStepButtons();
+updateStatusBadges();
 
-// Sync step with URL hash on load so reload / shared link / bookmark resumes
+// On load: explicit hash wins; otherwise resume on the furthest step the
+// user has reached so they don't have to step-through to get back.
 (function syncStepFromHash() {
   const slug = (location.hash || '').replace(/^#/, '');
   const idx = STEP_NAMES.indexOf(slug);
-  if (idx > 0) {
-    goToStep(idx); // fires step_view inside goToStep
+  if (idx >= 0) {
+    goToStep(idx);
   } else {
-    if (!location.hash) history.replaceState(null, '', '#' + STEP_NAMES[0]);
-    trackEvent('step_view', { step: STEP_NAMES[0] });
+    goToStep(furthestInternal());
   }
 })();
 </script>

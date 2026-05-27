@@ -914,6 +914,12 @@ function continueToUpload() {
     baseTotal:        tier.max ? +(price * tier.qty).toFixed(2) : null,
     summaryText:      summaryText(),
   }));
+  // Mark Music (global step 1) as reached so the artwork-upload page
+  // knows the user has progressed beyond Customize.
+  try {
+    const cur = parseInt(sessionStorage.getItem('goodzFurthestStep') || '0', 10);
+    if (cur < 1) sessionStorage.setItem('goodzFurthestStep', '1');
+  } catch (e) {}
   trackEvent('continue_clicked', {
     from_step: 'customize',
     quantity: tier.qty,
