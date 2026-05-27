@@ -246,49 +246,39 @@
     .pricing-grid-row .pricing-profit { color: var(--amber-ink); font-weight: 400; }
     .pricing-grid-row.data.selected .pricing-profit { font-weight: 700; }
 
-    /* Retail-price input ("Retail per Goodz: $12") above the pricing chart */
-    .profit-calc {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin: 0.4rem 0 0.7rem;
-      font-size: 0.92rem;
-    }
-    .profit-calc-label {
+    /* Inline editable retail price inside the "Est. profit" column header. */
+    .retail-inline-wrap {
+      display: block;
+      margin-top: 0.15rem;
+      text-transform: none;
+      letter-spacing: 0;
+      font-weight: 600;
+      font-size: 0.78rem;
       color: var(--amber-ink);
-      font-weight: 600;
     }
-    .profit-calc-input-wrap {
-      display: inline-flex;
-      align-items: stretch;
-      border: 1.5px solid var(--border);
-      border-radius: 6px;
-      background: #fff;
-      overflow: hidden;
-      transition: border-color 0.12s;
-    }
-    .profit-calc-input-wrap:focus-within { border-color: var(--black); }
-    .profit-calc-prefix {
-      padding: 0.35rem 0 0.35rem 0.55rem;
-      color: var(--muted);
-      font-weight: 600;
-      font-size: 0.92rem;
-    }
-    .profit-calc input {
-      width: 56px;
-      padding: 0.35rem 0.55rem 0.35rem 0.15rem;
+    #retail-input {
+      width: 2.2ch;
+      padding: 0;
+      margin: 0 0 0 0.05em;
       border: none;
+      border-bottom: 1px dotted var(--amber-ink);
       outline: none;
       background: transparent;
-      font-family: 'DM Sans', sans-serif;
+      font-family: inherit;
       font-size: 16px; /* prevent iOS auto-zoom */
       font-weight: 700;
-      color: var(--text);
-      -moz-appearance: textfield;
+      color: var(--amber-ink);
+      text-align: left;
+      text-transform: none;
+      letter-spacing: 0;
     }
-    .profit-calc input::-webkit-outer-spin-button,
-    .profit-calc input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-    .profit-calc-hint { color: var(--muted); font-size: 0.82rem; }
+    #retail-input:focus { border-bottom-style: solid; }
+    .pricing-estimate-hint {
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-style: italic;
+      margin-top: 0.35rem;
+    }
     .pricing-grid-row:last-child { border-bottom: none; }
     .pricing-grid-row.hdr { background: var(--off-white); }
     .pricing-grid-row.data { cursor: pointer; transition: background 0.1s, box-shadow 0.1s; position: relative; }
@@ -315,10 +305,10 @@
     .pricing-grid-cell.r { justify-content: flex-end; }
     .recommended-badge {
       font-size: 0.6rem;
-      font-weight: 800;
+      font-weight: 700;
       letter-spacing: 0.06em;
-      background: var(--black);
-      color: var(--yellow);
+      background: rgba(255, 200, 82, 0.22);
+      color: var(--amber-ink);
       padding: 0.2rem 0.45rem;
       border-radius: 3px;
     }
@@ -704,23 +694,17 @@
       <!-- Pricing table -->
       <div class="qty-section">
         <div class="option-section-label">Quantity</div>
-        <p class="pricing-revenue-note">Choose your run size. Adjust retail price to estimate your profit.</p>
-        <div class="profit-calc">
-          <span class="profit-calc-label">Retail per Goodz</span>
-          <span class="profit-calc-input-wrap">
-            <span class="profit-calc-prefix">$</span>
-            <input type="number" id="retail-input" value="12" min="0" max="999" step="1" inputmode="numeric" aria-label="Retail price per Goodz" oninput="handleRetailChange()">
-          </span>
-        </div>
+        <p class="pricing-revenue-note">Choose your run size.</p>
         <div class="pricing-grid" id="pricing-grid">
           <div class="pricing-grid-row hdr">
             <div class="pricing-grid-hdr">Quantity</div>
             <div class="pricing-grid-hdr r">Price</div>
             <div class="pricing-grid-hdr r">Order Total</div>
-            <div class="pricing-grid-hdr r">Est. profit</div>
+            <div class="pricing-grid-hdr r">Est. profit<span class="retail-inline-wrap">at $<input type="text" id="retail-input" value="12" maxlength="3" inputmode="numeric" pattern="[0-9]*" aria-label="Retail price per Goodz" oninput="handleRetailChange()" onclick="this.select()"></span></div>
           </div>
           <!-- Rows populated by JS -->
         </div>
+        <p class="pricing-estimate-hint">Estimate only. Won&rsquo;t affect your order.</p>
         <p class="pricing-contact" style="margin-top:0.5rem">Not ready for 50? <a href="custom.html#try-one">Try a sample first &rarr;</a></p>
         <p class="pricing-contact">Need 3,000+? <a href="mailto:hello@getthegoodz.com">Contact us for bulk pricing &rarr;</a></p>
         <p class="pricing-note" id="pricing-upcharge-note" style="display:none"></p>
