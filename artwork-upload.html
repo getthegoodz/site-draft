@@ -763,7 +763,12 @@
       display: block;
       width: 100%; min-width: 0; max-width: 100%;
       padding: 0.75rem 1rem; border-radius: 8px;
-      border: 1.5px solid var(--border); font-size: 0.9rem; font-family: 'DM Sans', sans-serif;
+      border: 1.5px solid var(--border);
+      /* iOS Safari auto-zooms on any input with font-size < 16px, which makes
+         the page render wider than the viewport and look "deformed" after the
+         user taps and pastes. Keeping the rendered font at 16px stops that. */
+      font-size: 16px;
+      font-family: 'DM Sans', sans-serif;
       transition: border-color 0.15s; background: #fff;
     }
     .url-input:focus { outline: none; border-color: var(--black); }
