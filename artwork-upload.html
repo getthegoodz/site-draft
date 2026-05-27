@@ -618,40 +618,59 @@
     .status-badge.info { background: var(--off-white);       border: 1px solid var(--border);         color: var(--text); }
     .status-badge.warn { background: var(--warn-bg);         border: 1px solid var(--warn-border);    color: var(--warn-text); }
 
-    /* Step bar */
-    .step-bar-wrapper { margin: 0; }
-    .step-bar { display: flex; gap: 0.25rem; margin-bottom: 0.4rem; }
-    .step-seg { flex: 1; height: 3px; border-radius: 2px; background: #b8b0a0; transition: background 0.2s; }
-    .step-seg.done   { background: var(--amber-ink); cursor: pointer; }
-    .step-seg.active { background: var(--black); }
-    a.step-seg-static { text-decoration: none; }
-    .step-labels { display: flex; }
-    .step-labels > * {
-      flex: 1; text-align: center; font-size: 0.62rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.08em; color: #b0a898;
-      transition: color 0.2s; text-decoration: none;
+    /* Step bar — numbered squares with labels */
+    .step-bar-wrapper { margin: 0; width: 100%; max-width: 380px; }
+    .step-bar { display: flex; gap: 0.5rem; justify-content: space-between; }
+    .step-cell {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      text-decoration: none;
+      color: inherit;
     }
-    .step-labels > .done    { color: var(--amber-ink); cursor: pointer; }
-    .step-labels > .done:hover { text-decoration: underline; }
-    .step-labels > .active  { color: var(--black); }
-    .step-status { display: none; }
+    .step-square {
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      border: 1.5px solid #b8b0a0;
+      color: #b8b0a0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      font-size: 0.95rem;
+      background: transparent;
+      transition: all 0.15s;
+    }
+    .step-cell.active .step-square {
+      border-color: var(--black);
+      color: var(--black);
+    }
+    .step-cell.done .step-square {
+      border-color: var(--black);
+      background: var(--black);
+      color: var(--cream, #efefe2);
+    }
+    .step-cell-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #b0a898;
+      text-align: center;
+      transition: color 0.15s;
+    }
+    .step-cell.active .step-cell-label { color: var(--black); }
+    .step-cell.done .step-cell-label { color: var(--black); }
+    a.step-cell { cursor: pointer; }
+    a.step-cell:hover .step-square { transform: translateY(-1px); }
     @media (max-width: 700px) {
-      .step-labels { display: none; }
-      .step-status {
-        display: block;
-        text-align: center;
-        font-size: 0.72rem;
-        font-weight: 700;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        color: var(--black);
-        margin-top: 0.3rem;
-      }
-      .step-status .step-count { color: var(--muted); }
-      .step-status .step-count::after { content: ' · '; color: var(--muted); margin: 0 0.4em; }
       .back-link { display: none; }
       .page-header { grid-template-columns: 1fr; }
-      .page-header .step-bar-wrapper { width: 100%; max-width: 320px; justify-self: center; }
+      .page-header .step-bar-wrapper { width: 100%; max-width: 380px; justify-self: center; }
     }
 
     /* Step headings */
@@ -846,18 +865,23 @@
   <button type="button" id="back-link" class="back-link" onclick="goBackOneStep()">&larr; Back to Customize</button>
   <div class="step-bar-wrapper" id="step-bar-wrapper">
     <div class="step-bar">
-      <a href="order.html" class="step-seg step-seg-static done" title="Edit your selections" aria-label="Step 1: Customize (edit)"></a>
-      <div class="step-seg active" data-step="0" onclick="handleStepClick(0)"></div>
-      <div class="step-seg"        data-step="1" onclick="handleStepClick(1)"></div>
-      <div class="step-seg"        data-step="2" onclick="handleStepClick(2)"></div>
+      <a href="order.html" class="step-cell done" title="Edit your selections">
+        <span class="step-square">1</span>
+        <span class="step-cell-label">Customize</span>
+      </a>
+      <span class="step-cell active" data-step="0" onclick="handleStepClick(0)">
+        <span class="step-square">2</span>
+        <span class="step-cell-label">Music</span>
+      </span>
+      <span class="step-cell" data-step="1" onclick="handleStepClick(1)">
+        <span class="step-square">3</span>
+        <span class="step-cell-label">Artwork</span>
+      </span>
+      <span class="step-cell" data-step="2" onclick="handleStepClick(2)">
+        <span class="step-square">4</span>
+        <span class="step-cell-label">Review</span>
+      </span>
     </div>
-    <div class="step-labels">
-      <a href="order.html" class="step-label-static done">Customize</a>
-      <span data-label="0" class="active">Music</span>
-      <span data-label="1">Artwork</span>
-      <span data-label="2">Review</span>
-    </div>
-    <div class="step-status" id="step-status"><span class="step-count">Step 2 of 4</span>Music</div>
   </div>
   <div></div>
 </header>
@@ -1666,18 +1690,14 @@ function trackEvent(name, params) {
 function goToStep(n) {
   state.currentStep = n;
   document.querySelectorAll('.step').forEach((el, i) => el.classList.toggle('active', i === n));
-  document.querySelectorAll('.step-seg:not(.step-seg-static)').forEach((el, i) => {
-    el.classList.toggle('active', i === n);
-    el.classList.toggle('done', i < n);
-  });
-  document.querySelectorAll('[data-label]').forEach(el => {
-    const i = +el.dataset.label;
+  // Stepper cells: only the ones with data-step participate (the static Customize cell at the start is always .done)
+  document.querySelectorAll('.step-cell[data-step]').forEach(el => {
+    const i = +el.dataset.step;
     el.classList.toggle('active', i === n);
     el.classList.toggle('done', i < n);
   });
   if (n === 2) renderSummary();
   updateBackLink();
-  updateStepStatus();
   const slug = STEP_NAMES[n];
   if (slug) {
     const newHash = '#' + slug;
@@ -1697,14 +1717,6 @@ function updateBackLink() {
   el.innerHTML = '&larr; Back to ' + prev;
 }
 
-// Mobile step-status text — "Step N of 4 · NAME". Updates on every step change.
-function updateStepStatus() {
-  const el = document.getElementById('step-status');
-  if (!el) return;
-  const idx = state.currentStep;          // 0 = Music, 1 = Artwork, 2 = Review
-  const number = idx + 2;                  // Customize = 1, Music = 2, etc.
-  el.innerHTML = '<span class="step-count">Step ' + number + ' of 4</span>' + STEP_LABELS[idx];
-}
 function goBackOneStep() {
   if (state.currentStep === 0) window.location.href = 'order.html';
   else goToStep(state.currentStep - 1);
@@ -1933,7 +1945,6 @@ updateCSVWarning();
 renderArtworkSubsteps();
 renderSizeWarnings();
 updateBackLink();
-updateStepStatus();
 updateStepButtons();
 
 // Sync step with URL hash on load so reload / shared link / bookmark resumes
