@@ -240,9 +240,54 @@
     }
     .pricing-grid-row {
       display: grid;
-      grid-template-columns: 1fr 120px 120px;
+      grid-template-columns: 1fr 96px 100px 100px;
       border-bottom: 1px solid var(--border);
     }
+    .pricing-grid-row .pricing-profit { color: var(--amber-ink); font-weight: 700; }
+
+    /* Retail-price input ("Retail per Goodz: $12") above the pricing chart */
+    .profit-calc {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 0.4rem 0 0.7rem;
+      font-size: 0.92rem;
+    }
+    .profit-calc-label {
+      color: var(--text);
+      font-weight: 600;
+    }
+    .profit-calc-input-wrap {
+      display: inline-flex;
+      align-items: stretch;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      background: #fff;
+      overflow: hidden;
+      transition: border-color 0.12s;
+    }
+    .profit-calc-input-wrap:focus-within { border-color: var(--black); }
+    .profit-calc-prefix {
+      padding: 0.35rem 0 0.35rem 0.55rem;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 0.92rem;
+    }
+    .profit-calc input {
+      width: 56px;
+      padding: 0.35rem 0.55rem 0.35rem 0.15rem;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px; /* prevent iOS auto-zoom */
+      font-weight: 700;
+      color: var(--text);
+      -moz-appearance: textfield;
+    }
+    .profit-calc input::-webkit-outer-spin-button,
+    .profit-calc input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .profit-calc-hint { color: var(--muted); font-size: 0.82rem; }
     .pricing-grid-row:last-child { border-bottom: none; }
     .pricing-grid-row.hdr { background: var(--off-white); }
     .pricing-grid-row.data { cursor: pointer; transition: background 0.1s; }
@@ -429,17 +474,17 @@
       .order-intro-title { font-size: 1.4rem; }
 
       /* Prevent pricing grid from overflowing narrow viewports */
-      .pricing-grid-row { grid-template-columns: minmax(0, 1fr) 96px 96px; }
-      .pricing-grid-cell { padding: 0.75rem 0.6rem; font-size: 0.85rem; gap: 0.4rem; }
-      .pricing-grid-hdr { padding: 0.55rem 0.6rem; font-size: 0.65rem; }
+      .pricing-grid-row { grid-template-columns: minmax(0, 1fr) 70px 80px 84px; }
+      .pricing-grid-cell { padding: 0.75rem 0.55rem; font-size: 0.85rem; gap: 0.4rem; }
+      .pricing-grid-hdr { padding: 0.55rem 0.55rem; font-size: 0.62rem; }
       .recommended-badge { font-size: 0.55rem; padding: 0.15rem 0.35rem; }
     }
 
     @media (max-width: 480px) {
       .option-card { min-width: 80px; }
       .config-col { padding: 1rem 1rem 6rem; }
-      .pricing-grid-row { grid-template-columns: minmax(0, 1fr) 80px 80px; }
-      .pricing-grid-cell { padding: 0.7rem 0.5rem; font-size: 0.8rem; }
+      .pricing-grid-row { grid-template-columns: minmax(0, 1fr) 58px 68px 72px; }
+      .pricing-grid-cell { padding: 0.7rem 0.45rem; font-size: 0.78rem; }
     }
   </style>
 </head>
@@ -642,12 +687,20 @@
       <!-- Pricing table -->
       <div class="qty-section">
         <div class="option-section-label">Quantity</div>
-        <p class="pricing-revenue-note">A 50-unit run is $172. Sell them for $10 at the merch table and you break even after selling 18. The other 32 are pure margin.</p>
+        <p class="pricing-revenue-note">Pick a run size. The Est. profit column updates with your retail price.</p>
+        <div class="profit-calc">
+          <span class="profit-calc-label">Retail per Goodz</span>
+          <span class="profit-calc-input-wrap">
+            <span class="profit-calc-prefix">$</span>
+            <input type="number" id="retail-input" value="12" min="0" max="999" step="1" inputmode="numeric" aria-label="Retail price per Goodz" oninput="handleRetailChange()">
+          </span>
+        </div>
         <div class="pricing-grid" id="pricing-grid">
           <div class="pricing-grid-row hdr">
             <div class="pricing-grid-hdr">Quantity</div>
-            <div class="pricing-grid-hdr r">Price per Goodz</div>
+            <div class="pricing-grid-hdr r">Price</div>
             <div class="pricing-grid-hdr r">Order Total</div>
+            <div class="pricing-grid-hdr r">Est. profit</div>
           </div>
           <!-- Rows populated by JS -->
         </div>
@@ -701,11 +754,12 @@ const TIERS = [
 const UPCHARGES = { sleeve: 0.20, keychain: 0.15, customBack: 0.10 };
 
 let state = {
-  music:    'bandcamp_codes',
-  sleeve:   'no-sleeve',
-  keychain: 'none',
-  back:     'standard',
-  tierIdx:  0,
+  music:        'bandcamp_codes',
+  sleeve:       'no-sleeve',
+  keychain:     'none',
+  back:         'standard',
+  tierIdx:      0,
+  retailPrice:  12,
 };
 
 const MUSIC_LABELS = {
@@ -743,9 +797,11 @@ function fmt(n) {
 function renderTable() {
   const grid = document.getElementById('pricing-grid');
   const hdr = grid.querySelector('.hdr').outerHTML;
+  const retail = Number.isFinite(state.retailPrice) && state.retailPrice > 0 ? state.retailPrice : 12;
   grid.innerHTML = hdr + TIERS.map((tier, i) => {
     const price = unitPrice(tier);
     const total = tier.max ? price * tier.qty : null;
+    const profit = tier.max ? (retail - price) * tier.qty : null;
     const sel = i === state.tierIdx;
     return `
       <div class="pricing-grid-row data${sel ? ' selected' : ''}" onclick="selectTier(${i})">
@@ -756,8 +812,16 @@ function renderTable() {
         </div>
         <div class="pricing-grid-cell r">${fmt(price)}</div>
         <div class="pricing-grid-cell r">${total ? fmt(total) : '<span style="color:#999;font-weight:400">Contact us</span>'}</div>
+        <div class="pricing-grid-cell r"><span class="pricing-profit">${profit !== null && profit > 0 ? fmt(profit) : '—'}</span></div>
       </div>`;
   }).join('');
+}
+
+function handleRetailChange() {
+  const input = document.getElementById('retail-input');
+  const val = parseFloat(input.value);
+  state.retailPrice = (Number.isFinite(val) && val >= 0) ? val : 12;
+  renderTable();
 }
 
 // Tiny GA event helper. No-ops cleanly until gtag is wired up on the page.
