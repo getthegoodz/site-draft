@@ -1184,7 +1184,9 @@ if (orderConfig) {
 // ---- App state ----
 let state = {
   frontArt:      null,   // Cloudinary URL or data URL
+  frontArtName:  '',
   backArt:       null,
+  backArtName:   '',
   frontTooSmall: false,
   backTooSmall:  false,
   uploadingFront: false,
@@ -1209,7 +1211,9 @@ function saveArtworkState() {
       musicMode: state.musicMode,
       // Only persist already-uploaded URLs, never data URLs (too big).
       frontArt: (state.frontArt && /^https?:/.test(state.frontArt)) ? state.frontArt : null,
+      frontArtName: state.frontArtName || '',
       backArt:  (state.backArt  && /^https?:/.test(state.backArt))  ? state.backArt  : null,
+      backArtName: state.backArtName || '',
       csvUrls: state.csvUrls,
       csvCloudUrl: state.csvCloudUrl,
       csvDuplicates: state.csvDuplicates,
@@ -1225,7 +1229,9 @@ function saveArtworkState() {
     if (typeof s.altURL === 'string')     state.altURL = s.altURL;
     if (typeof s.musicMode === 'string')  state.musicMode = s.musicMode;
     if (typeof s.frontArt === 'string')   state.frontArt = s.frontArt;
+    if (typeof s.frontArtName === 'string') state.frontArtName = s.frontArtName;
     if (typeof s.backArt === 'string')    state.backArt  = s.backArt;
+    if (typeof s.backArtName === 'string') state.backArtName = s.backArtName;
     if (Array.isArray(s.csvUrls))         state.csvUrls = s.csvUrls;
     if (typeof s.csvCloudUrl === 'string') state.csvCloudUrl = s.csvCloudUrl;
     if (typeof s.csvDuplicates === 'number') state.csvDuplicates = s.csvDuplicates;
@@ -1313,6 +1319,7 @@ function handleFrontFile(file) {
   reader.onload = e => {
     const dataUrl = e.target.result;
     state.frontArt = dataUrl;
+    state.frontArtName = file.name;
     showFrontPreview(dataUrl, file.name);
     checkImageSize(dataUrl, 'front');
     renderArtworkSubsteps();
@@ -1426,6 +1433,7 @@ function showFrontPreview(src, name) {
 function clearFront(e) {
   if (e) e.stopPropagation();
   state.frontArt = null;
+  state.frontArtName = '';
   state.frontTooSmall = false;
   saveArtworkState();
   document.getElementById('card-art').style.display = 'none';
@@ -1457,6 +1465,7 @@ function handleBackFile(file) {
   reader.onload = e => {
     const dataUrl = e.target.result;
     state.backArt = dataUrl;
+    state.backArtName = file.name;
     showBackPreview(dataUrl, file.name);
     checkImageSize(dataUrl, 'back');
     renderArtworkSubsteps();
@@ -1495,6 +1504,7 @@ function showBackPreview(src, name) {
 function clearBack(e) {
   if (e) e.stopPropagation();
   state.backArt = null;
+  state.backArtName = '';
   state.backTooSmall = false;
   state.customBackChosen = !!(orderConfig && orderConfig.backDesign === 'custom');
   saveArtworkState();
@@ -2007,11 +2017,11 @@ setupFileInput('input-csv', handleCSVFile);
   }
   // Front artwork
   if (state.frontArt) {
-    showFrontPreview(state.frontArt, 'previously uploaded');
+    showFrontPreview(state.frontArt, state.frontArtName);
   }
   // Back artwork
   if (state.backArt) {
-    showBackPreview(state.backArt, 'previously uploaded');
+    showBackPreview(state.backArt, state.backArtName);
   }
 })();
 
