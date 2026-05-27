@@ -821,7 +821,51 @@
     .btn-primary { background: var(--yellow); color: var(--black); border-color: var(--yellow); }
     .btn-primary:hover:not(:disabled) { background: #e6b044; border-color: #e6b044; }
     .btn-primary:disabled { background: #cdc8b2; border-color: #cdc8b2; color: #9a8e7e; cursor: not-allowed; }
-    .btn-order { padding: 1rem 2rem; font-size: 1.05rem; width: 100%; }
+    /* Front/back artwork preview on the Review step */
+    .review-art-preview {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      margin-bottom: 1.25rem;
+      padding: 0.85rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #fff;
+    }
+    .review-art-cards { display: flex; gap: 0.75rem; }
+    .review-art-card { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 0.35rem; }
+    .review-art-card img {
+      width: 88px; height: 88px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      object-fit: cover;
+      display: block;
+      background: var(--off-white);
+    }
+    .review-art-card figcaption {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+    .review-art-edit {
+      margin-left: auto;
+      background: none;
+      border: none;
+      padding: 0.2rem 0;
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--black);
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .review-art-edit:hover { color: var(--amber-ink); }
+    @media (max-width: 600px) {
+      .review-art-preview { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+      .review-art-edit { margin-left: 0; }
+    }
 
     /* Spinner */
     .spinner { display: inline-block; width: 15px; height: 15px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 5px; }
@@ -1132,14 +1176,26 @@
       <h2>Review Your Order</h2>
       <p class="step-sub">Double-check everything before heading to checkout.</p>
 
+      <div class="review-art-preview" id="review-art-preview" style="display:none">
+        <div class="review-art-cards">
+          <figure class="review-art-card">
+            <img id="review-front-img" src="" alt="Your front artwork">
+            <figcaption>Front</figcaption>
+          </figure>
+          <figure class="review-art-card">
+            <img id="review-back-img" src="" alt="Your back artwork">
+            <figcaption>Back</figcaption>
+          </figure>
+        </div>
+        <button type="button" class="review-art-edit" onclick="goToStep(1)">Edit artwork &rarr;</button>
+      </div>
+
       <div class="summary-rows" id="summary-rows"></div>
       <div id="summary-warning" class="summary-warning" style="display:none"></div>
 
-      <button class="btn btn-primary btn-order" id="btn-order" onclick="placeOrder()" disabled>
-        Proceed to Checkout &rarr;
-      </button>
-      <div class="btn-row" style="margin-top:0.75rem">
+      <div class="btn-row">
         <button class="btn btn-back" onclick="goToStep(1)">&larr; Back to Artwork</button>
+        <button class="btn btn-primary" id="btn-order" onclick="placeOrder()" disabled>Proceed to Checkout &rarr;</button>
       </div>
     </div>
 
@@ -1819,6 +1875,18 @@ function fmt(n) { return '$' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','
 function renderSummary() {
   const cfg = orderConfig || {};
   const rows = [];
+
+  // Artwork thumbnails — front (uploaded) and back (custom upload or standard template)
+  const preview = document.getElementById('review-art-preview');
+  const frontImg = document.getElementById('review-front-img');
+  const backImg = document.getElementById('review-back-img');
+  if (preview && state.frontArt) {
+    if (frontImg) frontImg.src = state.frontArt;
+    if (backImg) backImg.src = state.backArt || 'templates/Goodz_Standard_back.png';
+    preview.style.display = 'flex';
+  } else if (preview) {
+    preview.style.display = 'none';
+  }
 
   rows.push({ label: 'Front artwork',   value: state.frontArt ? 'Uploaded ✓' : 'Missing ✗', missing: !state.frontArt });
   if (needsBack()) {
