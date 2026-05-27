@@ -515,7 +515,9 @@
 </nav>
 
 
-<!-- Order flow stepper -->
+<!-- Order flow stepper. Cells beyond Customize get marked .done by the
+     script below if the user has reached them, and become clickable links
+     back into the artwork-upload steps. -->
 <div class="order-stepper">
   <div class="step-bar-wrapper">
     <div class="step-bar">
@@ -523,21 +525,38 @@
         <span class="step-square">1</span>
         <span class="step-cell-label">Customize</span>
       </span>
-      <span class="step-cell">
+      <span class="step-cell" data-step-global="1" data-step-slug="music">
         <span class="step-square">2</span>
         <span class="step-cell-label">Music</span>
       </span>
-      <span class="step-cell">
+      <span class="step-cell" data-step-global="2" data-step-slug="artwork">
         <span class="step-square">3</span>
         <span class="step-cell-label">Artwork</span>
       </span>
-      <span class="step-cell">
+      <span class="step-cell" data-step-global="3" data-step-slug="review">
         <span class="step-square">4</span>
         <span class="step-cell-label">Review</span>
       </span>
     </div>
   </div>
 </div>
+<script>
+(function hydrateOrderStepper() {
+  let furthest = 0;
+  try { furthest = parseInt(sessionStorage.getItem('goodzFurthestStep') || '0', 10) || 0; } catch (e) {}
+  document.querySelectorAll('.order-stepper .step-cell[data-step-global]').forEach(cell => {
+    const g = parseInt(cell.dataset.stepGlobal, 10);
+    if (furthest >= g) {
+      cell.classList.add('done');
+      const slug = cell.dataset.stepSlug;
+      cell.style.cursor = 'pointer';
+      cell.addEventListener('click', () => {
+        window.location.href = 'artwork-upload.html#' + slug;
+      });
+    }
+  });
+})();
+</script>
 
 <main>
   <div class="product-layout">
@@ -933,7 +952,10 @@ function continueToUpload() {
     quantity: tier.qty,
     music: state.music,
   });
-  window.location.href = 'artwork-upload.html';
+  // Force the Music step. The button literally says "Next: Music" — without
+  // an explicit hash, the artwork-upload page would auto-resume to whatever
+  // step the user had previously reached, which contradicts the button.
+  window.location.href = 'artwork-upload.html#music';
 }
 
 // Wire option card clicks
