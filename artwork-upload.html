@@ -42,7 +42,7 @@
       gap: 1rem;
       position: sticky;
       top: 0;
-      z-index: 200;
+      z-index: 50;
     }
     .page-header .step-bar-wrapper {
       width: 320px;
@@ -90,7 +90,7 @@
     .upload-area {
       display: flex;
       align-items: flex-start;
-      justify-content: center;
+      justify-content: flex-start;
       gap: 0.6rem;
       margin-bottom: 0.5rem;
     }
@@ -136,15 +136,14 @@
 
     /* Legend: print-term explanations + dimensions for each */
     .overlay-legend {
-      max-width: 460px;
-      margin: 1rem auto 0;
+      margin: 1rem 0 0;
       display: flex;
       flex-direction: column;
       gap: 0.85rem;
     }
     .overlay-legend-toggle {
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;
     }
     .overlay-legend-item {
       display: flex;
@@ -240,9 +239,8 @@
       justify-content: center;
     }
     .card-meta {
-      max-width: 320px;
-      margin: 0.75rem auto 0;
-      text-align: center;
+      margin: 0.75rem 0 0;
+      text-align: left;
     }
     .card-meta .file-name {
       font-size: 0.78rem;
@@ -406,7 +404,7 @@
     /* Card action row, sits below the preview, keeps the artwork pristine */
     .card-actions {
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;
       align-items: center;
       gap: 0.85rem;
       margin-top: 0.6rem;
@@ -481,19 +479,18 @@
 
     /* Artwork specs (mirrors order page guidelines) */
     .artwork-specs {
-      max-width: 540px;
-      margin: 2.5rem auto 0;
+      margin: 2.5rem 0 0;
       padding-top: 1.75rem;
       border-top: 1px solid var(--border);
     }
     .artwork-specs-heading {
-      font-size: 0.72rem;
+      font-size: 0.78rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.1em;
       color: var(--muted);
       margin-bottom: 0.85rem;
-      text-align: center;
+      text-align: left;
     }
     .specs-list {
       display: flex;
@@ -522,7 +519,7 @@
     .specs-templates {
       display: flex;
       gap: 0.6rem;
-      justify-content: center;
+      justify-content: flex-start;
       flex-wrap: wrap;
     }
     .specs-template-tile {
