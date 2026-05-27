@@ -433,6 +433,11 @@
       font-size: 0.85rem;
     }
     .card-action-primary:hover { background: #e6b044; border-color: #e6b044; color: var(--black); }
+    /* Cost suffix inside a card-action button ("Replace with custom design (+$0.10/unit)") */
+    .card-action-meta { color: var(--muted); font-weight: 400; text-decoration: none; }
+    .card-action:hover .card-action-meta { color: var(--text); }
+    /* Standard-back caption shown when viewing the back side and no custom is uploaded */
+    .back-default-included { color: var(--amber-ink, var(--black)); font-weight: 600; }
 
     /* Keychain hole overlay
        Spec: 70mm × 70mm canvas, hole center 8.5mm from top + side, 3mm diameter
@@ -1018,6 +1023,7 @@
 
     <div class="card-meta">
       <div class="file-name" id="front-filename"></div>
+      <div class="file-name back-default-caption" id="back-default-caption" style="display:none">Standard back &middot; <span class="back-default-included">included</span></div>
       <div class="size-warning" id="front-size-warn">
         &#9888; Image may be too small for 300 DPI print quality. We recommend at least 827&times;827px (<span data-mm-value data-mm="70">2.76"</span>).
       </div>
@@ -1029,7 +1035,7 @@
     <div class="card-actions" id="card-actions">
       <button type="button" class="card-action" id="action-front-replace" style="display:none" onclick="document.getElementById('input-front').click()">Replace</button>
       <button type="button" class="card-action" id="action-front-remove" style="display:none" onclick="clearFront(event)">Remove</button>
-      <button type="button" class="card-action card-action-primary" id="action-add-custom-back" style="display:none" onclick="addCustomBack()">Add a custom back</button>
+      <button type="button" class="card-action" id="action-add-custom-back" style="display:none" onclick="addCustomBack()">Replace with custom design <span class="card-action-meta">(+$0.10/unit)</span></button>
       <button type="button" class="card-action" id="action-back-replace" style="display:none" onclick="addCustomBack()">Replace</button>
       <button type="button" class="card-action" id="action-use-standard" style="display:none" onclick="useStandardBack()">Use standard back</button>
     </div>
@@ -1350,6 +1356,12 @@ function renderCardActions() {
   set('action-add-custom-back', !isFront && !state.backArt && !state.customBackChosen);
   set('action-back-replace',    !isFront && !!state.backArt);
   set('action-use-standard',    !isFront && !!state.backArt && !isMandatory);
+  // Meta line: "Standard back · included" shows when viewing the back side and
+  // no custom upload exists, so the no-charge default is explicit.
+  const back = document.getElementById('back-default-caption');
+  const front = document.getElementById('front-filename');
+  if (back) back.style.display = (!isFront && !state.backArt && !state.customBackChosen) ? 'block' : 'none';
+  if (front) front.style.display = isFront ? 'block' : 'none';
 }
 
 // ---- Pricing helpers (dynamic custom-back upcharge) ----
