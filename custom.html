@@ -21,8 +21,16 @@
       border: var(--border);
       margin-top: 3rem;
     }
-    .audience-card { border-right: 2px solid #fff; overflow: hidden; }
-    .audience-card:last-child { border-right: none; }
+    .audience-card { position: relative; overflow: hidden; }
+    .audience-card::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0; bottom: 0;
+      width: 2px;
+      background: #fff;
+      pointer-events: none;
+    }
+    .audience-card:last-child::after { display: none; }
     .audience-img { aspect-ratio: 3/4; }
     .audience-label {
       padding: 1rem;
@@ -36,12 +44,13 @@
 
     @media (max-width: 900px) {
       .audience-grid { grid-template-columns: 1fr 1fr; }
-      .audience-card:nth-child(2) { border-right: none; }
+      .audience-card:nth-child(2)::after { display: none; }
       .audience-card:nth-child(3) { border-top: var(--border); }
     }
     @media (max-width: 600px) {
       .audience-grid { grid-template-columns: 1fr; }
-      .audience-card { border-right: none; border-bottom: var(--border-inner); }
+      .audience-card::after { display: none; }
+      .audience-card { border-bottom: var(--border-inner); }
     }
 
     /* Artwork guidelines (mirrored from Start Your Order page) */
