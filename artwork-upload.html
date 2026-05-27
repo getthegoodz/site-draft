@@ -359,23 +359,10 @@
       padding: 1.5rem;
       text-align: center;
     }
-    .artwork-substeps {
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-      margin-bottom: 1.25rem;
-      font-size: 0.78rem;
-      color: var(--muted);
-    }
-    .artwork-substeps .ss-item { display: inline-flex; align-items: center; gap: 0.4rem; }
-    .artwork-substeps .ss-dot {
-      width: 9px; height: 9px; border-radius: 50%;
-      background: #e0ddd4;
-      box-shadow: 0 0 0 1px rgba(0,0,0,0.15);
-    }
-    .artwork-substeps .ss-dot.is-pending { background: var(--yellow); }
-    .artwork-substeps .ss-dot.is-done    { background: #22c55e; }
-    .artwork-substeps .ss-item.is-active { color: var(--black); font-weight: 700; }
+    /* Back thumb stays locked until the front is uploaded so users
+       can't preview the back before the required front art is in. */
+    .thumb[disabled] { cursor: not-allowed; opacity: 0.45; }
+    .thumb[disabled]:hover { border-color: var(--border); }
     .back-image-frame {
       position: absolute;
       top: 3.57%;
@@ -947,10 +934,6 @@
   <!-- STEP 1: Upload artwork -->
   <div class="step" id="step-1">
     <h2>Upload Your Artwork</h2>
-    <div class="artwork-substeps" id="artwork-substeps" style="display:none">
-      <span class="ss-item" id="ss-front"><span class="ss-dot"></span>Front</span>
-      <span class="ss-item" id="ss-back"><span class="ss-dot"></span>Back</span>
-    </div>
 
     <div class="upload-area">
       <div class="card-wrap" id="card-wrap">
@@ -1285,23 +1268,20 @@ function renderSizeWarnings() {
 
 // ---- Sub-step cue + back placeholder for the artwork step ----
 function renderArtworkSubsteps() {
+  // Empty back placeholder ("tap to upload") shows only when a custom back
+  // is required but hasn't been uploaded yet.
   const required = !!state.customBackChosen;
-  const substeps = document.getElementById('artwork-substeps');
-  substeps.style.display = required ? 'flex' : 'none';
-
-  const frontDot = document.querySelector('#ss-front .ss-dot');
-  const backDot  = document.querySelector('#ss-back .ss-dot');
-  const setDotClass = (el, cls) => { el.className = 'ss-dot' + (cls ? ' ' + cls : ''); };
-  setDotClass(frontDot, state.frontArt ? 'is-done' : 'is-pending');
-  setDotClass(backDot,  state.backArt  ? 'is-done' : 'is-pending');
-  document.getElementById('ss-front').classList.toggle('is-active', state.viewMode === 'front');
-  document.getElementById('ss-back').classList.toggle('is-active', state.viewMode === 'back');
-
-  // Show empty back placeholder when custom back required but not yet uploaded
   document.getElementById('card-content-back').classList.toggle(
     'needs-custom-back',
     required && !state.backArt
   );
+  // Gate the back thumbnail until front art is uploaded — front is the
+  // required first step; back (standard or custom) is meaningless without it.
+  const backThumb = document.getElementById('thumb-back');
+  if (backThumb) {
+    if (state.frontArt) backThumb.removeAttribute('disabled');
+    else backThumb.setAttribute('disabled', 'disabled');
+  }
 }
 
 // ---- Front art ----
