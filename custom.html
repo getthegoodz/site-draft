@@ -18,11 +18,12 @@
     .audience-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      background: #fff;
       border: var(--border);
       margin-top: 3rem;
     }
-    .audience-card { border-right: 2px solid #fff; overflow: hidden; }
-    .audience-card:last-child { border-right: none; }
+    .audience-card { overflow: hidden; }
     .audience-img { aspect-ratio: 3/4; }
     .audience-label {
       padding: 1rem;
@@ -36,12 +37,9 @@
 
     @media (max-width: 900px) {
       .audience-grid { grid-template-columns: 1fr 1fr; }
-      .audience-card:nth-child(2) { border-right: none; }
-      .audience-card:nth-child(3) { border-top: var(--border); }
     }
     @media (max-width: 600px) {
       .audience-grid { grid-template-columns: 1fr; }
-      .audience-card { border-right: none; border-bottom: var(--border-inner); }
     }
 
     /* Artwork guidelines (mirrored from Start Your Order page) */
