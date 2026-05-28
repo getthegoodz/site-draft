@@ -1437,7 +1437,12 @@ function fmtMoney(n) {
 // at all times and live-updates when the user upgrades to a custom back.
 function renderOrderStrip() {
   const cfg = orderConfig || {};
-  if (!cfg.quantity || !cfg.unitPrice) return;
+  const stripEl = document.getElementById('order-strip');
+  if (!cfg.quantity || !cfg.unitPrice) {
+    if (stripEl) stripEl.style.display = 'none';
+    return;
+  }
+  if (stripEl) stripEl.style.display = '';
   const unit = effectiveUnitPrice();
   const total = effectiveTotal();
   document.getElementById('strip-qty').textContent =

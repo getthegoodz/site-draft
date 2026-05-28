@@ -1089,6 +1089,8 @@ footer {
   font-size: 0.85rem;
   max-width: 520px;
 }
+/* hidden attribute must beat display:grid here so the toggle actually closes it */
+.order-strip-details[hidden] { display: none; }
 .order-strip-details dt {
   color: var(--text-lighter);
   font-weight: 400;
