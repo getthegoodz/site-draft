@@ -1460,8 +1460,17 @@ function renderOrderStrip() {
   document.getElementById('strip-qty').textContent =
     `${cfg.quantity.toLocaleString()}${cfg.tierMax ? '' : '+'} units`;
   document.getElementById('strip-unit').textContent = `${fmtMoney(unit)}/unit`;
-  document.getElementById('strip-total').textContent =
-    total != null ? `${fmtMoney(total)} total` : 'Contact us';
+  // See order.html for the rationale: " total" suffix is wrapped in its
+  // own span so mobile CSS can swap it for a "Total: " prefix. The
+  // .has-amount class gates the prefix for the "Contact us" tier.
+  const totalEl = document.getElementById('strip-total');
+  if (total != null) {
+    totalEl.classList.add('has-amount');
+    totalEl.innerHTML = `${fmtMoney(total)}<span class="strip-total-suffix"> total</span>`;
+  } else {
+    totalEl.classList.remove('has-amount');
+    totalEl.textContent = 'Contact us';
+  }
   const usingCustomBack = !!state.customBackChosen;
   const includesEl = document.getElementById('strip-includes');
   includesEl.style.display = usingCustomBack ? '' : 'none';

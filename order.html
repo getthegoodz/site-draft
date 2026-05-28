@@ -933,12 +933,22 @@ function updateSummary() {
 function renderOrderStrip() {
   const tier = TIERS[state.tierIdx];
   const price = unitPrice(tier);
-  const totalStr = tier.max ? `${fmt(price * tier.qty)} total` : 'Contact us';
 
   document.getElementById('strip-qty').textContent =
     `${tier.qty.toLocaleString()}${tier.max ? '' : '+'} units`;
   document.getElementById('strip-unit').textContent = `${fmt(price)}/unit`;
-  document.getElementById('strip-total').textContent = totalStr;
+  // strip-total renders differently on desktop vs mobile, controlled by
+  // CSS. Wrap the desktop " total" suffix in its own span so mobile can
+  // hide it and pseudo-prepend "Total: " instead. The .has-amount class
+  // gates the prefix so we don't say "Total: Contact us" on the 3,000+ tier.
+  const totalEl = document.getElementById('strip-total');
+  if (tier.max) {
+    totalEl.classList.add('has-amount');
+    totalEl.innerHTML = `${fmt(price * tier.qty)}<span class="strip-total-suffix"> total</span>`;
+  } else {
+    totalEl.classList.remove('has-amount');
+    totalEl.textContent = 'Contact us';
+  }
   const includesEl = document.getElementById('strip-includes');
   if (state.back === 'custom') {
     includesEl.style.display = '';

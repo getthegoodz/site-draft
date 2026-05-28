@@ -1110,7 +1110,46 @@ footer {
   color: var(--amber-ink);
   font-weight: 600;
 }
+/* Mobile order strip: drop bullets, stack into three lines
+   line 1: "You're ordering   Custom Goodz"
+   line 2: "100 units ($3.47/unit) Total: $347.00"
+   line 3: "Details" (underlined-link style, tight to data above)
+   Desktop layout (above) is unchanged. */
 @media (max-width: 700px) {
   .order-strip { padding: 0.6rem 1rem; }
-  .order-strip-info { font-size: 0.82rem; }
+  .order-strip-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+  .order-strip-info {
+    width: 100%;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 0.45rem;
+    font-size: 0.82rem;
+  }
+  /* Flatten .order-strip-product so its children flow inside the
+     wrapping .order-strip-info row. */
+  .order-strip-product { display: contents; }
+  /* Bullets gone on mobile. */
+  .order-strip-sep { display: none; }
+  /* Quantity starts line 2. */
+  #strip-qty { flex-basis: 100%; margin-top: 0.05rem; }
+  /* Parens around unit price: ($3.47/unit) */
+  #strip-unit::before { content: "("; }
+  #strip-unit::after  { content: ")"; }
+  /* "Total: " prefix replaces the desktop " total" suffix.
+     Only when there is an actual dollar amount (.has-amount). */
+  #strip-total.has-amount::before { content: "Total: "; }
+  .strip-total-suffix { display: none; }
+  /* Details: rendered as an underlined link, tight to the data above. */
+  .order-strip-toggle {
+    text-decoration: underline;
+    padding: 0;
+    margin-top: 0.2rem;
+    font-size: 0.78rem;
+    color: var(--text);
+  }
+  .order-strip-toggle .order-strip-arrow { display: none; }
 }
