@@ -219,7 +219,7 @@
     }
     .pricing-grid-row {
       display: grid;
-      grid-template-columns: 1fr 96px 100px 100px;
+      grid-template-columns: 1fr 96px 100px 124px;
       border-bottom: 1px solid var(--border);
     }
     /* Est. profit is a speculative number — keep it unbolded even on the
@@ -231,6 +231,9 @@
     .pricing-grid-cell:nth-child(4) {
       background: var(--profit-tint);
       border-left: 1px solid #cbe3d0;
+      /* Extra left padding so large profit figures don't crowd the
+         Order Total column. (Reset on mobile below to avoid clipping.) */
+      padding-left: 1.5rem;
     }
     .pricing-grid-hdr:nth-child(4) { color: var(--profit-green); }
 
@@ -286,7 +289,7 @@
       font-style: normal;
     }
     #retail-input {
-      width: 2.2ch;
+      width: 2ch;
       padding: 0;
       margin: 0 0 0 0.05em;
       border: none;
@@ -524,6 +527,7 @@
       /* Prevent pricing grid from overflowing narrow viewports */
       .pricing-grid-row { grid-template-columns: minmax(0, 1fr) 70px 80px 84px; }
       .pricing-grid-cell { padding: 0.75rem 0.55rem; font-size: 0.85rem; gap: 0.4rem; }
+      .pricing-grid-cell:nth-child(4) { padding-left: 0.55rem; }
       .pricing-grid-hdr { padding: 0.55rem 0.55rem; font-size: 0.62rem; }
       .recommended-badge { font-size: 0.55rem; padding: 0.15rem 0.35rem; }
     }
@@ -533,6 +537,7 @@
       .config-col { padding: 1rem 1rem 6rem; }
       .pricing-grid-row { grid-template-columns: minmax(0, 1fr) 58px 68px 72px; }
       .pricing-grid-cell { padding: 0.7rem 0.45rem; font-size: 0.78rem; }
+      .pricing-grid-cell:nth-child(4) { padding-left: 0.45rem; }
     }
   </style>
 </head>
@@ -621,7 +626,7 @@
               </svg>
             </div>
             <div class="option-card-title">Bandcamp codes</div>
-            <div class="option-card-sub">Each Goodz gets a unique album download code. Free for fans, no login.</div>
+            <div class="option-card-sub">Your Goodz come pre-loaded with unique album download codes. Give your fans something physical with their download.</div>
           </div>
           <div class="option-card" data-value="streaming">
             <div class="option-card-icon streaming-logos" aria-label="Bandcamp, SoundCloud, YouTube, Spotify, Apple Music, Amazon">
@@ -652,7 +657,7 @@
               </svg>
             </div>
             <div class="option-card-title">Streaming service</div>
-            <div class="option-card-sub">Bandcamp, SoundCloud, YouTube, Spotify, Apple Music, Amazon. Some require a fan login.</div>
+            <div class="option-card-sub">Bandcamp, SoundCloud, YouTube, Spotify, Apple Music, Amazon.</div>
           </div>
           <div class="option-card" data-value="url">
             <div class="option-card-icon">
@@ -663,7 +668,7 @@
               </svg>
             </div>
             <div class="option-card-title">Website</div>
-            <div class="option-card-sub">Your site, a release page, merch store, anywhere on the web.</div>
+            <div class="option-card-sub">Your site, a drop page, a merch store, or anywhere else online.</div>
           </div>
         </div>
       </div>
@@ -678,7 +683,7 @@
             <div class="option-card-thumb">
               <img src="templates/Goodz_Standard_back.png" alt="Standard Goodz back">
             </div>
-            <div class="option-card-title">Standard Goodz Back</div>
+            <div class="option-card-title">Standard Design</div>
           </div>
           <div class="option-card" data-value="custom">
             <div class="option-card-icon">
@@ -687,7 +692,7 @@
                 <path d="M13 8v10M8 13h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
               </svg>
             </div>
-            <div class="option-card-title">Upload My Own Back <span class="option-upcharge">$0.10/unit</span></div>
+            <div class="option-card-title">Upload Custom Design <span class="option-upcharge">$0.10/unit</span></div>
           </div>
         </div>
       </div>
@@ -768,7 +773,7 @@
         </div>
         <div class="profit-calc">
           <span class="profit-calc-label">Profit Calculator</span>
-          <p class="profit-calc-body">Sell your Goodz at $<span class="retail-inline-wrap"><input type="text" id="retail-input" value="12" maxlength="3" inputmode="numeric" pattern="[0-9]*" aria-label="Retail price per Goodz" oninput="handleRetailChange()" onclick="this.select()"></span> each and the <strong>Est. profit</strong> column shows your take across the run. Estimate only, won&rsquo;t affect your order.</p>
+          <p class="profit-calc-body">Sell your Goodz at $<span class="retail-inline-wrap"><input type="text" id="retail-input" value="12" maxlength="2" inputmode="numeric" pattern="[0-9]*" aria-label="Retail price per Goodz" oninput="handleRetailChange()" onclick="this.select()"></span> each and the <strong>Est. profit</strong> column shows your take across the run. Estimate only, won&rsquo;t affect your order.</p>
         </div>
         <p class="pricing-contact">Not ready for 50? <a href="custom.html#try-one">Try a sample first &rarr;</a></p>
       </div>
