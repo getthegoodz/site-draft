@@ -941,12 +941,14 @@ function renderOrderStrip() {
   const dl = document.getElementById('order-strip-details');
   const rows = [
     ['Music source', MUSIC_LABELS[state.music] || 'Other'],
-    ['Sleeve',       state.sleeve === 'sleeve' ? `With sleeve (+${fmt(UPCHARGES.sleeve)}/unit)` : 'No sleeve'],
     ['Keychain hole',
       state.keychain === 'none' ? 'None' :
       `${state.keychain === 'top-left' ? 'Top left' : 'Top right'} (+${fmt(UPCHARGES.keychain)}/unit)`],
     ['Back design',  state.back === 'custom' ? `Custom (+${fmt(UPCHARGES.customBack)}/unit)` : 'Standard'],
   ];
+  if (state.sleeve === 'sleeve') {
+    rows.splice(2, 0, ['Sleeve', `With sleeve (+${fmt(UPCHARGES.sleeve)}/unit)`]);
+  }
   dl.innerHTML = rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('');
 }
 

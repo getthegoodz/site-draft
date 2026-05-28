@@ -1469,7 +1469,6 @@ function renderOrderStrip() {
 
   const dl = document.getElementById('order-strip-details');
   const musicLabel = cfg.musicLabel || 'Other';
-  const sleeveLabel = cfg.sleeve ? `With sleeve (+${fmtMoney(0.20)}/unit)` : 'No sleeve';
   const keyLabel = (cfg.keychainHole === 'top-left' || cfg.keychainHole === 'top-right')
     ? `${cfg.keychainHole === 'top-left' ? 'Top left' : 'Top right'} (+${fmtMoney(0.15)}/unit)`
     : 'None';
@@ -1478,10 +1477,12 @@ function renderOrderStrip() {
     : 'Standard';
   const rows = [
     ['Music source', musicLabel],
-    ['Sleeve',       sleeveLabel],
     ['Keychain hole', keyLabel],
     ['Back design',  backLabel],
   ];
+  if (cfg.sleeve) {
+    rows.splice(2, 0, ['Sleeve', `With sleeve (+${fmtMoney(0.20)}/unit)`]);
+  }
   dl.innerHTML = rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('');
 }
 
