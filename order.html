@@ -21,6 +21,8 @@
       --border: #cdc8b2;
       --text: #1a1510;
       --muted: #6b6354;
+      --profit-green: #2e7d4e;
+      --profit-tint: #edf5ee;
     }
 
     body {
@@ -221,8 +223,60 @@
       border-bottom: 1px solid var(--border);
     }
     /* Est. profit is a speculative number — keep it unbolded even on the
-       selected row, so bold is reserved for the concrete real prices. */
-    .pricing-grid-row .pricing-profit { color: var(--amber-ink); font-weight: 400; }
+       selected row, so bold is reserved for the concrete real prices.
+       Differentiated from the cost columns with green + a tinted column
+       band so it reads as "your upside", not another price. */
+    .pricing-grid-row .pricing-profit { color: var(--profit-green); font-weight: 400; }
+    .pricing-grid-hdr:nth-child(4),
+    .pricing-grid-cell:nth-child(4) {
+      background: var(--profit-tint);
+      border-left: 1px solid #cbe3d0;
+    }
+    .pricing-grid-hdr:nth-child(4) { color: var(--profit-green); }
+
+    /* Contact-us row (3,000+): not a checkout tier — a mailto spanning the
+       price/total/profit columns. */
+    .pricing-grid-row.contact { cursor: default; }
+    .pricing-contact-cell {
+      grid-column: 2 / -1;
+      align-self: center;
+      justify-self: end;
+      padding: 0.9rem 1rem;
+      font-weight: 700;
+      color: var(--black);
+      text-decoration: none;
+    }
+    .pricing-contact-cell:hover { text-decoration: underline; }
+
+    /* Profit Calculator — surfaced as a labeled green tool, not a buried
+       footnote, so the live estimate reads as a feature. */
+    .profit-calc {
+      margin: 0.85rem 0 1.25rem;
+      background: var(--profit-tint);
+      border: 1px solid #bfe0c7;
+      border-left: 4px solid var(--profit-green);
+      border-radius: 8px;
+      padding: 0.8rem 1rem;
+    }
+    .profit-calc-label {
+      display: block;
+      font-size: 0.66rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--profit-green);
+      margin-bottom: 0.3rem;
+    }
+    .profit-calc-body {
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.5;
+      margin: 0;
+    }
+    .profit-calc #retail-input {
+      color: var(--profit-green);
+      border-bottom-color: var(--profit-green);
+    }
 
     /* Inline editable retail price inside the estimate hint sentence. */
     .retail-inline-wrap {
@@ -712,9 +766,11 @@
           </div>
           <!-- Rows populated by JS -->
         </div>
-        <p class="pricing-estimate-hint">Assumes you sell at <span class="retail-inline-wrap">$<input type="text" id="retail-input" value="12" maxlength="3" inputmode="numeric" pattern="[0-9]*" aria-label="Retail price per Goodz" oninput="handleRetailChange()" onclick="this.select()"></span> retail. Estimate only, won&rsquo;t affect your order.</p>
-        <p class="pricing-contact" style="margin-top:0.5rem">Not ready for 50? <a href="custom.html#try-one">Try a sample first &rarr;</a></p>
-        <p class="pricing-contact">Need 3,000+? <a href="mailto:hello@getthegoodz.com">Contact us for bulk pricing &rarr;</a></p>
+        <div class="profit-calc">
+          <span class="profit-calc-label">Profit Calculator</span>
+          <p class="profit-calc-body">Sell your Goodz at $<span class="retail-inline-wrap"><input type="text" id="retail-input" value="12" maxlength="3" inputmode="numeric" pattern="[0-9]*" aria-label="Retail price per Goodz" oninput="handleRetailChange()" onclick="this.select()"></span> each and the <strong>Est. profit</strong> column shows your take across the run. Estimate only, won&rsquo;t affect your order.</p>
+        </div>
+        <p class="pricing-contact">Not ready for 50? <a href="custom.html#try-one">Try a sample first &rarr;</a></p>
       </div>
 
       <!-- Summary — rows mirror the selection order on this page
@@ -747,13 +803,14 @@
 
 <script>
 const TIERS = [
-  { qty: 50,   max: 99,   basePrice: 3.44 },
-  { qty: 100,  max: 199,  basePrice: 3.32 },
-  { qty: 200,  max: 499,  basePrice: 3.06, recommended: true },
-  { qty: 500,  max: 999,  basePrice: 3.00 },
-  { qty: 1000, max: 1999, basePrice: 2.72 },
-  { qty: 2000, max: 2999, basePrice: 2.62 },
-  { qty: 3000, max: null, basePrice: 2.52 },
+  { qty: 50,   max: 99,   basePrice: 3.51 },
+  { qty: 100,  max: 199,  basePrice: 3.22 },
+  { qty: 200,  max: 499,  basePrice: 2.88, recommended: true },
+  { qty: 500,  max: 749,  basePrice: 2.21 },
+  { qty: 750,  max: 999,  basePrice: 2.10 },
+  { qty: 1000, max: 1999, basePrice: 1.71 },
+  { qty: 2000, max: 2999, basePrice: 1.44 },
+  { qty: 3000, max: null, basePrice: null, contact: true },
 ];
 
 const UPCHARGES = { sleeve: 0.20, keychain: 0.15, customBack: 0.10 };
@@ -804,20 +861,31 @@ function renderTable() {
   const hdr = grid.querySelector('.hdr').outerHTML;
   const retail = Number.isFinite(state.retailPrice) && state.retailPrice > 0 ? state.retailPrice : 12;
   grid.innerHTML = hdr + TIERS.map((tier, i) => {
+    // 3,000+ has no fixed price — it's a contact-us row, not a checkout tier.
+    if (tier.contact) {
+      return `
+        <div class="pricing-grid-row contact">
+          <div class="pricing-grid-cell">
+            <span class="pricing-selected-dot" style="visibility:hidden"></span>
+            <span>${tier.qty.toLocaleString()}+</span>
+          </div>
+          <a class="pricing-contact-cell" href="mailto:info@getthegoodz.com?subject=Custom%20Goodz%20bulk%20order%20(3%2C000%2B)">Contact us &rarr;</a>
+        </div>`;
+    }
     const price = unitPrice(tier);
-    const total = tier.max ? price * tier.qty : null;
-    const profit = tier.max ? (retail - price) * tier.qty : null;
+    const total = price * tier.qty;
+    const profit = (retail - price) * tier.qty;
     const sel = i === state.tierIdx;
     return `
       <div class="pricing-grid-row data${sel ? ' selected' : ''}" onclick="selectTier(${i})">
         <div class="pricing-grid-cell">
           <span class="pricing-selected-dot"></span>
-          <span>${tier.qty.toLocaleString()}${tier.max ? '' : '+'}</span>
+          <span>${tier.qty.toLocaleString()}</span>
           ${tier.recommended ? '<span class="recommended-badge">RECOMMENDED</span>' : ''}
         </div>
         <div class="pricing-grid-cell r">${fmt(price)}</div>
-        <div class="pricing-grid-cell r">${total ? fmt(total) : '<span style="color:#999;font-weight:400">Contact us</span>'}</div>
-        <div class="pricing-grid-cell r"><span class="pricing-profit">${profit !== null && profit > 0 ? fmt(profit) : '—'}</span></div>
+        <div class="pricing-grid-cell r">${fmt(total)}</div>
+        <div class="pricing-grid-cell r"><span class="pricing-profit">${profit > 0 ? fmt(profit) : '—'}</span></div>
       </div>`;
   }).join('');
 }
@@ -859,7 +927,8 @@ function selectOption(group, value) {
 function updateFromPrice() {
   const el = document.getElementById('from-price');
   if (!el) return;
-  const cheapest = TIERS[TIERS.length - 1];
+  const priced = TIERS.filter(t => t.basePrice != null);
+  const cheapest = priced[priced.length - 1];
   el.textContent = fmt(unitPrice(cheapest)) + '/unit';
 }
 
@@ -972,7 +1041,7 @@ updateFromPrice();
   if (cfg.keychainHole) selectOption('keychain', cfg.keychainHole);
   if (typeof cfg.sleeve === 'boolean') selectOption('sleeve', cfg.sleeve ? 'sleeve' : 'no-sleeve');
   if (typeof cfg.quantity === 'number') {
-    const idx = TIERS.findIndex(t => t.qty === cfg.quantity);
+    const idx = TIERS.findIndex(t => t.qty === cfg.quantity && !t.contact);
     if (idx >= 0) selectTier(idx);
   }
   __suppressTracking = false;
