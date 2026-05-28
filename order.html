@@ -319,11 +319,6 @@
     }
     .pricing-contact a { color: var(--black); font-weight: 700; text-decoration: none; }
     .pricing-contact a:hover { text-decoration: underline; }
-    .pricing-note {
-      font-size: 0.82rem;
-      color: var(--muted);
-      margin-top: 0.5rem;
-    }
 
     /* Revenue note */
     .pricing-revenue-note {
@@ -381,6 +376,19 @@
       color: var(--text);
       font-weight: 600;
       text-align: right;
+    }
+    /* Inline +$X/unit appended to a summary choice — lighter so the
+       choice itself reads first and the upcharge supports it. */
+    .summary-upcharge {
+      color: var(--muted);
+      font-weight: 500;
+      font-size: 0.85em;
+      margin-left: 0.4rem;
+    }
+    /* Unit price row — sits between the choices and the total to show
+       how the per-unit math composes before multiplying by quantity. */
+    .summary-row-unit > span:last-child {
+      font-weight: 700;
     }
     .summary-row-total {
       padding-top: 0.85rem;
@@ -720,7 +728,6 @@
         <p class="pricing-estimate-hint">Assumes you sell at <span class="retail-inline-wrap">$<input type="text" id="retail-input" value="12" maxlength="3" inputmode="numeric" pattern="[0-9]*" aria-label="Retail price per Goodz" oninput="handleRetailChange()" onclick="this.select()"></span> retail. Estimate only, won&rsquo;t affect your order.</p>
         <p class="pricing-contact" style="margin-top:0.5rem">Not ready for 50? <a href="custom.html#try-one">Try a sample first &rarr;</a></p>
         <p class="pricing-contact">Need 3,000+? <a href="mailto:hello@getthegoodz.com">Contact us for bulk pricing &rarr;</a></p>
-        <p class="pricing-note" id="pricing-upcharge-note" style="display:none"></p>
       </div>
 
       <!-- Summary -->
@@ -732,7 +739,8 @@
           <div class="summary-row" style="display:none"><span>Packaging</span><span id="summary-sleeve"></span></div>
           <div class="summary-row"><span>Keychain hole</span><span id="summary-keychain"></span></div>
           <div class="summary-row"><span>Back design</span><span id="summary-back"></span></div>
-          <div class="summary-row summary-row-total"><span>Price</span><span id="summary-price"></span></div>
+          <div class="summary-row summary-row-unit"><span>Unit price</span><span id="summary-unit"></span></div>
+          <div class="summary-row summary-row-total"><span>Order total</span><span id="summary-price"></span></div>
         </div>
       </div>
 
@@ -856,7 +864,6 @@ function selectOption(group, value) {
   renderTable();
   updateSummary();
   updateFromPrice();
-  updateUpchargeNote();
   if (!__suppressTracking) trackEvent('option_change', { group, value });
 }
 
@@ -865,21 +872,6 @@ function updateFromPrice() {
   if (!el) return;
   const cheapest = TIERS[TIERS.length - 1];
   el.textContent = fmt(unitPrice(cheapest)) + '/unit';
-}
-
-function updateUpchargeNote() {
-  const u = totalUpcharge();
-  const el = document.getElementById('pricing-upcharge-note');
-  if (u > 0) {
-    const parts = [];
-    if (state.sleeve === 'sleeve')  parts.push('sleeve +$0.20');
-    if (state.keychain !== 'none')  parts.push('keychain +$0.15');
-    if (state.back === 'custom')    parts.push('custom back +$0.10');
-    el.textContent = 'Includes: ' + parts.join(', ') + ' per unit.';
-    el.style.display = 'block';
-  } else {
-    el.style.display = 'none';
-  }
 }
 
 function summaryText() {
@@ -893,6 +885,16 @@ function summaryText() {
   return parts.join(' · ');
 }
 
+// Build the right-hand cell of a summary row as a choice label with an
+// optional inline "+$X.XX/unit" upcharge tag, so the Summary itself is
+// the breakdown rather than pointing at separate floating notes.
+function summaryCell(label, upchargePerUnit) {
+  if (upchargePerUnit && upchargePerUnit > 0) {
+    return `${label}<span class="summary-upcharge">+${fmt(upchargePerUnit)}/unit</span>`;
+  }
+  return label;
+}
+
 function updateSummary() {
   const tier = TIERS[state.tierIdx];
   const price = unitPrice(tier);
@@ -901,13 +903,20 @@ function updateSummary() {
   document.getElementById('summary-qty').textContent =
     `${tier.qty.toLocaleString()}${tier.max ? '' : '+'} Goodz`;
   document.getElementById('summary-music').textContent = MUSIC_LABELS[state.music] || 'Other';
-  document.getElementById('summary-sleeve').textContent =
-    state.sleeve === 'sleeve' ? 'With sleeve' : 'No sleeve';
-  document.getElementById('summary-keychain').textContent =
+  document.getElementById('summary-sleeve').innerHTML = summaryCell(
+    state.sleeve === 'sleeve' ? 'With sleeve' : 'No sleeve',
+    state.sleeve === 'sleeve' ? UPCHARGES.sleeve : 0
+  );
+  document.getElementById('summary-keychain').innerHTML = summaryCell(
     state.keychain === 'none' ? 'None' :
-    state.keychain === 'top-left' ? 'Top left' : 'Top right';
-  document.getElementById('summary-back').textContent =
-    state.back === 'standard' ? 'Standard' : 'Custom';
+    state.keychain === 'top-left' ? 'Top left' : 'Top right',
+    state.keychain !== 'none' ? UPCHARGES.keychain : 0
+  );
+  document.getElementById('summary-back').innerHTML = summaryCell(
+    state.back === 'standard' ? 'Standard' : 'Custom',
+    state.back === 'custom' ? UPCHARGES.customBack : 0
+  );
+  document.getElementById('summary-unit').textContent = `${fmt(price)}/unit`;
   document.getElementById('summary-price').textContent = total;
   renderOrderStrip();
 }

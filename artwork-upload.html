@@ -31,18 +31,25 @@
     html, body { overflow-x: hidden; }
     body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); }
 
-    /* Page header (sticky) */
-    .page-header {
+    /* Sticky top band: page-header + order-strip travel together so the
+       live order summary stays visible as the user scrolls. Previously
+       only .page-header was sticky and the strip below it scrolled out
+       of view behind the header — invisible on mobile after any scroll. */
+    .sticky-top {
+      position: sticky;
+      top: 0;
+      z-index: 50;
       background: var(--off-white);
       border-bottom: 1px solid var(--border);
+    }
+
+    .page-header {
+      background: var(--off-white);
       padding: 0.85rem 2rem;
       display: grid;
       grid-template-columns: 1fr auto 1fr;
       align-items: center;
       gap: 1rem;
-      position: sticky;
-      top: 0;
-      z-index: 50;
     }
     .page-header .step-bar-wrapper {
       width: 320px;
@@ -847,7 +854,9 @@
 
     /* Responsive */
     @media (max-width: 768px) {
-      .layout { padding: 1.25rem 1rem 3rem; }
+      /* Tight top padding so the page title sits close to the sticky
+         band; large gap there was reading as disconnect on mobile. */
+      .layout { padding: 0.75rem 1rem 3rem; }
       .page-title { font-size: 1.35rem; margin-bottom: 1rem; }
       .btn-row { flex-direction: column-reverse; }
       .btn-row .btn { width: 100%; text-align: center; padding: 0.9rem; }
@@ -869,6 +878,8 @@
   <button class="nav-toggle" aria-label="Menu" onclick="document.querySelector(&apos;.nav-links&apos;).classList.toggle(&apos;is-open&apos;)">☰</button>
 </nav>
 
+<!-- Sticky top band: header + live order strip travel together -->
+<div class="sticky-top">
 <!-- Page header -->
 <header class="page-header">
   <button type="button" id="back-link" class="back-link" onclick="goBackOneStep()">&larr; Back to Customize</button>
@@ -917,6 +928,7 @@
   </div>
   <dl class="order-strip-details" id="order-strip-details" hidden></dl>
 </div>
+</div><!-- /.sticky-top -->
 
 <main class="layout">
 

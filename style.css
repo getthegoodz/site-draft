@@ -1024,10 +1024,16 @@ footer {
    one-off custom-back upcharge notice on Artwork.
    ────────────────────────────────────────────────────────────────────────── */
 .order-strip {
-  background: #fff;
-  border-bottom: 1px solid #d8d5cc;
+  background: var(--off-white);
+  border-bottom: 1px solid var(--border);
   padding: 0.7rem 2rem;
 }
+/* Inside the sticky-top band on artwork-upload.html the page-header
+   sits directly on top of the strip — both read as one surface, with
+   the .sticky-top wrapper providing the single bottom boundary so the
+   band stays bordered even if the strip is hidden (no sessionStorage). */
+.sticky-top .page-header { border-bottom: none; }
+.sticky-top .order-strip { border-bottom: none; }
 .order-strip-row {
   display: flex;
   align-items: baseline;
