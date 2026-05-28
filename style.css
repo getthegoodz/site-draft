@@ -1134,8 +1134,18 @@ footer {
   .order-strip-product { display: contents; }
   /* Bullets gone on mobile. */
   .order-strip-sep { display: none; }
-  /* Quantity starts line 2. */
-  #strip-qty { flex-basis: 100%; margin-top: 0.05rem; }
+  /* Repurpose the first separator (the one right after 'Custom Goodz')
+     as a zero-height full-width row break so qty/unit/total flow
+     together on a single line below the eyebrow + product. Without
+     this, putting flex-basis:100% on #strip-qty itself caused qty to
+     consume the whole row, pushing ($3.47/unit) and Total to row 3. */
+  #strip-product + .order-strip-sep {
+    display: block;
+    flex-basis: 100%;
+    height: 0;
+    margin: 0;
+    visibility: hidden;
+  }
   /* Parens around unit price: ($3.47/unit) */
   #strip-unit::before { content: "("; }
   #strip-unit::after  { content: ")"; }
