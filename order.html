@@ -547,13 +547,20 @@
   try { furthest = parseInt(sessionStorage.getItem('goodzFurthestStep') || '0', 10) || 0; } catch (e) {}
   document.querySelectorAll('.order-stepper .step-cell[data-step-global]').forEach(cell => {
     const g = parseInt(cell.dataset.stepGlobal, 10);
+    // "Reached" (furthest >= g): user has been to this step. Make it
+    // clickable so they can jump back into it.
+    // "Done"    (furthest >  g): user has moved PAST this step, which
+    // implies the step's required inputs were valid (Next button
+    // wasn't enabled otherwise). Only then show the filled dark square.
     if (furthest >= g) {
-      cell.classList.add('done');
       const slug = cell.dataset.stepSlug;
       cell.style.cursor = 'pointer';
       cell.addEventListener('click', () => {
         window.location.href = 'artwork-upload.html#' + slug;
       });
+    }
+    if (furthest > g) {
+      cell.classList.add('done');
     }
   });
 })();
