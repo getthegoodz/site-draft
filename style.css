@@ -305,9 +305,16 @@ img { display: block; width: 100%; }
   margin-top: 2.5rem;
 }
 
+/* Numeral beside the text (Option A): big numeral in column 1, the
+   title + sentence stacked in column 2, vertically centered together —
+   no dividing rule, no dead space above the title. */
 .steps .step {
   --step-bg: var(--amber);
-  padding: 2.5rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: 1.4rem;
+  padding: 2.25rem 2.5rem;
   border: 2px solid var(--black);
   background: var(--step-bg);
   color: var(--black);
@@ -315,7 +322,9 @@ img { display: block; width: 100%; }
 .steps .step p { color: inherit; }
 
 .step-num {
-  display: block;
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  align-self: center;
   font-family: 'Poppins', sans-serif;
   font-size: 3.75rem;
   font-weight: 800;
@@ -324,14 +333,8 @@ img { display: block; width: 100%; }
   letter-spacing: -0.04em;
 }
 
-.step-rule {
-  border: none;
-  border-top: 2px solid var(--black);
-  margin: 1.25rem 0 1rem;
-}
-
-.steps .step h3 { font-size: 1.1rem; margin-bottom: 0.4rem; }
-.steps .step p  { font-size: 0.92rem; color: rgba(0, 0, 0, 0.78); line-height: 1.6; }
+.steps .step h3 { grid-column: 2; align-self: end; font-size: 1.1rem; margin-bottom: 0.25rem; }
+.steps .step p  { grid-column: 2; align-self: start; font-size: 0.92rem; color: rgba(0, 0, 0, 0.78); line-height: 1.55; }
 
 /* ── COMPAT NOTE BAR ── */
 .compat-bar {
