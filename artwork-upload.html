@@ -890,11 +890,11 @@
       <span class="order-strip-eyebrow">You're ordering</span>
       <span class="order-strip-product">
         <strong id="strip-product">Custom Goodz</strong>
-        <span class="order-strip-sep">·</span>
+        <span class="order-strip-sep">•</span>
         <span id="strip-qty">50 units</span>
-        <span class="order-strip-sep">·</span>
+        <span class="order-strip-sep">•</span>
         <span id="strip-unit">$3.44/unit</span>
-        <span class="order-strip-sep">·</span>
+        <span class="order-strip-sep">•</span>
         <span id="strip-total">$172 total</span>
         <span class="order-strip-includes" id="strip-includes" style="display:none">includes custom back</span>
       </span>
@@ -1416,7 +1416,7 @@ function renderCardActions() {
   set('action-add-custom-back', !isFront && !state.backArt && !state.customBackChosen);
   set('action-back-replace',    !isFront && !!state.backArt);
   set('action-use-standard',    !isFront && !!state.backArt && !isMandatory);
-  // Meta line: front filename, back filename, or "Standard back · included"
+  // Meta line: front filename, back filename, or "Standard back • included"
   // — only one is visible at a time, matched to view + state.
   const front = document.getElementById('front-filename');
   const backName = document.getElementById('back-filename');
@@ -1817,7 +1817,7 @@ function applyMusicSource(source) {
   const urlInput = document.getElementById('url-input');
   if (urlInput) {
     urlInput.placeholder = source === 'streaming'
-      ? 'https://open.spotify.com/album/...  ·  any streaming link'
+      ? 'https://open.spotify.com/album/...  •  any streaming link'
       : 'https://...';
   }
   setMode(source === 'bandcamp_codes' ? 'csv' : 'url');
