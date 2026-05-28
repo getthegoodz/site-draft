@@ -1028,12 +1028,12 @@ footer {
   border-bottom: 1px solid var(--border);
   padding: 0.7rem 2rem;
 }
-/* Inside the sticky-top band on artwork-upload.html the page-header
-   sits directly on top of the strip — both read as one surface, with
-   the .sticky-top wrapper providing the single bottom boundary so the
-   band stays bordered even if the strip is hidden (no sessionStorage). */
+/* Inside the sticky-top band on artwork-upload.html the strip sits on
+   top and the page-header (stepper) below it. The strip keeps its own
+   bottom border as a hairline divider between order context and the
+   stepper; the page-header drops its border so the stepper flows into
+   the band's bottom boundary (carried by .sticky-top). */
 .sticky-top .page-header { border-bottom: none; }
-.sticky-top .order-strip { border-bottom: none; }
 .order-strip-row {
   display: flex;
   align-items: baseline;
@@ -1063,7 +1063,16 @@ footer {
   gap: 0.4rem;
 }
 .order-strip-product strong { font-weight: 700; }
-.order-strip-sep { color: var(--text-lighter); }
+/* Bullets removed on all viewports — items are spaced by the flex gap.
+   The first separator is repurposed as a line break on mobile (see the
+   media query below); on desktop it stays hidden like the rest. */
+.order-strip-sep { display: none; }
+/* Unit price wrapped in parentheses, e.g. ($3.47/unit). */
+#strip-unit::before { content: "("; }
+#strip-unit::after  { content: ")"; }
+/* "Total: " prefix on the order total. .has-amount gates it so the
+   3,000+ "Contact us" tier doesn't read "Total: Contact us". */
+#strip-total.has-amount::before { content: "Total: "; }
 .order-strip-toggle {
   background: none;
   border: none;
@@ -1110,35 +1119,31 @@ footer {
   color: var(--amber-ink);
   font-weight: 600;
 }
-/* Mobile order strip: drop bullets, stack into three lines
+/* Mobile order strip: stack into two lines (parens, "Total:" prefix and
+   no-bullets are handled in the base rules above, so they apply on
+   desktop too).
    line 1: "You're ordering   Custom Goodz"
-   line 2: "100 units ($3.47/unit) Total: $347.00"
-   line 3: "Details" (underlined-link style, tight to data above)
-   Desktop layout (above) is unchanged. */
+   line 2: "100 units ($3.47/unit) Total: $347.00  Details"
+   Details rides at the end of the data line as an underlined link. */
 @media (max-width: 700px) {
   .order-strip { padding: 0.6rem 1rem; }
+  /* Flatten the row + info + product wrappers so every piece
+     (eyebrow, product, qty, unit, total, Details) is a flex item of
+     .order-strip-row and can wrap together as one flow. */
   .order-strip-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0;
-  }
-  .order-strip-info {
-    width: 100%;
+    display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
     align-items: baseline;
+    justify-content: flex-start;
     gap: 0.25rem 0.45rem;
     font-size: 0.82rem;
   }
-  /* Flatten .order-strip-product so its children flow inside the
-     wrapping .order-strip-info row. */
+  .order-strip-info { display: contents; }
   .order-strip-product { display: contents; }
-  /* Bullets gone on mobile. */
-  .order-strip-sep { display: none; }
   /* Repurpose the first separator (the one right after 'Custom Goodz')
-     as a zero-height full-width row break so qty/unit/total flow
-     together on a single line below the eyebrow + product. Without
-     this, putting flex-basis:100% on #strip-qty itself caused qty to
-     consume the whole row, pushing ($3.47/unit) and Total to row 3. */
+     as a zero-height full-width row break so qty/unit/total/Details
+     flow together on the line below the eyebrow + product. */
   #strip-product + .order-strip-sep {
     display: block;
     flex-basis: 100%;
@@ -1146,18 +1151,10 @@ footer {
     margin: 0;
     visibility: hidden;
   }
-  /* Parens around unit price: ($3.47/unit) */
-  #strip-unit::before { content: "("; }
-  #strip-unit::after  { content: ")"; }
-  /* "Total: " prefix replaces the desktop " total" suffix.
-     Only when there is an actual dollar amount (.has-amount). */
-  #strip-total.has-amount::before { content: "Total: "; }
-  .strip-total-suffix { display: none; }
-  /* Details: rendered as an underlined link, tight to the data above. */
+  /* Details: underlined link riding at the end of the data line. */
   .order-strip-toggle {
     text-decoration: underline;
     padding: 0;
-    margin-top: 0.2rem;
     font-size: 0.78rem;
     color: var(--text);
   }

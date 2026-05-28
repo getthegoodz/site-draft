@@ -878,9 +878,35 @@
   <button class="nav-toggle" aria-label="Menu" onclick="document.querySelector(&apos;.nav-links&apos;).classList.toggle(&apos;is-open&apos;)">☰</button>
 </nav>
 
-<!-- Sticky top band: header + live order strip travel together -->
+<!-- Sticky top band: live order strip (order context) sits ABOVE the
+     stepper so the stepper stays adjacent to the step title below.
+     Both travel together as one pinned band. -->
 <div class="sticky-top">
-<!-- Page header -->
+
+<!-- Slim live order strip — same component on every step. -->
+<div class="order-strip" id="order-strip">
+  <div class="order-strip-row">
+    <div class="order-strip-info">
+      <span class="order-strip-eyebrow">You're ordering</span>
+      <span class="order-strip-product">
+        <strong id="strip-product">Custom Goodz</strong>
+        <span class="order-strip-sep">·</span>
+        <span id="strip-qty">50 units</span>
+        <span class="order-strip-sep">·</span>
+        <span id="strip-unit">$3.44/unit</span>
+        <span class="order-strip-sep">·</span>
+        <span id="strip-total">$172 total</span>
+        <span class="order-strip-includes" id="strip-includes" style="display:none">includes custom back</span>
+      </span>
+    </div>
+    <button type="button" class="order-strip-toggle" id="order-strip-toggle" aria-expanded="false" aria-controls="order-strip-details" onclick="toggleOrderStripDetails()">
+      Details <span class="order-strip-arrow" aria-hidden="true">▾</span>
+    </button>
+  </div>
+  <dl class="order-strip-details" id="order-strip-details" hidden></dl>
+</div>
+
+<!-- Page header (stepper) -->
 <header class="page-header">
   <button type="button" id="back-link" class="back-link" onclick="goBackOneStep()">&larr; Back to Customize</button>
   <div class="step-bar-wrapper" id="step-bar-wrapper">
@@ -905,29 +931,6 @@
   </div>
   <div></div>
 </header>
-
-<!-- Slim live order strip — same component on every step. -->
-<div class="order-strip" id="order-strip">
-  <div class="order-strip-row">
-    <div class="order-strip-info">
-      <span class="order-strip-eyebrow">You're ordering</span>
-      <span class="order-strip-product">
-        <strong id="strip-product">Custom Goodz</strong>
-        <span class="order-strip-sep">·</span>
-        <span id="strip-qty">50 units</span>
-        <span class="order-strip-sep">·</span>
-        <span id="strip-unit">$3.44/unit</span>
-        <span class="order-strip-sep">·</span>
-        <span id="strip-total">$172 total</span>
-        <span class="order-strip-includes" id="strip-includes" style="display:none">includes custom back</span>
-      </span>
-    </div>
-    <button type="button" class="order-strip-toggle" id="order-strip-toggle" aria-expanded="false" aria-controls="order-strip-details" onclick="toggleOrderStripDetails()">
-      Details <span class="order-strip-arrow" aria-hidden="true">▾</span>
-    </button>
-  </div>
-  <dl class="order-strip-details" id="order-strip-details" hidden></dl>
-</div>
 </div><!-- /.sticky-top -->
 
 <main class="layout">
@@ -1460,13 +1463,13 @@ function renderOrderStrip() {
   document.getElementById('strip-qty').textContent =
     `${cfg.quantity.toLocaleString()}${cfg.tierMax ? '' : '+'} units`;
   document.getElementById('strip-unit').textContent = `${fmtMoney(unit)}/unit`;
-  // See order.html for the rationale: " total" suffix is wrapped in its
-  // own span so mobile CSS can swap it for a "Total: " prefix. The
-  // .has-amount class gates the prefix for the "Contact us" tier.
+  // CSS adds the "Total: " prefix (both desktop and mobile). The
+  // .has-amount class gates it so the 3,000+ "Contact us" tier isn't
+  // prefixed.
   const totalEl = document.getElementById('strip-total');
   if (total != null) {
     totalEl.classList.add('has-amount');
-    totalEl.innerHTML = `${fmtMoney(total)}<span class="strip-total-suffix"> total</span>`;
+    totalEl.textContent = fmtMoney(total);
   } else {
     totalEl.classList.remove('has-amount');
     totalEl.textContent = 'Contact us';
@@ -1474,7 +1477,7 @@ function renderOrderStrip() {
   const usingCustomBack = !!state.customBackChosen;
   const includesEl = document.getElementById('strip-includes');
   includesEl.style.display = usingCustomBack ? '' : 'none';
-  includesEl.textContent = '· includes custom back';
+  includesEl.textContent = 'includes custom back';
 
   const dl = document.getElementById('order-strip-details');
   const musicLabel = cfg.musicLabel || 'Other';

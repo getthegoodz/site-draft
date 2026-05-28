@@ -518,28 +518,6 @@
     </div>
   </div>
 </div>
-<!-- Slim live order strip — same component on every step. -->
-<div class="order-strip" id="order-strip">
-  <div class="order-strip-row">
-    <div class="order-strip-info">
-      <span class="order-strip-eyebrow">You're ordering</span>
-      <span class="order-strip-product">
-        <strong id="strip-product">Custom Goodz</strong>
-        <span class="order-strip-sep">·</span>
-        <span id="strip-qty">50</span>
-        <span class="order-strip-sep">·</span>
-        <span id="strip-unit">$3.44/unit</span>
-        <span class="order-strip-sep">·</span>
-        <span id="strip-total">$172 total</span>
-        <span class="order-strip-includes" id="strip-includes" style="display:none">includes custom back</span>
-      </span>
-    </div>
-    <button type="button" class="order-strip-toggle" id="order-strip-toggle" aria-expanded="false" aria-controls="order-strip-details" onclick="toggleOrderStripDetails()">
-      Details <span class="order-strip-arrow" aria-hidden="true">▾</span>
-    </button>
-  </div>
-  <dl class="order-strip-details" id="order-strip-details" hidden></dl>
-</div>
 
 <script>
 (function hydrateOrderStepper() {
@@ -927,53 +905,6 @@ function updateSummary() {
   );
   document.getElementById('summary-unit').textContent = `${fmt(price)}/unit`;
   document.getElementById('summary-price').textContent = total;
-  renderOrderStrip();
-}
-
-function renderOrderStrip() {
-  const tier = TIERS[state.tierIdx];
-  const price = unitPrice(tier);
-
-  document.getElementById('strip-qty').textContent =
-    `${tier.qty.toLocaleString()}${tier.max ? '' : '+'} units`;
-  document.getElementById('strip-unit').textContent = `${fmt(price)}/unit`;
-  // strip-total renders differently on desktop vs mobile, controlled by
-  // CSS. Wrap the desktop " total" suffix in its own span so mobile can
-  // hide it and pseudo-prepend "Total: " instead. The .has-amount class
-  // gates the prefix so we don't say "Total: Contact us" on the 3,000+ tier.
-  const totalEl = document.getElementById('strip-total');
-  if (tier.max) {
-    totalEl.classList.add('has-amount');
-    totalEl.innerHTML = `${fmt(price * tier.qty)}<span class="strip-total-suffix"> total</span>`;
-  } else {
-    totalEl.classList.remove('has-amount');
-    totalEl.textContent = 'Contact us';
-  }
-  const includesEl = document.getElementById('strip-includes');
-  if (state.back === 'custom') {
-    includesEl.style.display = '';
-    includesEl.textContent = '· includes custom back';
-  } else {
-    includesEl.style.display = 'none';
-  }
-
-  const dl = document.getElementById('order-strip-details');
-  const rows = [
-    ['Music source', MUSIC_LABELS[state.music] || 'Other'],
-    ['Back design',  state.back === 'custom' ? `Custom (+${fmt(UPCHARGES.customBack)}/unit)` : 'Standard'],
-    ['Keychain hole',
-      state.keychain === 'none' ? 'None' :
-      `${state.keychain === 'top-left' ? 'Top left' : 'Top right'} (+${fmt(UPCHARGES.keychain)}/unit)`],
-  ];
-  dl.innerHTML = rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('');
-}
-
-function toggleOrderStripDetails() {
-  const dl = document.getElementById('order-strip-details');
-  const btn = document.getElementById('order-strip-toggle');
-  const open = btn.getAttribute('aria-expanded') === 'true';
-  btn.setAttribute('aria-expanded', open ? 'false' : 'true');
-  dl.hidden = open;
 }
 
 function continueToUpload() {
