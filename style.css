@@ -513,19 +513,22 @@ img { display: block; width: 100%; }
 
 .revenue-num {
   font-family: 'Poppins', sans-serif;
-  font-size: 2.5rem;
+  font-size: 2.75rem;
   font-weight: 800;
   display: block;
   line-height: 1;
 }
 
+/* Detail line under the number ("50 units • $3.44 each"). Deliberately
+   demoted vs the uppercase eyebrow above the number: smaller, lighter,
+   sentence case, muted — so it reads as fine print and the $ number
+   keeps the punch. */
 .revenue-label {
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: rgba(0,0,0,0.78);
-  font-weight: 600;
-  margin-top: 0.45rem;
+  font-size: 0.72rem;
+  letter-spacing: 0;
+  color: rgba(0,0,0,0.5);
+  font-weight: 400;
+  margin-top: 0.4rem;
   display: block;
 }
 
@@ -989,7 +992,11 @@ footer {
   .compat-bar-inner { grid-template-columns: 1fr; gap: 1.25rem; }
   .pricing-cell { border-right: none; border-bottom: var(--border-inner); padding: 0.75rem 1rem; }
   .revenue-inner { align-items: center; }
-  .revenue-arrow { padding-bottom: 1.5rem; }
+  /* Stack the two blocks vertically and drop the arrow — a right-pointing
+     arrow makes no sense once the blocks are stacked; the Spend this /
+     Get this eyebrows + vertical order carry the if-this-then-that. */
+  .revenue-math { flex-direction: column; gap: 1.5rem; }
+  .revenue-arrow { display: none; }
   .sample-box { flex-direction: column; }
   .bandcamp-inner { grid-template-columns: 1fr; gap: 3rem; }
   .page-hero { padding: 2rem 1.5rem 2.5rem; }
