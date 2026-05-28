@@ -20,12 +20,15 @@
  *   SHOPIFY_API_VERSION   defaults to 2026-07
  */
 
-const STORE_DOMAIN = process.env.SHOPIFY_STORE_DOMAIN || 'goodz-dev-store-1.myshopify.com';
-const STOREFRONT_TOKEN = process.env.SHOPIFY_STOREFRONT_TOKEN;
-const VARIANT_ID =
+// .trim() guards against trailing newlines/whitespace in env var values
+// (e.g. when set via `echo "..." | vercel env add`).
+const STORE_DOMAIN = (process.env.SHOPIFY_STORE_DOMAIN || 'goodz-dev-store-1.myshopify.com').trim();
+const STOREFRONT_TOKEN = process.env.SHOPIFY_STOREFRONT_TOKEN?.trim();
+const VARIANT_ID = (
   process.env.SHOPIFY_CUSTOM_GOODZ_VARIANT_ID ||
-  'gid://shopify/ProductVariant/45053177036897'; // dev store default
-const API_VERSION = process.env.SHOPIFY_API_VERSION || '2026-07';
+  'gid://shopify/ProductVariant/45053177036897' // dev store default
+).trim();
+const API_VERSION = (process.env.SHOPIFY_API_VERSION || '2026-07').trim();
 
 async function shopifyGraphQL(query, variables = {}) {
   if (!STOREFRONT_TOKEN) {
