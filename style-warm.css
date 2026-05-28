@@ -68,7 +68,10 @@ body {
 }
 
 /* ── HOW IT WORKS ── */
-.tap-section { background: var(--off-white); border-color: #cdc8b2; }
+/* Full-width section band: use the dark structural border so its edge
+   matches the dark-bordered sections it abuts (e.g. the video band),
+   rather than a tan line sitting beside their dark one. */
+.tap-section { background: var(--off-white); border-color: #2e2a1e; }
 .steps {
   gap: 1rem;
   border: none;
@@ -86,9 +89,10 @@ body {
 }
 
 /* ── CRED BAR ── */
+/* Full-width section band: dark structural border to match neighbours. */
 .cred-bar {
   background: var(--off-white);
-  border-color: #cdc8b2;
+  border-color: #2e2a1e;
 }
 
 /* ── SECTION LABELS — small Goodz-shaped square prefix ── */
@@ -111,14 +115,20 @@ body {
 .section-label.on-dark::before { border-color: var(--amber); }
 
 /* ── SPLIT SECTIONS ── */
-.split { border-color: #cdc8b2; }
+/* Structural dividers stay the dark border (inherited from --border).
+   The old tan overrides here created a dark-line-next-to-tan-line double
+   border at the panel seam and section edges — see the reverse split,
+   where the text panel's dark right border met the image panel's tan
+   left border. */
 .split.dark {
   background: var(--black);
   border-color: #2a2520;
 }
 .split.dark .split-img  { border-right-color: #2a2520; }
 .split.dark .split-text { border-left-color: #2a2520; }
-.split.reverse .split-img { border-left-color: #cdc8b2; }
+/* Let the text panel's right border be the single seam; the image
+   panel doesn't draw its own (which previously doubled up in tan). */
+.split.reverse .split-img { border-left: none; }
 
 /* ── REVENUE STRIP ── */
 .revenue-strip { border-color: #c8a840; }
