@@ -427,7 +427,7 @@
       font-size: 0.85rem;
     }
     .card-action-primary:hover { background: #e6b044; border-color: #e6b044; color: var(--black); }
-    /* Cost suffix inside a card-action button ("Replace with custom design (+$0.10/unit)") */
+    /* Cost suffix inside a card-action button ("Replace with custom design ($0.10/unit)") */
     .card-action-meta { color: var(--muted); font-weight: 400; text-decoration: none; }
     .card-action:hover .card-action-meta { color: var(--text); }
     /* Standard-back caption shown when viewing the back side and no custom is uploaded */
@@ -1081,7 +1081,7 @@
     <div class="card-actions" id="card-actions">
       <button type="button" class="card-action" id="action-front-replace" style="display:none" onclick="document.getElementById('input-front').click()">Replace</button>
       <button type="button" class="card-action" id="action-front-remove" style="display:none" onclick="clearFront(event)">Remove</button>
-      <button type="button" class="card-action" id="action-add-custom-back" style="display:none" onclick="addCustomBack()">Replace with custom design <span class="card-action-meta">(+$0.10/unit)</span></button>
+      <button type="button" class="card-action" id="action-add-custom-back" style="display:none" onclick="addCustomBack()">Replace with custom design <span class="card-action-meta">($0.10/unit)</span></button>
       <button type="button" class="card-action" id="action-back-replace" style="display:none" onclick="addCustomBack()">Replace</button>
       <button type="button" class="card-action" id="action-use-standard" style="display:none" onclick="useStandardBack()">Use standard back</button>
     </div>
@@ -1482,10 +1482,10 @@ function renderOrderStrip() {
   const dl = document.getElementById('order-strip-details');
   const musicLabel = cfg.musicLabel || 'Other';
   const keyLabel = (cfg.keychainHole === 'top-left' || cfg.keychainHole === 'top-right')
-    ? `${cfg.keychainHole === 'top-left' ? 'Top left' : 'Top right'} (+${fmtMoney(0.15)}/unit)`
+    ? `${cfg.keychainHole === 'top-left' ? 'Top left' : 'Top right'} (${fmtMoney(0.15)}/unit)`
     : 'None';
   const backLabel = usingCustomBack
-    ? `Custom (+${fmtMoney(CUSTOM_BACK_UPCHARGE)}/unit)`
+    ? `Custom (${fmtMoney(CUSTOM_BACK_UPCHARGE)}/unit)`
     : 'Standard';
   const rows = [
     ['Music source', musicLabel],
@@ -1928,13 +1928,13 @@ function renderSummary() {
   rows.push({ label: 'Front artwork',   value: state.frontArt ? 'Uploaded ✓' : 'Missing ✗', missing: !state.frontArt });
   if (needsBack()) {
     const backLabel = isUpgradedToCustomBack()
-      ? `Custom back (+${fmtMoney(CUSTOM_BACK_UPCHARGE)}/unit)`
+      ? `Custom back (${fmtMoney(CUSTOM_BACK_UPCHARGE)}/unit)`
       : 'Back artwork';
     rows.push({ label: backLabel, value: state.backArt ? 'Uploaded ✓' : 'Missing ✗', missing: !state.backArt });
   } else {
     rows.push({ label: 'Back design', value: 'Standard Goodz Back' });
   }
-  rows.push({ label: 'Keychain hole', value: cfg.keychainHole === 'none' || !cfg.keychainHole ? 'None' : `${cfg.keychainHole === 'top-left' ? 'Top Left' : 'Top Right'} (+$0.15/unit)` });
+  rows.push({ label: 'Keychain hole', value: cfg.keychainHole === 'none' || !cfg.keychainHole ? 'None' : `${cfg.keychainHole === 'top-left' ? 'Top Left' : 'Top Right'} ($0.15/unit)` });
   rows.push({ label: 'Music',
     value: state.musicMode === 'csv'
       ? (state.csvUrls.length ? `${state.csvUrls.length} Bandcamp codes` : 'Missing ✗')
