@@ -286,7 +286,9 @@ img { display: block; width: 100%; }
 /* ── HOW THE TAP WORKS ── */
 .tap-section {
   background: var(--off-white);
-  border-top: var(--border);
+  /* No border-top: the preceding video-section already draws a
+     border-bottom, so a top border here doubled the seam into a
+     too-thick line (the amber/cream boundary made both visible). */
   border-bottom: var(--border);
   padding: 5rem 2rem;
 }

@@ -131,7 +131,9 @@ body {
 .split.reverse .split-img { border-left: none; }
 
 /* ── REVENUE STRIP ── */
-.revenue-strip { border-color: #c8a840; }
+/* No top/bottom rule: the amber box already contrasts enough with the
+   sections above and below, so the border just looked like clutter. */
+.revenue-strip { border-top: none; border-bottom: none; }
 
 /* ── SAMPLE BOX ── */
 .sample-box {
