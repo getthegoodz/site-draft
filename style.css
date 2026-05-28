@@ -312,7 +312,7 @@ img { display: block; width: 100%; }
   --step-bg: var(--amber);
   display: grid;
   grid-template-columns: auto 1fr;
-  align-items: center;
+  align-items: start;
   column-gap: 1.4rem;
   padding: 2.25rem 2.5rem;
   border: 2px solid var(--black);
@@ -321,10 +321,14 @@ img { display: block; width: 100%; }
 }
 .steps .step p { color: inherit; }
 
+/* Top-aligned with the title (caps roughly level) so the numeral and
+   title share a top edge, and a wrapping sentence grows the card
+   downward only — not in both directions. line-height 0.9 trims the
+   numeral's box so its cap sits near the top, matching the title. */
 .step-num {
   grid-column: 1;
   grid-row: 1 / span 2;
-  align-self: center;
+  align-self: start;
   font-family: 'Poppins', sans-serif;
   font-size: 3.75rem;
   font-weight: 800;
@@ -333,7 +337,7 @@ img { display: block; width: 100%; }
   letter-spacing: -0.04em;
 }
 
-.steps .step h3 { grid-column: 2; align-self: end; font-size: 1.1rem; margin-bottom: 0.25rem; }
+.steps .step h3 { grid-column: 2; align-self: start; font-size: 1.1rem; margin-bottom: 0.25rem; }
 .steps .step p  { grid-column: 2; align-self: start; font-size: 0.92rem; color: rgba(0, 0, 0, 0.78); line-height: 1.55; }
 
 /* ── COMPAT NOTE BAR ── */
