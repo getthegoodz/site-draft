@@ -946,9 +946,6 @@ function renderOrderStrip() {
       `${state.keychain === 'top-left' ? 'Top left' : 'Top right'} (+${fmt(UPCHARGES.keychain)}/unit)`],
     ['Back design',  state.back === 'custom' ? `Custom (+${fmt(UPCHARGES.customBack)}/unit)` : 'Standard'],
   ];
-  if (state.sleeve === 'sleeve') {
-    rows.splice(2, 0, ['Sleeve', `With sleeve (+${fmt(UPCHARGES.sleeve)}/unit)`]);
-  }
   dl.innerHTML = rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('');
 }
 

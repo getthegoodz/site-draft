@@ -1480,9 +1480,6 @@ function renderOrderStrip() {
     ['Keychain hole', keyLabel],
     ['Back design',  backLabel],
   ];
-  if (cfg.sleeve) {
-    rows.splice(2, 0, ['Sleeve', `With sleeve (+${fmtMoney(0.20)}/unit)`]);
-  }
   dl.innerHTML = rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('');
 }
 
