@@ -940,7 +940,7 @@
 
     <!-- Bandcamp codes mode -->
     <div id="csv-area">
-      <p class="music-desc">Upload the CSV of download codes from Bandcamp. Each Goodz gets one unique redemption link. Need one code per unit ordered. <a href="https://get.bandcamp.help/hc/en-us/articles/23020666567191-Track-album-code-tutorial" target="_blank" rel="noreferrer">How to get codes &rarr;</a></p>
+      <p class="music-desc">Upload the CSV of download codes from Bandcamp. Each Goodz gets one redemption link. <a href="https://get.bandcamp.help/hc/en-us/articles/23020666567191-Track-album-code-tutorial" target="_blank" rel="noreferrer">How to get codes &rarr;</a></p>
 
       <div id="csv-upload-zone">
         <div class="csv-zone" id="csv-zone" onclick="document.getElementById('input-csv').click()">
@@ -968,7 +968,7 @@
 
       <div id="csv-success-detail" class="csv-success" style="display:none">
         <div class="csv-success-title" id="csv-success-title"></div>
-        <div class="csv-success-sub">Each Goodz gets one unique download link.</div>
+        <div class="csv-success-sub">Each Goodz gets one download link.</div>
         <details class="csv-preview"><summary>Preview first 5 URLs</summary><ul id="csv-url-list"></ul></details>
       </div>
       <div id="csv-warning" class="csv-warning" style="display:none"></div>
@@ -1711,20 +1711,18 @@ function handleCSVFile(file) {
 }
 
 function parseCSVUrls(text) {
+  // No uniqueness check — keep every URL (duplicates included). We don't
+  // dedupe or validate codes here; that's reconciled after checkout.
   const urls = [];
-  const seen = new Set();
-  let duplicates = 0;
   for (const line of text.trim().split('\n')) {
     for (const cell of line.split(',')) {
       const t = cell.trim().replace(/^["']|["']$/g, '');
       if (t.startsWith('http://') || t.startsWith('https://')) {
-        if (seen.has(t)) { duplicates++; continue; }
-        seen.add(t);
         urls.push(t);
       }
     }
   }
-  return { urls, duplicates };
+  return { urls, duplicates: 0 };
 }
 
 function showCSVFilled(urls) {
@@ -1732,7 +1730,7 @@ function showCSVFilled(urls) {
   document.getElementById('csv-filled-area').style.display = 'block';
   document.getElementById('csv-filled-count').textContent = `${urls.length} codes loaded`;
   document.getElementById('csv-success-detail').style.display = 'block';
-  document.getElementById('csv-success-title').textContent = `${urls.length} unique Bandcamp URLs`;
+  document.getElementById('csv-success-title').textContent = `${urls.length} Bandcamp URLs`;
   document.getElementById('csv-url-list').innerHTML =
     urls.slice(0,5).map(u => `<li>${u}</li>`).join('') +
     (urls.length > 5 ? `<li style="color:#999">...and ${urls.length-5} more</li>` : '');
@@ -1767,23 +1765,10 @@ function updateCSVWarning() {
   warnEl.classList.remove('is-match', 'is-short', 'is-over');
   const count = state.csvUrls.length;
   if (count === 0) { warnEl.style.display = 'none'; return; }
-  const qty = orderConfig ? orderConfig.quantity : 0;
-  const dupNote = state.csvDuplicates
-    ? ` (${state.csvDuplicates} duplicate URL${state.csvDuplicates === 1 ? '' : 's'} skipped.)`
-    : '';
-  if (qty && count === qty) {
-    warnEl.innerHTML = `&#10003; <strong>${count}</strong> codes match your <strong>${qty}</strong> unit order.${dupNote}`;
-    warnEl.classList.add('is-match');
-  } else if (qty && count < qty) {
-    warnEl.innerHTML = `&#9888; You have <strong>${count}</strong> codes but ordered <strong>${qty}</strong> units. Upload a CSV with exactly ${qty} codes, or <a href="order.html">go back</a> and reduce quantity.${dupNote}`;
-    warnEl.classList.add('is-short');
-  } else if (qty && count > qty) {
-    warnEl.innerHTML = `&#9888; You have <strong>${count}</strong> codes but ordered <strong>${qty}</strong> units. Use a CSV with exactly ${qty} codes, or <a href="order.html">go back</a> and increase quantity.${dupNote}`;
-    warnEl.classList.add('is-over');
-  } else {
-    warnEl.style.display = 'none';
-    return;
-  }
+  // Neutral confirmation only — no count-match requirement. Codes are
+  // reconciled with the customer after checkout if anything's missing.
+  warnEl.innerHTML = `&#10003; <strong>${count}</strong> code${count === 1 ? '' : 's'} loaded. We'll follow up after checkout if we need anything else.`;
+  warnEl.classList.add('is-match');
   warnEl.style.display = 'block';
 }
 
@@ -1878,8 +1863,9 @@ function needsBack() { return state.customBackChosen; }
 
 function hasMusic() {
   if (state.musicMode === 'csv') {
-    const qty = orderConfig ? orderConfig.quantity : 0;
-    return qty > 0 && state.csvUrls.length === qty;
+    // No-friction: any uploaded CSV lets them proceed. We don't require the
+    // code count to match units — codes are reconciled after checkout.
+    return state.csvUrls.length > 0;
   }
   return state.altURL.startsWith('http://') || state.altURL.startsWith('https://');
 }
@@ -1955,19 +1941,9 @@ function renderSummary() {
   const issues = [];
   if (!state.frontArt) issues.push('front artwork');
   if (needsBack() && !state.backArt) issues.push('back artwork');
-  if (!hasMusic()) {
-    if (state.musicMode === 'csv' && state.csvUrls.length > 0 && cfg.quantity) {
-      if (state.csvUrls.length < cfg.quantity) {
-        issues.push(`${cfg.quantity - state.csvUrls.length} more Bandcamp codes`);
-      } else if (state.csvUrls.length > cfg.quantity) {
-        issues.push(`a CSV with exactly ${cfg.quantity} codes (you have ${state.csvUrls.length})`);
-      } else {
-        issues.push('music link');
-      }
-    } else {
-      issues.push('music link');
-    }
-  }
+  // No code-count friction: a music link (CSV uploaded or URL entered) is
+  // all that's required; we reconcile Bandcamp codes after checkout.
+  if (!hasMusic()) issues.push('music link');
   if (issues.length) {
     warnEl.style.display = 'block';
     warnEl.textContent = `Still needed: ${issues.join(', ')}.`;
@@ -2022,7 +1998,7 @@ function placeOrder() {
     btn.disabled = false;
     const w = document.getElementById('summary-warning');
     w.style.display = 'block';
-    w.textContent = 'Could not connect to checkout. Please try again or contact hello@getthegoodz.com.';
+    w.textContent = 'Could not connect to checkout. Please try again or contact info@getthegoodz.com.';
     trackEvent('checkout_error', { context: 'place_order' });
   });
 }

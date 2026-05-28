@@ -85,22 +85,11 @@ module.exports = async (req, res) => {
       return;
     }
 
-    // Bandcamp codes are uniquely assigned per goodz, so the CSV count must
-    // exactly match the number of units ordered. Client-side validation can
-    // be bypassed; this is the authoritative check.
-    if (musicType === 'csv') {
-      const count = parseInt(csvCount, 10);
-      if (!Number.isFinite(count) || count < 1) {
-        res.status(400).json({ error: 'csvCount is required when musicType is "csv".' });
-        return;
-      }
-      if (count !== unitsInt) {
-        res.status(400).json({
-          error: `Bandcamp code count (${count}) must match units ordered (${unitsInt}).`,
-        });
-        return;
-      }
-    }
+    // No CSV validation by design: we do NOT require a Bandcamp code CSV,
+    // nor that its count match the units ordered, nor that codes be unique.
+    // Removing this friction lets customers submit and pay immediately; we
+    // reconcile the actual codes with them after checkout. Whatever count
+    // was uploaded is still recorded on the order as _csv_code_count below.
 
     // Line attributes ride on the cart line and appear on the order line item
     // in admin. Keys with a leading underscore are hidden from the customer
@@ -121,7 +110,7 @@ module.exports = async (req, res) => {
       lineAttributes.push({ key: 'music_url', value: musicUrl });
     } else if (musicType === 'csv' && csvUrl) {
       lineAttributes.push({ key: '_csv_url', value: csvUrl });
-      lineAttributes.push({ key: '_csv_code_count', value: String(csvCount) });
+      if (csvCount != null) lineAttributes.push({ key: '_csv_code_count', value: String(csvCount) });
     }
 
     // Cart-level attributes mirror the line-level ones for visibility in the
