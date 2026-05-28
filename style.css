@@ -1014,3 +1014,95 @@ footer {
   .revenue-math { gap: 1rem; }
   .hero-text { padding: 2.5rem 1.25rem; }
 }
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Order strip
+   Slim live "what you're buying right now" header that travels across every
+   step of the order flow (Customize / Music / Artwork / Review). One line of
+   product · unit price · total, with a Details toggle that expands a small
+   breakdown. Replaces the old static product chip on Customize and the
+   one-off custom-back upcharge notice on Artwork.
+   ────────────────────────────────────────────────────────────────────────── */
+.order-strip {
+  background: #fff;
+  border-bottom: 1px solid #d8d5cc;
+  padding: 0.7rem 2rem;
+}
+.order-strip-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.order-strip-info {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem 0.7rem;
+  flex-wrap: wrap;
+  font-size: 0.88rem;
+  color: var(--text);
+}
+.order-strip-eyebrow {
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-lighter);
+}
+.order-strip-product {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+.order-strip-product strong { font-weight: 700; }
+.order-strip-sep { color: var(--text-lighter); }
+.order-strip-toggle {
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--black);
+  cursor: pointer;
+  padding: 0.2rem 0.3rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.order-strip-toggle:hover { color: var(--amber-ink); }
+.order-strip-toggle .order-strip-arrow {
+  display: inline-block;
+  transition: transform 0.15s ease;
+}
+.order-strip-toggle[aria-expanded="true"] .order-strip-arrow {
+  transform: rotate(180deg);
+}
+.order-strip-details {
+  margin: 0.85rem 0 0;
+  padding: 0.85rem 0 0;
+  border-top: 1px solid #d8d5cc;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.35rem 1.25rem;
+  font-size: 0.85rem;
+  max-width: 520px;
+}
+.order-strip-details dt {
+  color: var(--text-lighter);
+  font-weight: 400;
+}
+.order-strip-details dd {
+  margin: 0;
+  font-weight: 600;
+}
+.order-strip-includes {
+  font-size: 0.78rem;
+  color: var(--amber-ink);
+  font-weight: 600;
+}
+@media (max-width: 700px) {
+  .order-strip { padding: 0.6rem 1rem; }
+  .order-strip-info { font-size: 0.82rem; }
+}

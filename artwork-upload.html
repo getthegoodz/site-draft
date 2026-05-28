@@ -542,39 +542,6 @@
     .specs-template-ext.pdf { background: #DC2626; color: #fff; }
     .specs-template-label { font-size: 0.7rem; color: var(--muted); font-weight: 600; }
 
-    /* Custom-back upcharge notice */
-    .upcharge-notice {
-      margin: 0.85rem 0 0;
-      padding: 0.75rem 1rem;
-      background: var(--warn-bg);
-      border: 1px solid var(--warn-border);
-      border-radius: 8px;
-      font-size: 0.82rem;
-      color: var(--warn-text);
-      line-height: 1.5;
-      text-align: left;
-    }
-    .upcharge-notice-lead { margin: 0; }
-    .upcharge-rows {
-      list-style: none;
-      padding: 0;
-      margin: 0.5rem 0 0;
-      display: grid;
-      grid-template-columns: auto auto;
-      justify-content: start;
-      column-gap: 0.6rem;
-      row-gap: 0.15rem;
-      align-items: baseline;
-    }
-    .upcharge-rows li { display: contents; }
-    .upcharge-row-label { color: var(--warn-text); opacity: 0.85; }
-    .upcharge-row-value { font-weight: 700; font-variant-numeric: tabular-nums; }
-    .upcharge-notice-reassure {
-      margin: 0.5rem 0 0;
-      font-size: 0.75rem;
-      color: var(--muted);
-    }
-
     /* Sleeve preview (kept compact, restyled to fit new palette) */
     .sleeve-wrap {
       display: flex;
@@ -928,6 +895,29 @@
   <div></div>
 </header>
 
+<!-- Slim live order strip — same component on every step. -->
+<div class="order-strip" id="order-strip">
+  <div class="order-strip-row">
+    <div class="order-strip-info">
+      <span class="order-strip-eyebrow">You're ordering</span>
+      <span class="order-strip-product">
+        <strong id="strip-product">Custom Goodz</strong>
+        <span class="order-strip-sep">·</span>
+        <span id="strip-qty">50 units</span>
+        <span class="order-strip-sep">·</span>
+        <span id="strip-unit">$3.44/unit</span>
+        <span class="order-strip-sep">·</span>
+        <span id="strip-total">$172 total</span>
+        <span class="order-strip-includes" id="strip-includes" style="display:none">includes custom back</span>
+      </span>
+    </div>
+    <button type="button" class="order-strip-toggle" id="order-strip-toggle" aria-expanded="false" aria-controls="order-strip-details" onclick="toggleOrderStripDetails()">
+      Details <span class="order-strip-arrow" aria-hidden="true">▾</span>
+    </button>
+  </div>
+  <dl class="order-strip-details" id="order-strip-details" hidden></dl>
+</div>
+
 <main class="layout">
 
   <!-- STEP 0: Music -->
@@ -1080,8 +1070,6 @@
       <button type="button" class="card-action" id="action-back-replace" style="display:none" onclick="addCustomBack()">Replace</button>
       <button type="button" class="card-action" id="action-use-standard" style="display:none" onclick="useStandardBack()">Use standard back</button>
     </div>
-
-    <div class="upcharge-notice" id="custom-back-upcharge-notice" style="display:none"></div>
 
     <div class="overlay-legend" aria-label="Print spec key">
       <div class="overlay-legend-toggle">
@@ -1444,26 +1432,48 @@ function fmtMoney(n) {
   return '$' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
-function updateUpchargeNotice() {
-  const el = document.getElementById('custom-back-upcharge-notice');
-  if (!el) return;
+// Renders the slim live order strip below the page header. The strip
+// replaces the old standalone upcharge notice — pricing is now visible
+// at all times and live-updates when the user upgrades to a custom back.
+function renderOrderStrip() {
   const cfg = orderConfig || {};
-  if (!isUpgradedToCustomBack() || !cfg.unitPrice || !cfg.quantity) {
-    el.style.display = 'none';
-    el.innerHTML = '';
-    return;
-  }
-  const newUnit = effectiveUnitPrice();
-  const newTotal = effectiveTotal();
-  el.innerHTML = `
-    <p class="upcharge-notice-lead">Custom backs cost +${fmtMoney(CUSTOM_BACK_UPCHARGE)}/unit.</p>
-    <ul class="upcharge-rows">
-      <li><span class="upcharge-row-label">New unit price</span><span class="upcharge-row-value">${fmtMoney(newUnit)}</span></li>
-      <li><span class="upcharge-row-label">New order total</span><span class="upcharge-row-value">${fmtMoney(newTotal)}</span></li>
-    </ul>
-    <p class="upcharge-notice-reassure">You'll have a chance to review everything before placing your order.</p>
-  `;
-  el.style.display = 'block';
+  if (!cfg.quantity || !cfg.unitPrice) return;
+  const unit = effectiveUnitPrice();
+  const total = effectiveTotal();
+  document.getElementById('strip-qty').textContent =
+    `${cfg.quantity.toLocaleString()}${cfg.tierMax ? '' : '+'} units`;
+  document.getElementById('strip-unit').textContent = `${fmtMoney(unit)}/unit`;
+  document.getElementById('strip-total').textContent =
+    total != null ? `${fmtMoney(total)} total` : 'Contact us';
+  const usingCustomBack = !!state.customBackChosen;
+  const includesEl = document.getElementById('strip-includes');
+  includesEl.style.display = usingCustomBack ? '' : 'none';
+  includesEl.textContent = '· includes custom back';
+
+  const dl = document.getElementById('order-strip-details');
+  const musicLabel = cfg.musicLabel || 'Other';
+  const sleeveLabel = cfg.sleeve ? `With sleeve (+${fmtMoney(0.20)}/unit)` : 'No sleeve';
+  const keyLabel = (cfg.keychainHole === 'top-left' || cfg.keychainHole === 'top-right')
+    ? `${cfg.keychainHole === 'top-left' ? 'Top left' : 'Top right'} (+${fmtMoney(0.15)}/unit)`
+    : 'None';
+  const backLabel = usingCustomBack
+    ? `Custom (+${fmtMoney(CUSTOM_BACK_UPCHARGE)}/unit)`
+    : 'Standard';
+  const rows = [
+    ['Music source', musicLabel],
+    ['Sleeve',       sleeveLabel],
+    ['Keychain hole', keyLabel],
+    ['Back design',  backLabel],
+  ];
+  dl.innerHTML = rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('');
+}
+
+function toggleOrderStripDetails() {
+  const dl = document.getElementById('order-strip-details');
+  const btn = document.getElementById('order-strip-toggle');
+  const open = btn.getAttribute('aria-expanded') === 'true';
+  btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+  dl.hidden = open;
 }
 
 function showFrontPreview(src, name) {
@@ -1552,7 +1562,7 @@ function showBackPreview(src, name) {
   document.getElementById('thumb-back-img').src = src;
   document.getElementById('back-filename').textContent = name || '';
   state.customBackChosen = true;
-  updateUpchargeNotice();
+  renderOrderStrip();
   renderCardActions();
 }
 
@@ -1569,7 +1579,7 @@ function clearBack(e) {
   document.getElementById('back-filename').textContent = '';
   renderSizeWarnings();
   document.getElementById('input-back').value = '';
-  updateUpchargeNotice();
+  renderOrderStrip();
   renderCardActions();
   renderArtworkSubsteps();
   updateStepButtons();
@@ -2099,6 +2109,7 @@ renderSizeWarnings();
 updateBackLink();
 updateStepButtons();
 updateStatusBadges();
+renderOrderStrip();
 
 // On load: explicit hash wins; otherwise resume on the furthest step the
 // user has reached so they don't have to step-through to get back.
