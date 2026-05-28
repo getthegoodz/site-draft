@@ -1477,8 +1477,8 @@ function renderOrderStrip() {
     : 'Standard';
   const rows = [
     ['Music source', musicLabel],
-    ['Keychain hole', keyLabel],
     ['Back design',  backLabel],
+    ['Keychain hole', keyLabel],
   ];
   dl.innerHTML = rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('');
 }

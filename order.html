@@ -730,15 +730,17 @@
         <p class="pricing-contact">Need 3,000+? <a href="mailto:hello@getthegoodz.com">Contact us for bulk pricing &rarr;</a></p>
       </div>
 
-      <!-- Summary -->
+      <!-- Summary — rows mirror the selection order on this page
+           (Music → Back → Keychain → Quantity), with the computed
+           Unit price and Order total at the end. -->
       <div class="summary-section">
         <div class="option-section-label">Summary</div>
         <div class="summary-list">
-          <div class="summary-row"><span>Quantity</span><span id="summary-qty"></span></div>
           <div class="summary-row"><span>Music</span><span id="summary-music"></span></div>
-          <div class="summary-row" style="display:none"><span>Packaging</span><span id="summary-sleeve"></span></div>
-          <div class="summary-row"><span>Keychain hole</span><span id="summary-keychain"></span></div>
           <div class="summary-row"><span>Back design</span><span id="summary-back"></span></div>
+          <div class="summary-row"><span>Keychain hole</span><span id="summary-keychain"></span></div>
+          <div class="summary-row" style="display:none"><span>Packaging</span><span id="summary-sleeve"></span></div>
+          <div class="summary-row"><span>Quantity</span><span id="summary-qty"></span></div>
           <div class="summary-row summary-row-unit"><span>Unit price</span><span id="summary-unit"></span></div>
           <div class="summary-row summary-row-total"><span>Order total</span><span id="summary-price"></span></div>
         </div>
@@ -941,10 +943,10 @@ function renderOrderStrip() {
   const dl = document.getElementById('order-strip-details');
   const rows = [
     ['Music source', MUSIC_LABELS[state.music] || 'Other'],
+    ['Back design',  state.back === 'custom' ? `Custom (+${fmt(UPCHARGES.customBack)}/unit)` : 'Standard'],
     ['Keychain hole',
       state.keychain === 'none' ? 'None' :
       `${state.keychain === 'top-left' ? 'Top left' : 'Top right'} (+${fmt(UPCHARGES.keychain)}/unit)`],
-    ['Back design',  state.back === 'custom' ? `Custom (+${fmt(UPCHARGES.customBack)}/unit)` : 'Standard'],
   ];
   dl.innerHTML = rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('');
 }
