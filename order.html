@@ -302,6 +302,9 @@
       color: var(--amber-ink);
       text-align: right;
       font-style: normal;
+      /* Equal-width digits so the value fills the 2ch box exactly — a
+         narrow "1" was leaving a gap after the "$". */
+      font-variant-numeric: tabular-nums;
     }
     #retail-input:focus { border-bottom-style: solid; }
     .pricing-estimate-hint {
@@ -626,7 +629,7 @@
               </svg>
             </div>
             <div class="option-card-title">Bandcamp codes</div>
-            <div class="option-card-sub">Your Goodz come pre-loaded with unique album download codes. Give your fans something physical with their download.</div>
+            <div class="option-card-sub">Pre-load your Goodz with unique album download codes. Fans get something physical with their code.</div>
           </div>
           <div class="option-card" data-value="streaming">
             <div class="option-card-icon streaming-logos" aria-label="Bandcamp, SoundCloud, YouTube, Spotify, Apple Music, Amazon">
@@ -657,7 +660,7 @@
               </svg>
             </div>
             <div class="option-card-title">Streaming service</div>
-            <div class="option-card-sub">Bandcamp, SoundCloud, YouTube, Spotify, Apple Music, Amazon.</div>
+            <div class="option-card-sub">Any album or playlist on Spotify, SoundCloud, Bandcamp, YouTube, etc.</div>
           </div>
           <div class="option-card" data-value="url">
             <div class="option-card-icon">
