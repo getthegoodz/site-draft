@@ -953,7 +953,7 @@ footer {
   .hero-text { border-right: none; border-bottom: 2px solid #2a2a2a; padding: 3rem 1.5rem; }
   .hero-visual { min-height: 260px; border-left: none; border-top: 2px solid #2a2a2a; }
   .split-text { border-left: none !important; border-right: none !important; border-top: var(--border); padding: 2.5rem 1.5rem; }
-  .split-img { border-right: none !important; max-height: 260px; min-height: 0 !important; }
+  .split-img { border-right: none !important; }
   .split.reverse .split-img { order: 0; border-left: none !important; }
   .product-card { border-right: none; border-bottom: var(--border); padding: 2rem 1.5rem; }
   .product-card:last-child { border-bottom: none; }
