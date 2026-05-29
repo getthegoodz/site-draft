@@ -656,12 +656,12 @@ img { display: block; width: 100%; }
 .cred-logo:hover { opacity: 0.95; }
 
 .cred-logo--sony   { height: 55px; }
-.cred-logo--warner { height: 38px; }
-.cred-logo--craft  { height: 77px; }
-.cred-logo--britney { height: 42px; }
-.cred-logo--outkast { height: 46px; }
-.cred-logo--tmbg    { height: 38px; }
-.cred-logo--motorola { height: 42px; }
+.cred-logo--warner { height: 40px; }
+.cred-logo--craft  { height: 60px; }
+.cred-logo--britney { height: 40px; }
+.cred-logo--outkast { height: 56px; }
+.cred-logo--tmbg    { height: 54px; }
+.cred-logo--motorola { height: 56px; }
 
 /* Dark cred-bar variant: black background, tan reversed-out logos */
 .cred-bar.dark { background: var(--black); }
@@ -1021,12 +1021,12 @@ footer {
   .use-case { border-right: none; border-bottom: var(--border); }
   .cred-logos { gap: 2.5rem; }
   .cred-logo--sony   { height: 46px; }
-  .cred-logo--warner { height: 31px; }
-  .cred-logo--craft  { height: 62px; }
+  .cred-logo--warner { height: 34px; }
+  .cred-logo--craft  { height: 50px; }
   .cred-logo--britney { height: 34px; }
-  .cred-logo--outkast { height: 36px; }
-  .cred-logo--tmbg    { height: 30px; }
-  .cred-logo--motorola { height: 34px; }
+  .cred-logo--outkast { height: 47px; }
+  .cred-logo--tmbg    { height: 45px; }
+  .cred-logo--motorola { height: 47px; }
   .revenue-math { gap: 1rem; }
   .hero-text { padding: 2.5rem 1.25rem; }
 }
