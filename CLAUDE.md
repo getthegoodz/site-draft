@@ -10,7 +10,7 @@ Live preview: https://getthegoodz.github.io/site-draft/
 The static frontend calls these cross-origin at `API_BASE` (`https://goodz-site-draft.vercel.app`), so the functions set CORS `*` (mirrors `api/custom-goodz-order.js`).
 
 **Required Vercel env vars** on the `goodz-site-draft` project (none of these live in git):
-- `TURNSTILE_SITE_KEY` (public; currently `0x4AAAAAACszrg0jgW25CH8Y`)
+- `TURNSTILE_SITE_KEY` (public; site-draft's own widget = `0x4AAAAAADdyQ5lXmOvi-aAQ`. NB: the live getthegoodz.com / website-migration project uses a *different* sitekey, `0x4AAAAAACszrg0jgW25CH8Y`, in a Cloudflare account we got locked out of — site-draft deliberately has its own widget in an account we control.)
 - `TURNSTILE_SECRET_KEY`
 - `RESEND_API_KEY`
 - `CONTACT_TO_EMAIL` (where messages are delivered)
