@@ -49,11 +49,13 @@ img { display: block; width: 100%; }
 }
 
 .nav-logo {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 800;
-  font-size: 1.1rem;
-  letter-spacing: 0.04em;
-  color: var(--white);
+  display: inline-flex;
+  align-items: center;
+}
+.nav-logo img {
+  height: 22px;
+  width: auto;
+  display: block;
 }
 
 .nav-links {
@@ -844,11 +846,12 @@ footer {
 }
 
 .footer-logo {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 800;
-  font-size: 1.1rem;
   margin-bottom: 0.5rem;
-  letter-spacing: 0.04em;
+}
+.footer-logo img {
+  height: 24px;
+  width: auto;
+  display: block;
 }
 
 .footer-tagline { font-size: 0.78rem; color: #b0b0b0; }

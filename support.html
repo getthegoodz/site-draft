@@ -43,12 +43,21 @@
     }
     .support-contact h3 { font-size: 1.25rem; margin-bottom: 0.5rem; }
     .support-contact p { font-size: 0.95rem; color: var(--text-light); margin-bottom: 1.25rem; line-height: 1.6; }
+    .nfc-guide { display: flex; gap: 1.5rem; align-items: flex-start; margin: 0.6rem 0 1.5rem; }
+    .nfc-guide img { width: 118px; height: auto; flex-shrink: 0; }
+    .nfc-guide-text { flex: 1; }
+    .nfc-guide-text p { margin: 0 0 0.6rem; line-height: 1.7; }
+    .nfc-guide-text p:last-child { margin-bottom: 0; }
+    @media (max-width: 480px) {
+      .nfc-guide { gap: 1rem; }
+      .nfc-guide img { width: 84px; }
+    }
   </style>
 </head>
 <body>
 
 <nav class="nav">
-  <a href="index.html" class="nav-logo">((GOODZ))</a>
+  <a href="index.html" class="nav-logo" aria-label="Goodz home"><img src="logos/goodz-wordmark-white.svg" alt="Goodz" width="139" height="22"></a>
   <ul class="nav-links">
     <li><a href="mixtape.html">Mixtape Goodz</a></li>
     <li><a href="custom.html">Custom Goodz</a></li>
@@ -75,39 +84,28 @@
     <h2>Tapping Your Goodz</h2>
     <div class="faq">
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Where is my NFC reader? <span class="icon">+</span></button>
+        <button class="faq-q" onclick="toggleFaq(this)">Where is my NFC reader, and how do I tap my Goodz? <span class="icon">+</span></button>
         <div class="faq-a">
-          <h4 class="faq-device">iPhone</h4>
-          <p>The NFC sensor on an iPhone is on the back of the device, along its top edge, to the right of the camera.</p>
-          <h4 class="faq-device">Android</h4>
-          <p>On Android phones, the NFC reader is usually located in the middle or upper back of the phone.</p>
-        </div>
-      </div>
+          <p>Your phone's NFC reader is built in. Hold your Goodz flat against the reader for a couple of seconds and a notification opens your content. The reader sits in a different spot on iPhone and Android:</p>
 
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">How do I tap my Goodz? <span class="icon">+</span></button>
-        <div class="faq-a">
-          <h4 class="faq-device">iPhone 11 &amp; newer</h4>
-          <ol>
-            <li>Grab your Goodz.</li>
-            <li>Wake your phone, and hold the top edge of your iPhone directly against your Goodz for several seconds.</li>
-            <li>Open the notification that appears to be taken to your content.</li>
-          </ol>
-          <h4 class="faq-device">iPhone 7, 8, and X</h4>
-          <ol>
-            <li>Wake and unlock your iPhone.</li>
-            <li>Swipe up to open the Control Center.</li>
-            <li>Click on the NFC icon to enable NFC scan mode.</li>
-            <li>Hold the top edge of your iPhone directly against your Goodz for several seconds.</li>
-            <li>Open the notification that appears to be taken to your content.</li>
-          </ol>
+          <h4 class="faq-device">iPhone</h4>
+          <div class="nfc-guide">
+            <img src="photos/nfc-location-iphone.webp" alt="Diagram of an iPhone from the back, highlighting the NFC reader along the top edge near the cameras." loading="lazy">
+            <div class="nfc-guide-text">
+              <p>The reader is on the back, along the top edge, next to the cameras.</p>
+              <p><strong>iPhone 11 and newer:</strong> wake your phone, hold its top edge against your Goodz for a few seconds, then open the notification that appears.</p>
+              <p><strong>iPhone 7, 8, and X:</strong> wake and unlock, swipe up to open Control Center, tap the NFC icon to start a scan, then hold the top edge against your Goodz.</p>
+            </div>
+          </div>
+
           <h4 class="faq-device">Android</h4>
-          <ol>
-            <li>Ensure that NFC is enabled in settings.</li>
-            <li>Grab your Goodz. Wake and unlock your Android.</li>
-            <li>Hold your Goodz against the middle back of your phone for several seconds.</li>
-            <li>Open the notification that appears, or follow the instructions on the webpage that loads to access your content.</li>
-          </ol>
+          <div class="nfc-guide">
+            <img src="photos/nfc-location-android.webp" alt="Diagram of an Android phone from the back, highlighting the NFC reader in the middle of the phone." loading="lazy">
+            <div class="nfc-guide-text">
+              <p>The reader is usually in the middle or upper-middle of the back.</p>
+              <p>Make sure NFC is enabled in Settings, then hold the middle of your phone's back against your Goodz for a few seconds and open the notification that appears.</p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -214,7 +212,7 @@
 
 <footer>
   <div>
-    <div class="footer-logo">((GOODZ))</div>
+    <div class="footer-logo"><img src="logos/goodz-wordmark-white.svg" alt="Goodz" width="152" height="24"></div>
     <div class="footer-tagline">Music you can hold</div>
   </div>
   <ul class="footer-links">
