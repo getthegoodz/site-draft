@@ -348,6 +348,17 @@
       padding: 0.15rem 0.4rem;
       border-radius: 3px;
     }
+    .tier-discount-badge {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--profit-green);
+      background: var(--profit-tint);
+      border: 1px solid #cbe3d0;
+      padding: 0.15rem 0.4rem;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
     .pricing-selected-dot {
       width: 16px;
       height: 16px;
@@ -533,6 +544,7 @@
       .pricing-grid-cell:nth-child(4) { padding-left: 0.55rem; }
       .pricing-grid-hdr { padding: 0.55rem 0.55rem; font-size: 0.62rem; }
       .recommended-badge { font-size: 0.55rem; padding: 0.15rem 0.35rem; }
+      .tier-discount-badge { font-size: 0.55rem; padding: 0.15rem 0.35rem; }
     }
 
     @media (max-width: 480px) {
@@ -812,12 +824,12 @@
 <script>
 const TIERS = [
   { qty: 50,   max: 99,   basePrice: 3.50 },
-  { qty: 100,  max: 199,  basePrice: 3.22 },
-  { qty: 200,  max: 499,  basePrice: 2.88, recommended: true },
-  { qty: 500,  max: 749,  basePrice: 2.21 },
-  { qty: 750,  max: 999,  basePrice: 2.10 },
-  { qty: 1000, max: 1999, basePrice: 1.71 },
-  { qty: 2000, max: 2999, basePrice: 1.44 },
+  { qty: 100,  max: 199,  basePrice: 3.33, discount: 5 },
+  { qty: 200,  max: 499,  basePrice: 3.15, discount: 10, recommended: true },
+  { qty: 500,  max: 749,  basePrice: 2.98, discount: 15 },
+  { qty: 750,  max: 999,  basePrice: 2.80, discount: 20 },
+  { qty: 1000, max: 1999, basePrice: 2.63, discount: 25 },
+  { qty: 2000, max: 2999, basePrice: 2.28, discount: 35 },
   { qty: 3000, max: null, basePrice: null, contact: true },
 ];
 
@@ -890,6 +902,7 @@ function renderTable() {
           <span class="pricing-selected-dot"></span>
           <span>${tier.qty.toLocaleString()}</span>
           ${tier.recommended ? '<span class="recommended-badge">RECOMMENDED</span>' : ''}
+          ${tier.discount ? `<span class="tier-discount-badge">${tier.discount}% off</span>` : ''}
         </div>
         <div class="pricing-grid-cell r">${fmt(price)}</div>
         <div class="pricing-grid-cell r">${fmt(total)}</div>
