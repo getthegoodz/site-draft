@@ -1,3 +1,17 @@
+/**
+ * POST /api/contact — contact form handler (Cloudflare Turnstile + Resend email).
+ *
+ * ┌─ IF THIS RETURNS "Email service is not configured." ──────────────────────┐
+ * │ It is NOT a code bug. It means one of these Vercel env vars is missing at  │
+ * │ runtime: RESEND_API_KEY, CONTACT_TO_EMAIL, CONTACT_FROM_EMAIL.            │
+ * │ Fix: re-add all three in the Vercel project's Environment Variables, then  │
+ * │ redeploy. CONTACT_FROM_EMAIL must be on a Resend-verified sending domain.  │
+ * │ (Turnstile needs TURNSTILE_SITE_KEY + TURNSTILE_SECRET_KEY separately.)    │
+ * │ History: the live getthegoodz.com form silently broke ~Apr 2026 when these │
+ * │ vars dropped out of Vercel during a deploy-pipeline change — the code      │
+ * │ never changed. See site-draft/CLAUDE.md "Contact form / email".           │
+ * └────────────────────────────────────────────────────────────────────────────┘
+ */
 const RATE_WINDOW_MS = 10 * 60 * 1000;
 const RATE_LIMIT = 5;
 
@@ -108,6 +122,13 @@ module.exports = async (req, res) => {
   const fromEmail = process.env.CONTACT_FROM_EMAIL;
 
   if (!resendKey || !toEmail || !fromEmail) {
+    // Logged to Vercel function logs so the fix is obvious next time: this is a
+    // missing-env-var problem, not a code bug. Re-add the vars + redeploy.
+    console.error('[contact] Email service not configured. Missing Vercel env vars:', {
+      RESEND_API_KEY: !resendKey,
+      CONTACT_TO_EMAIL: !toEmail,
+      CONTACT_FROM_EMAIL: !fromEmail,
+    });
     return badRequest(res, 500, 'Email service is not configured.');
   }
 
