@@ -203,3 +203,20 @@ footer {
     border-bottom: 1px solid var(--border-inner) !important;
   }
 }
+
+/* ── COLLAPSE DOUBLED SECTION DIVIDERS ──
+   Full-bleed bands each draw a 2px border-top AND border-bottom. Where two
+   bands sit directly adjacent, the upper one's bottom and the lower one's top
+   stack into a 4px double line. Drop the LOWER band's top border at each such
+   seam so the divider is a single 2px line carried by the upper band's bottom.
+   (video-section and tap-section already omit their top border for this reason;
+   these rules extend the same fix to compat-bar / cred-bar / cta-band.)
+   Seams covered: index compat→cta; custom video→compat, tap→cred,
+   product-detail→cta; mixtape tap→compat. */
+.compat-bar + .cta-band,
+.product-detail + .cta-band,
+.video-section + .compat-bar,
+.tap-section + .compat-bar,
+.tap-section + .cred-bar {
+  border-top: none;
+}
